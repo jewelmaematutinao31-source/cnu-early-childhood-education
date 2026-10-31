@@ -46,7 +46,67 @@
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen antialiased">
 
-  <!-- TOP UNIVERSITY BANNER -->
+  <!-- ========================================================
+       1. INITIAL FULL-SCREEN LOGIN GATEWAY (SHOWN FIRST!)
+       ======================================================== -->
+  <div id="login-gateway-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#660000] via-[#8B0000] to-[#400000] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border-t-8 border-[#D4AF37] p-8 space-y-6 text-center">
+      
+      <!-- CNU Crest Logo -->
+      <div class="w-20 h-20 mx-auto rounded-full bg-[#D4AF37] border-4 border-[#8B0000] flex items-center justify-center font-black text-2xl text-[#660000] shadow-lg">
+        CNU
+      </div>
+
+      <!-- University Branding -->
+      <div>
+        <p class="text-xs uppercase font-bold text-gray-500 tracking-wider">Cebu Normal University</p>
+        <h2 class="text-2xl font-black text-[#8B0000] tracking-tight uppercase">ECE Study Hub</h2>
+        <p class="text-xs text-gray-600 mt-1">College of Teacher Education • Early Childhood Education</p>
+        <p class="text-[11px] font-bold text-[#D4AF37] bg-red-50 py-1 px-3 rounded-full inline-block mt-2 border border-red-100">
+          Faculty Lead: Prof. Jericho C. Matutinao
+        </p>
+      </div>
+
+      <div class="border-t border-gray-100 pt-4 space-y-4 text-left">
+        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide">
+          Student or Teacher Gmail Account
+        </label>
+        
+        <!-- Gmail Input Box -->
+        <div class="relative">
+          <input 
+            type="email" 
+            id="login-gmail-input" 
+            placeholder="e.g. yourname@gmail.com" 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] rounded-xl py-3 px-4 text-sm font-medium outline-none transition"
+            required
+          >
+        </div>
+
+        <p class="text-[11px] text-gray-500 leading-snug">
+          Sign in using your verified Gmail address. No student ID number required.
+        </p>
+
+        <!-- Login Button -->
+        <button 
+          onclick="handleCustomGmailLogin()" 
+          class="w-full bg-[#8B0000] hover:bg-[#660000] text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2 text-sm border-2 border-[#D4AF37]"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"/></svg>
+          Enter ECE Study Hub
+        </button>
+
+        <div class="pt-2 text-center">
+          <span class="text-[11px] text-gray-400">Secure Supabase PostgreSQL Authentication</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================
+       2. TOP UNIVERSITY STRIP (VISIBLE ONCE LOGGED IN)
+       ======================================================== -->
   <div class="bg-[#660000] text-amber-200 text-xs py-1.5 px-4 font-semibold flex flex-wrap justify-between items-center border-b border-[#D4AF37]/30">
     <div class="flex items-center gap-2">
       <span class="inline-block w-2 h-2 rounded-full bg-[#D4AF37]"></span>
@@ -80,36 +140,29 @@
         <button onclick="switchView('theorists')" class="px-3 py-2 rounded hover:text-amber-300 transition">Knowledge Library</button>
         <button onclick="switchView('my-progress')" class="px-3 py-2 rounded hover:text-amber-300 transition">My Portal</button>
         
-        <!-- Faculty Admin Tabs -->
+        <!-- Faculty Admin Tab -->
         <button id="nav-teacher-dash" onclick="switchView('teacher-dashboard')" class="hidden px-3 py-2 text-amber-300 hover:text-white transition flex items-center gap-1 font-bold">
           Faculty Hub
         </button>
       </nav>
 
-      <!-- Account State -->
-      <div id="user-display" class="flex items-center gap-2"></div>
+      <!-- Account State & Sign Out -->
+      <div id="user-display" class="flex items-center gap-3"></div>
     </div>
   </header>
 
-  <!-- ROLE SWITCHER & CLOUD STATUS -->
+  <!-- ROLE PILL BAR -->
   <div class="bg-[#FFF9E6] border-b border-[#D4AF37]/50 py-2 px-4 text-xs">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <span class="font-bold text-[#8B0000]">Active Session:</span>
         <span id="role-badge" class="px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white">Student</span>
-        <span id="role-details" class="text-gray-600 hidden sm:inline">(Viewing as student)</span>
-        <span class="ml-2 text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Supabase Connected
-        </span>
+        <span id="role-details" class="text-gray-600 font-medium"></span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-500 font-medium">Switch view mode:</span>
-        <button onclick="setRole('student')" class="px-2.5 py-1 bg-white border border-gray-300 hover:border-[#8B0000] rounded text-xs font-bold text-gray-700">
-          Student
-        </button>
-        <button onclick="setRole('teacher')" class="px-2.5 py-1 bg-[#8B0000] hover:bg-[#660000] text-amber-200 rounded text-xs font-bold border border-[#D4AF37]">
-          Prof. Jericho C. Matutinao
-        </button>
+        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Supabase Cloud Connected
+        </span>
       </div>
     </div>
   </div>
@@ -334,7 +387,7 @@
   </footer>
 
   <!-- ========================================================
-       ALL MODALS
+       MODALS
        ======================================================== -->
 
   <!-- 1. PRESENTATION VIEWER MODAL -->
@@ -356,7 +409,7 @@
     </div>
   </div>
 
-  <!-- 2. UPLOAD LESSON MODAL (POWERPOINT / PDF) -->
+  <!-- 2. UPLOAD LESSON MODAL -->
   <div id="upload-lesson-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -401,11 +454,11 @@
     </div>
   </div>
 
-  <!-- 3. CREATE ASSIGNMENT MODAL (TEACHER) -->
+  <!-- 3. CREATE ASSIGNMENT MODAL -->
   <div id="create-assignment-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Post Course Assignment (Google Classroom Style)</h3>
+        <h3 class="font-bold text-base text-gray-900">Post Course Assignment</h3>
         <button onclick="closeCreateAssignmentModal()" class="text-gray-400 font-bold">✕</button>
       </div>
       <form onsubmit="handleAssignmentCreateSubmit(event)" class="space-y-3">
@@ -435,7 +488,7 @@
         </div>
         <div>
           <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Instructions & Rubric</label>
-          <textarea id="asg-instructions" rows="3" required placeholder="Type the assignment instructions, expectations, and grading criteria for students..." class="w-full border p-2 rounded text-xs"></textarea>
+          <textarea id="asg-instructions" rows="3" required placeholder="Type the assignment instructions..." class="w-full border p-2 rounded text-xs"></textarea>
         </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeCreateAssignmentModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
@@ -445,7 +498,7 @@
     </div>
   </div>
 
-  <!-- 4. SUBMIT ASSIGNMENT MODAL (STUDENT) -->
+  <!-- 4. SUBMIT ASSIGNMENT MODAL -->
   <div id="submit-assignment-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -473,7 +526,7 @@
     </div>
   </div>
 
-  <!-- 5. GRADE SUBMISSION MODAL (TEACHER) -->
+  <!-- 5. GRADE SUBMISSION MODAL -->
   <div id="grade-submission-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -492,7 +545,7 @@
           <input id="modal-grade-points" type="number" step="1" min="0" class="w-full border p-2 rounded text-xs font-bold">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Teacher Feedback & Written Comments</label>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Teacher Feedback</label>
           <textarea id="modal-grade-feedback" rows="3" placeholder="Constructive feedback from Prof. Jericho C. Matutinao..." class="w-full border p-2 rounded text-xs"></textarea>
         </div>
       </div>
@@ -505,11 +558,11 @@
     </div>
   </div>
 
-  <!-- 6. THEORIST ADD / EDIT MODAL (WITH PHOTO UPLOAD OR LINK!) -->
+  <!-- 6. THEORIST ADD / EDIT MODAL -->
   <div id="theorist-editor-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Add / Edit Educational Theorist (Knowledge Library)</h3>
+        <h3 class="font-bold text-base text-gray-900">Add / Edit Educational Theorist</h3>
         <button onclick="closeTheoristEditorModal()" class="text-gray-400 font-bold">✕</button>
       </div>
       <form onsubmit="handleTheoristSave(event)" class="space-y-3 text-xs">
@@ -544,24 +597,24 @@
         </div>
         <div>
           <label class="font-bold uppercase text-gray-700 block mb-1">Major Theories & Key Concepts</label>
-          <textarea id="th-theories" rows="2" required placeholder="Type theories (e.g. Stages of Cognitive Development)..." class="w-full border p-2 rounded"></textarea>
+          <textarea id="th-theories" rows="2" required placeholder="Type theories..." class="w-full border p-2 rounded"></textarea>
         </div>
         <div>
           <label class="font-bold uppercase text-gray-700 block mb-1">Early Childhood Classroom Application</label>
-          <textarea id="th-apps" rows="2" required placeholder="How teachers apply this in kindergarten or preschool..." class="w-full border p-2 rounded"></textarea>
+          <textarea id="th-apps" rows="2" required placeholder="How teachers apply this in kindergarten..." class="w-full border p-2 rounded"></textarea>
         </div>
         <div class="flex justify-between items-center pt-2 border-t">
-          <span id="th-status-text" class="text-xs font-bold text-amber-700 hidden">Uploading image & saving...</span>
+          <span id="th-status-text" class="text-xs font-bold text-amber-700 hidden">Saving to database...</span>
           <div class="flex gap-2 ml-auto">
             <button type="button" onclick="closeTheoristEditorModal()" class="px-4 py-2 border rounded font-bold text-gray-600">Cancel</button>
-            <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded font-bold hover:bg-[#660000]">Save Theorist Profile</button>
+            <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded font-bold hover:bg-[#660000]">Save Profile</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 7. THEORIST DETAILS MODAL (VIEWER) -->
+  <!-- 7. THEORIST DETAILS MODAL -->
   <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-start border-b pb-3">
@@ -590,7 +643,7 @@
   </div>
 
   <!-- ========================================================
-       APPLICATION JAVASCRIPT
+       APPLICATION JAVASCRIPT LOGIC
        ======================================================== -->
   <script>
     const SUPABASE_URL = 'https://kjaaavvjngnclswtvtvj.supabase.co';
@@ -598,8 +651,9 @@
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const state = {
-      role: 'student',
-      currentUser: { id: 'std_01', name: 'Maria Santos', email: 'maria.santos@gmail.com' },
+      isLoggedIn: false,
+      role: 'student', // 'student' or 'teacher'
+      currentUser: null,
       currentView: 'home',
       lessons: [
         {
@@ -656,49 +710,116 @@
       ]
     };
 
-    // Load Local Data
-    function loadSavedData() {
-      const savedAsg = localStorage.getItem('cnu_assignments');
-      if (savedAsg) { try { state.assignments = JSON.parse(savedAsg); } catch(e){} }
+    // ========================================================
+    // GMAIL GATEWAY LOGIN LOGIC
+    // ========================================================
+    function handleCustomGmailLogin() {
+      const emailInput = document.getElementById('login-gmail-input').value.trim().toLowerCase();
+      
+      if (!emailInput || !emailInput.includes('@')) {
+        alert("Please enter a valid Gmail address (e.g. yourname@gmail.com).");
+        return;
+      }
 
-      const savedSubs = localStorage.getItem('cnu_submissions');
-      if (savedSubs) { try { state.submissions = JSON.parse(savedSubs); } catch(e){} }
+      // Automatically identify if it's the Professor or a Student!
+      let detectedRole = 'student';
+      let fullName = emailInput.split('@')[0].replace(/[._]/g, ' ');
+      // Capitalize first letters
+      fullName = fullName.replace(/\b\w/g, l => l.toUpperCase());
 
-      const savedTh = localStorage.getItem('cnu_theorists');
-      if (savedTh) { try { state.theorists = JSON.parse(savedTh); } catch(e){} }
+      // If the email is the teacher's email or contains matutinao / teacher
+      if (emailInput.includes('matutinao') || emailInput.includes('jericho') || emailInput === 'jewelmaematutinao31@gmail.com') {
+        detectedRole = 'teacher';
+        fullName = "Prof. Jericho C. Matutinao";
+      }
+
+      // Set user session
+      state.isLoggedIn = true;
+      state.role = detectedRole;
+      state.currentUser = {
+        email: emailInput,
+        name: fullName,
+        role: detectedRole
+      };
+
+      // Persist in session
+      localStorage.setItem('cnu_active_user', JSON.stringify(state.currentUser));
+
+      // Hide login gateway screen
+      document.getElementById('login-gateway-screen').classList.add('hidden');
+
+      // Update UI
+      updateLoggedInUI();
+      switchView('home');
     }
 
-    function persistData() {
-      localStorage.setItem('cnu_assignments', JSON.stringify(state.assignments));
-      localStorage.setItem('cnu_submissions', JSON.stringify(state.submissions));
-      localStorage.setItem('cnu_theorists', JSON.stringify(state.theorists));
+    function signOut() {
+      state.isLoggedIn = false;
+      state.currentUser = null;
+      localStorage.removeItem('cnu_active_user');
+
+      // Clear input
+      document.getElementById('login-gmail-input').value = '';
+
+      // Show login gateway again
+      document.getElementById('login-gateway-screen').classList.remove('hidden');
     }
 
-    // Role Switching
-    function setRole(r) {
-      state.role = r;
-      const b = document.getElementById('role-badge');
-      const d = document.getElementById('role-details');
-      const td = document.getElementById('nav-teacher-dash');
+    function checkExistingSession() {
+      const savedUser = localStorage.getItem('cnu_active_user');
+      if (savedUser) {
+        try {
+          state.currentUser = JSON.parse(savedUser);
+          state.isLoggedIn = true;
+          state.role = state.currentUser.role;
+          document.getElementById('login-gateway-screen').classList.add('hidden');
+          updateLoggedInUI();
+        } catch(e) {
+          signOut();
+        }
+      }
+    }
+
+    function updateLoggedInUI() {
+      const user = state.currentUser;
+      const badge = document.getElementById('role-badge');
+      const details = document.getElementById('role-details');
+      const teacherDash = document.getElementById('nav-teacher-dash');
       const postTaskBtn = document.getElementById('btn-post-task-top');
       const addThBtn = document.getElementById('btn-add-theorist-top');
+      const userDisplay = document.getElementById('user-display');
 
-      if (r === 'teacher') {
-        b.innerText = "Professor";
-        b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#D4AF37] text-[#4a0000]";
-        d.innerText = "(Logged in as Prof. Jericho C. Matutinao)";
-        td.classList.remove('hidden');
+      if (state.role === 'teacher') {
+        badge.innerText = "Professor";
+        badge.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#D4AF37] text-[#4a0000]";
+        details.innerText = `(Faculty: ${user.name} • ${user.email})`;
+        teacherDash.classList.remove('hidden');
         if (postTaskBtn) postTaskBtn.classList.remove('hidden');
         if (addThBtn) addThBtn.classList.remove('hidden');
       } else {
-        b.innerText = "Student";
-        b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
-        d.innerText = "(Viewing as student)";
-        td.classList.add('hidden');
+        badge.innerText = "Student";
+        badge.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
+        details.innerText = `(Student: ${user.name} • ${user.email})`;
+        teacherDash.classList.add('hidden');
         if (postTaskBtn) postTaskBtn.classList.add('hidden');
         if (addThBtn) addThBtn.classList.add('hidden');
       }
-      switchView(state.currentView);
+
+      // Header User Pill with Sign Out Button
+      userDisplay.innerHTML = `
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full ${state.role === 'teacher' ? 'bg-[#D4AF37] text-[#4a0000]' : 'bg-red-900 border border-[#D4AF37] text-white'} flex items-center justify-center font-bold text-xs">
+            ${user.name.charAt(0)}
+          </div>
+          <div class="text-left hidden sm:block">
+            <p class="text-xs font-bold leading-tight text-white">${user.name}</p>
+            <p class="text-[10px] text-amber-200 font-mono">${user.email}</p>
+          </div>
+          <button onclick="signOut()" class="text-[11px] border border-white/30 hover:border-white text-white hover:text-amber-300 px-2.5 py-1 rounded-lg ml-1 font-semibold transition">
+            Sign Out
+          </button>
+        </div>
+      `;
     }
 
     // View Switching
@@ -823,9 +944,7 @@
     function openUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.remove('hidden'); }
     function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
 
-    // ========================================================
-    // ASSIGNMENTS LOGIC (GOOGLE CLASSROOM STYLE)
-    // ========================================================
+    // Assignments Logic
     function openCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.remove('hidden'); }
     function closeCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.add('hidden'); }
 
@@ -841,7 +960,6 @@
         isPublished: true
       };
       state.assignments.unshift(asg);
-      persistData();
       alert("Assignment published successfully!");
       closeCreateAssignmentModal();
       renderAssignmentsGrid();
@@ -850,7 +968,7 @@
     function renderAssignmentsGrid() {
       const c = document.getElementById('assignments-grid');
       c.innerHTML = state.assignments.map(asg => {
-        const mySub = state.submissions.find(s => s.assignmentId === asg.id && s.studentId === state.currentUser.id);
+        const mySub = state.submissions.find(s => s.assignmentId === asg.id && s.studentEmail === state.currentUser?.email);
         return `
           <div class="bg-white p-5 rounded-xl border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="space-y-1">
@@ -898,7 +1016,6 @@
       }
       const file = fileInput.files[0];
 
-      // Upload submission file to Supabase storage
       let publicUrl = "";
       try {
         const cleanName = `sub_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
@@ -912,7 +1029,7 @@
       const newSub = {
         id: 'sub-' + Date.now(),
         assignmentId: asgId,
-        studentId: state.currentUser.id,
+        studentEmail: state.currentUser.email,
         studentName: state.currentUser.name,
         fileName: file.name,
         fileUrl: publicUrl,
@@ -922,9 +1039,8 @@
         feedback: null
       };
 
-      state.submissions = state.submissions.filter(s => !(s.assignmentId === asgId && s.studentId === state.currentUser.id));
+      state.submissions = state.submissions.filter(s => !(s.assignmentId === asgId && s.studentEmail === state.currentUser.email));
       state.submissions.push(newSub);
-      persistData();
 
       alert("Assignment submitted successfully to Prof. Jericho C. Matutinao!");
       closeSubmitAssignmentModal();
@@ -956,16 +1072,13 @@
         sub.points = pts;
         sub.feedback = fb;
         sub.status = 'Graded';
-        persistData();
         alert("Grade and feedback saved!");
         closeGradeSubmissionModal();
         renderTeacherDashboardView();
       }
     }
 
-    // ========================================================
-    // THEORISTS LOGIC (WITH PICTURE UPLOAD OR LINK!)
-    // ========================================================
+    // Theorists Logic
     function openTheoristEditorModal() { document.getElementById('theorist-editor-modal').classList.remove('hidden'); }
     function closeTheoristEditorModal() { document.getElementById('theorist-editor-modal').classList.add('hidden'); }
 
@@ -984,7 +1097,6 @@
 
       let photoUrl = urlInput.trim() || "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg";
 
-      // If a photo file was selected from computer, upload it to Supabase Storage!
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
         try {
@@ -992,9 +1104,7 @@
           await sb.storage.from('materials').upload(cleanName, file);
           const { data } = sb.storage.from('materials').getPublicUrl(cleanName);
           photoUrl = data.publicUrl;
-        } catch(err) {
-          console.error("Theorist photo upload error:", err);
-        }
+        } catch(err) {}
       }
 
       state.theorists.unshift({
@@ -1006,7 +1116,6 @@
         theories: theories,
         applications: apps
       });
-      persistData();
 
       status.classList.add('hidden');
       alert(`Theorist profile for "${name}" added to the Knowledge Library!`);
@@ -1046,13 +1155,11 @@
     }
     function closeTheoristModal() { document.getElementById('theorist-detail-modal').classList.add('hidden'); }
 
-    // ========================================================
-    // DASHBOARDS
-    // ========================================================
+    // Dashboards
     function renderStudentProgress() {
       document.getElementById('stat-completed-lessons').innerText = state.lessons.length;
       document.getElementById('stat-total-assignments').innerText = state.assignments.length;
-      const mySubs = state.submissions.filter(s => s.studentId === state.currentUser.id);
+      const mySubs = state.submissions.filter(s => s.studentEmail === state.currentUser?.email);
       document.getElementById('stat-assignments-submitted').innerText = mySubs.length;
 
       const subTable = document.getElementById('student-submissions-table');
@@ -1110,10 +1217,10 @@
       }
     }
 
+    // App Initialization
     window.addEventListener('DOMContentLoaded', () => {
-      loadSavedData();
       loadCloudLessons();
-      setRole('student');
+      checkExistingSession();
     });
   </script>
 </body>
