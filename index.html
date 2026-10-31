@@ -128,7 +128,7 @@
             Comprehensive Early Childhood Learning Portal
           </h2>
           <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
-            Welcome to the centralized digital classroom for Bachelor of Early Childhood Education candidate teachers. Study PowerPoint presentations, watch video lectures, submit class assignments, review seminal pedagogical theories, and complete self-scoring evaluations.
+            Welcome to the centralized digital classroom for Bachelor of Early Childhood Education candidate teachers. Study PowerPoint presentations, submit class assignments, review seminal pedagogical theories, and complete evaluations.
           </p>
           <div class="flex items-center gap-3 pt-2">
             <div class="w-10 h-10 rounded-full border border-amber-300/40 bg-white/10 flex items-center justify-center font-bold text-amber-300 text-sm">JM</div>
@@ -148,30 +148,6 @@
               ECE Knowledge Library
             </button>
           </div>
-        </div>
-      </div>
-
-      <!-- Feature Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-red-200">PPT</div>
-          <h3 class="font-bold text-gray-900 mb-1">Slide Decks & Video</h3>
-          <p class="text-xs text-gray-600">Review PPT presentations with Microsoft Online and stream video lectures in-browser.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-amber-200">GCR</div>
-          <h3 class="font-bold text-gray-900 mb-1">Classroom Tasks</h3>
-          <p class="text-xs text-gray-600">Download rubrics, submit files, track deadlines, and receive grades and written feedback from professors.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-red-200">BIO</div>
-          <h3 class="font-bold text-gray-900 mb-1">Knowledge Library</h3>
-          <p class="text-xs text-gray-600">Explore complete, verified profiles of 10 seminal educational theorists with classroom implications.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-amber-200">QZ</div>
-          <h3 class="font-bold text-gray-900 mb-1">Timed Quizzes</h3>
-          <p class="text-xs text-gray-600">Auto-grading, comprehensive rationale explanations, and persistent 3-year academic tracking.</p>
         </div>
       </div>
     </section>
@@ -203,6 +179,9 @@
           <h2 class="text-2xl font-black text-gray-900">Course Assignments & Tasks</h2>
           <p class="text-sm text-gray-500">Submit lesson plans, case studies, and observation portfolios.</p>
         </div>
+        <button id="btn-post-task-top" onclick="openCreateAssignmentModal()" class="hidden px-4 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
+          + Post New Assignment
+        </button>
       </div>
       <div id="assignments-grid" class="space-y-4"></div>
     </section>
@@ -223,6 +202,9 @@
             <option value="Psychosocial / Humanist">Psychosocial / Humanist</option>
             <option value="Behavioral">Behavioral</option>
           </select>
+          <button id="btn-add-theorist-top" onclick="openTheoristEditorModal()" class="hidden px-3.5 py-1.5 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
+            + Add / Edit Theorist
+          </button>
         </div>
       </div>
       <div id="theorists-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
@@ -232,21 +214,17 @@
     <section id="view-my-progress" class="view-panel hidden space-y-6">
       <div>
         <h2 class="text-2xl font-black text-gray-900">Student Academic Record</h2>
-        <p class="text-sm text-gray-500">Long-term tracking of lesson progress, quiz attempts, and graded assignments.</p>
+        <p class="text-sm text-gray-500">Long-term tracking of lesson progress and assignments.</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <p class="text-xs font-bold uppercase text-gray-500">Lessons Completed</p>
+          <p class="text-xs font-bold uppercase text-gray-500">Available Lessons</p>
           <p id="stat-completed-lessons" class="text-3xl font-black text-[#8B0000] mt-1">0</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <p class="text-xs font-bold uppercase text-gray-500">Quizzes Completed</p>
-          <p id="stat-completed-quizzes" class="text-3xl font-black text-[#D4AF37] mt-1">0</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <p class="text-xs font-bold uppercase text-gray-500">Average Quiz Mastery</p>
-          <p id="stat-quiz-avg" class="text-3xl font-black text-emerald-700 mt-1">0%</p>
+          <p class="text-xs font-bold uppercase text-gray-500">Total Assignments</p>
+          <p id="stat-total-assignments" class="text-3xl font-black text-[#D4AF37] mt-1">0</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
           <p class="text-xs font-bold uppercase text-gray-500">Submitted Tasks</p>
@@ -256,7 +234,7 @@
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
-          Assignment Submissions & Teacher Feedback
+          My Assignment Submissions & Feedback
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -265,31 +243,11 @@
                 <th class="py-3 px-4">Assignment</th>
                 <th class="py-3 px-4">Status</th>
                 <th class="py-3 px-4">Submitted File</th>
-                <th class="py-3 px-4">Grade / Points</th>
+                <th class="py-3 px-4">Grade / Score</th>
                 <th class="py-3 px-4">Teacher Feedback</th>
               </tr>
             </thead>
             <tbody id="student-submissions-table"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
-          Quiz Attempt History
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-gray-100 text-gray-600 uppercase">
-              <tr>
-                <th class="py-3 px-4">Quiz Title</th>
-                <th class="py-3 px-4">Date Completed</th>
-                <th class="py-3 px-4">Score</th>
-                <th class="py-3 px-4">Percentage</th>
-                <th class="py-3 px-4">Evaluation</th>
-              </tr>
-            </thead>
-            <tbody id="student-quiz-history-table"></tbody>
           </table>
         </div>
       </div>
@@ -307,20 +265,25 @@
         </span>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <button onclick="openUploadLessonModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-[#8B0000] uppercase">+ Cloud Upload</p>
-          <p class="text-base font-bold text-gray-800">New PowerPoint or Video Lesson</p>
+          <p class="text-base font-bold text-gray-800">New PowerPoint Slide Deck</p>
         </button>
         <button onclick="openCreateAssignmentModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-amber-700 uppercase">+ Post Task</p>
           <p class="text-base font-bold text-gray-800">New Assignment & Deadline</p>
         </button>
+        <button onclick="openTheoristEditorModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
+          <p class="text-xs font-bold text-emerald-700 uppercase">+ Library Profile</p>
+          <p class="text-base font-bold text-gray-800">Add / Edit ECE Theorist</p>
+        </button>
       </div>
 
+      <!-- Materials List -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 flex justify-between items-center">
-          <span>Uploaded Course Materials & Editable Quizzes</span>
+          <span>Uploaded Course Materials (PowerPoint & PDF)</span>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -336,6 +299,27 @@
           </table>
         </div>
       </div>
+
+      <!-- Submissions Queue -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
+          Assignment Submissions Queue (Google Classroom Style)
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-gray-100 text-gray-600 uppercase">
+              <tr>
+                <th class="py-3 px-4">Student</th>
+                <th class="py-3 px-4">Assignment</th>
+                <th class="py-3 px-4">Submitted File</th>
+                <th class="py-3 px-4">Grade</th>
+                <th class="py-3 px-4 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="faculty-submissions-table"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
   </main>
@@ -346,11 +330,14 @@
       <p class="font-bold text-white tracking-wide">ECE STUDY HUB & LMS • CEBU NORMAL UNIVERSITY</p>
       <p class="text-xs text-amber-200/90">College of Teacher Education • Department of Early Childhood Education</p>
       <p class="text-xs text-amber-100/70">Faculty Lead: Prof. Jericho C. Matutinao</p>
-      <p class="text-[11px] text-gray-400 pt-2">Osmeña Boulevard, Cebu City, 6000 Cebu, Philippines</p>
     </div>
   </footer>
 
-  <!-- PRESENTATION VIEWER MODAL -->
+  <!-- ========================================================
+       ALL MODALS
+       ======================================================== -->
+
+  <!-- 1. PRESENTATION VIEWER MODAL -->
   <div id="viewer-modal" class="fixed inset-0 z-50 bg-black/85 hidden flex flex-col backdrop-blur-sm">
     <div class="bg-[#8B0000] text-white px-4 py-3 flex items-center justify-between border-b border-[#D4AF37]">
       <div>
@@ -366,11 +353,10 @@
     </div>
     <div class="flex-grow bg-gray-950 w-full h-full relative flex items-center justify-center p-2">
       <iframe id="viewer-iframe" class="w-full h-full border-0 rounded" allowfullscreen="true"></iframe>
-      <div id="viewer-video-container" class="w-full max-w-4xl h-full max-h-[80vh] hidden"></div>
     </div>
   </div>
 
-  <!-- UPLOAD LESSON MODAL -->
+  <!-- 2. UPLOAD LESSON MODAL (POWERPOINT / PDF) -->
   <div id="upload-lesson-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -415,14 +401,187 @@
     </div>
   </div>
 
-  <!-- THEORIST MODAL -->
-  <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+  <!-- 3. CREATE ASSIGNMENT MODAL (TEACHER) -->
+  <div id="create-assignment-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-base text-gray-900">Post Course Assignment (Google Classroom Style)</h3>
+        <button onclick="closeCreateAssignmentModal()" class="text-gray-400 font-bold">✕</button>
+      </div>
+      <form onsubmit="handleAssignmentCreateSubmit(event)" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Subject</label>
+            <select id="asg-subject" class="w-full border p-2 rounded text-xs bg-white">
+              <option value="ECE 101">ECE 101 - Child Development</option>
+              <option value="ECE 102">ECE 102 - Creative Arts</option>
+              <option value="ECE 201">ECE 201 - Emergent Literacy</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Assignment Title</label>
+            <input id="asg-title" type="text" required placeholder="e.g. Piagetian Stage Case Study" class="w-full border p-2 rounded text-xs">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Max Points</label>
+            <input id="asg-points" type="number" value="100" min="10" required class="w-full border p-2 rounded text-xs">
+          </div>
+          <div>
+            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Deadline Date & Time</label>
+            <input id="asg-deadline" type="datetime-local" required class="w-full border p-2 rounded text-xs">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Instructions & Rubric</label>
+          <textarea id="asg-instructions" rows="3" required placeholder="Type the assignment instructions, expectations, and grading criteria for students..." class="w-full border p-2 rounded text-xs"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeCreateAssignmentModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold hover:bg-[#660000]">Publish Assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. SUBMIT ASSIGNMENT MODAL (STUDENT) -->
+  <div id="submit-assignment-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 id="modal-submit-title" class="font-bold text-base text-gray-900">Submit Assignment</h3>
+        <button onclick="closeSubmitAssignmentModal()" class="text-gray-400 font-bold">✕</button>
+      </div>
+      <input type="hidden" id="modal-submit-assignment-id">
+      <p id="modal-submit-instructions" class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border"></p>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Student Notes / Comment</label>
+          <textarea id="modal-submit-text" rows="2" placeholder="Write any notes for Prof. Jericho C. Matutinao..." class="w-full border p-2 rounded text-xs"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Attach File (PDF, DOCX, PPTX, or Image)</label>
+          <input id="modal-submit-file" type="file" required class="w-full border p-1.5 rounded text-xs bg-gray-50">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="closeSubmitAssignmentModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
+        <button onclick="confirmAssignmentSubmission()" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
+          Turn In Work
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. GRADE SUBMISSION MODAL (TEACHER) -->
+  <div id="grade-submission-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-base text-gray-900">Grade Student Assignment</h3>
+        <button onclick="closeGradeSubmissionModal()" class="text-gray-400 font-bold">✕</button>
+      </div>
+      <input type="hidden" id="modal-grade-submission-id">
+      <div class="text-xs space-y-1 bg-amber-50 p-3 rounded-lg border border-amber-200">
+        <p><strong>Student:</strong> <span id="modal-grade-student-name"></span></p>
+        <p><strong>Task:</strong> <span id="modal-grade-assignment-title"></span></p>
+        <p><strong>Submitted File:</strong> <a id="modal-grade-file-link" href="#" target="_blank" class="text-blue-700 underline font-bold">View Attached File</a></p>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Award Points</label>
+          <input id="modal-grade-points" type="number" step="1" min="0" class="w-full border p-2 rounded text-xs font-bold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Teacher Feedback & Written Comments</label>
+          <textarea id="modal-grade-feedback" rows="3" placeholder="Constructive feedback from Prof. Jericho C. Matutinao..." class="w-full border p-2 rounded text-xs"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="closeGradeSubmissionModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
+        <button onclick="saveStudentGrade()" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
+          Return Grade & Feedback
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. THEORIST ADD / EDIT MODAL (WITH PHOTO UPLOAD OR LINK!) -->
+  <div id="theorist-editor-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 id="detail-theorist-name" class="text-xl font-bold"></h3>
-        <button onclick="closeTheoristModal()" class="text-gray-400 font-bold">✕</button>
+        <h3 class="font-bold text-base text-gray-900">Add / Edit Educational Theorist (Knowledge Library)</h3>
+        <button onclick="closeTheoristEditorModal()" class="text-gray-400 font-bold">✕</button>
       </div>
-      <p id="detail-theorist-bio" class="text-xs text-gray-600"></p>
+      <form onsubmit="handleTheoristSave(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">Theorist Full Name</label>
+            <input id="th-name" type="text" required placeholder="e.g. Jean Piaget" class="w-full border p-2 rounded">
+          </div>
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">Category</label>
+            <select id="th-cat" class="w-full border p-2 rounded bg-white">
+              <option value="Cognitive / Constructivist">Cognitive / Constructivist</option>
+              <option value="Early Childhood Pedagogy">Early Childhood Pedagogy</option>
+              <option value="Psychosocial / Humanist">Psychosocial / Humanist</option>
+              <option value="Behavioral">Behavioral</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">Upload Photo (from Computer)</label>
+            <input id="th-photo-file" type="file" accept="image/*" class="w-full border p-1 rounded bg-gray-50">
+          </div>
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">OR Paste Image Web Link (URL)</label>
+            <input id="th-photo-url" type="url" placeholder="https://..." class="w-full border p-2 rounded">
+          </div>
+        </div>
+        <div>
+          <label class="font-bold uppercase text-gray-700 block mb-1">Short Biography & Academic Career</label>
+          <textarea id="th-bio" rows="2" required placeholder="Type short background..." class="w-full border p-2 rounded"></textarea>
+        </div>
+        <div>
+          <label class="font-bold uppercase text-gray-700 block mb-1">Major Theories & Key Concepts</label>
+          <textarea id="th-theories" rows="2" required placeholder="Type theories (e.g. Stages of Cognitive Development)..." class="w-full border p-2 rounded"></textarea>
+        </div>
+        <div>
+          <label class="font-bold uppercase text-gray-700 block mb-1">Early Childhood Classroom Application</label>
+          <textarea id="th-apps" rows="2" required placeholder="How teachers apply this in kindergarten or preschool..." class="w-full border p-2 rounded"></textarea>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t">
+          <span id="th-status-text" class="text-xs font-bold text-amber-700 hidden">Uploading image & saving...</span>
+          <div class="flex gap-2 ml-auto">
+            <button type="button" onclick="closeTheoristEditorModal()" class="px-4 py-2 border rounded font-bold text-gray-600">Cancel</button>
+            <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded font-bold hover:bg-[#660000]">Save Theorist Profile</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. THEORIST DETAILS MODAL (VIEWER) -->
+  <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
+      <div class="flex justify-between items-start border-b pb-3">
+        <div class="flex gap-3 items-center">
+          <img id="detail-theorist-photo" class="w-16 h-16 object-cover rounded-xl border-2 border-[#D4AF37]" src="" alt="">
+          <div>
+            <span id="detail-theorist-cat" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-50 text-[#8B0000] border border-red-200"></span>
+            <h3 id="detail-theorist-name" class="text-xl font-black text-gray-900 mt-1"></h3>
+          </div>
+        </div>
+        <button onclick="closeTheoristModal()" class="text-gray-400 font-bold text-lg">✕</button>
+      </div>
+      <div>
+        <h4 class="font-bold text-xs uppercase text-[#8B0000] mb-1">Biography</h4>
+        <p id="detail-theorist-bio" class="text-xs text-gray-600 leading-relaxed"></p>
+      </div>
+      <div>
+        <h4 class="font-bold text-xs uppercase text-[#8B0000] mb-1">Major Theories & Principles</h4>
+        <p id="detail-theorist-theories" class="text-xs text-gray-700 leading-relaxed font-semibold"></p>
+      </div>
       <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
         <h4 class="font-bold text-xs uppercase text-[#660000] mb-1">Early Childhood Classroom Application</h4>
         <p id="detail-theorist-applications" class="text-xs text-amber-950 font-medium"></p>
@@ -430,16 +589,14 @@
     </div>
   </div>
 
-  <!-- APPLICATION SCRIPT WITH DIRECT SUPABASE CONNECTION -->
+  <!-- ========================================================
+       APPLICATION JAVASCRIPT
+       ======================================================== -->
   <script>
-    // ========================================================
-    // SUPABASE CREDENTIALS DIRECTLY INTEGRATED
-    // ========================================================
     const SUPABASE_URL = 'https://kjaaavvjngnclswtvtvj.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_BH_DvXJkqyXW7s9eL06tWA_bSzy5ZaU';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Initial state
     const state = {
       role: 'student',
       currentUser: { id: 'std_01', name: 'Maria Santos', email: 'maria.santos@gmail.com' },
@@ -456,32 +613,95 @@
           isPublished: true
         }
       ],
+      assignments: [
+        {
+          id: 'asg-1',
+          subject: 'ECE 101',
+          title: "Kindergarten Cognitive Observation Portfolio",
+          instructions: "Observe a 3-5 year old child during free play. Document schema usage and conservation tasks.",
+          maxPoints: 100,
+          deadline: "2026-11-20T23:59",
+          isPublished: true
+        }
+      ],
+      submissions: [],
       theorists: [
-        { id: '1', name: "Jean Piaget", category: "Cognitive / Constructivist", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/64/Jean_Piaget_in_Ann_Arbor.png", biography: "Pioneered cognitive developmental stages: Sensorimotor, Preoperational, Concrete, Formal.", eceApplications: "Hands-on manipulatives and play-based discovery learning." },
-        { id: '2', name: "Lev Vygotsky", category: "Cognitive / Constructivist", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Lev_Vygotsky.jpg", biography: "Proposed Sociocultural Theory and the Zone of Proximal Development (ZPD).", eceApplications: "Scaffolding and peer collaboration in early language and writing." },
-        { id: '3', name: "Maria Montessori", category: "Early Childhood Pedagogy", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg", biography: "Pioneered the prepared environment and child-directed sensory auto-education.", eceApplications: "Child-sized furniture, sensorial didactic materials, and autonomous work cycles." }
+        {
+          id: 'th-piaget',
+          name: "Jean Piaget",
+          category: "Cognitive / Constructivist",
+          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/64/Jean_Piaget_in_Ann_Arbor.png",
+          biography: "Swiss psychologist who established genetic epistemology and the four universal stages of cognitive growth.",
+          theories: "Sensorimotor, Preoperational, Concrete, and Formal Operational stages; Assimilation, Accommodation, and Schemas.",
+          applications: "Teachers act as facilitators providing developmentally appropriate manipulatives for active discovery."
+        },
+        {
+          id: 'th-vygotsky',
+          name: "Lev Vygotsky",
+          category: "Cognitive / Constructivist",
+          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Lev_Vygotsky.jpg",
+          biography: "Soviet developmental psychologist who founded sociocultural theory and demonstrated the social origin of thought.",
+          theories: "Zone of Proximal Development (ZPD), More Knowledgeable Other (MKO), Scaffolding, and Private Speech.",
+          applications: "Guided teacher scaffolding, collaborative peer learning, and dramatic sociodramatic play."
+        },
+        {
+          id: 'th-montessori',
+          name: "Maria Montessori",
+          category: "Early Childhood Pedagogy",
+          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg",
+          biography: "Italian physician and educator who founded the Casa dei Bambini and child-centered auto-education.",
+          theories: "Prepared Environment, Sensitive Periods, Absorbent Mind, and Self-Correcting Sensory Materials.",
+          applications: "Child-sized shelves, real life pouring exercises, and uninterrupted self-chosen work blocks."
+        }
       ]
     };
 
+    // Load Local Data
+    function loadSavedData() {
+      const savedAsg = localStorage.getItem('cnu_assignments');
+      if (savedAsg) { try { state.assignments = JSON.parse(savedAsg); } catch(e){} }
+
+      const savedSubs = localStorage.getItem('cnu_submissions');
+      if (savedSubs) { try { state.submissions = JSON.parse(savedSubs); } catch(e){} }
+
+      const savedTh = localStorage.getItem('cnu_theorists');
+      if (savedTh) { try { state.theorists = JSON.parse(savedTh); } catch(e){} }
+    }
+
+    function persistData() {
+      localStorage.setItem('cnu_assignments', JSON.stringify(state.assignments));
+      localStorage.setItem('cnu_submissions', JSON.stringify(state.submissions));
+      localStorage.setItem('cnu_theorists', JSON.stringify(state.theorists));
+    }
+
+    // Role Switching
     function setRole(r) {
       state.role = r;
       const b = document.getElementById('role-badge');
       const d = document.getElementById('role-details');
       const td = document.getElementById('nav-teacher-dash');
+      const postTaskBtn = document.getElementById('btn-post-task-top');
+      const addThBtn = document.getElementById('btn-add-theorist-top');
+
       if (r === 'teacher') {
         b.innerText = "Professor";
         b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#D4AF37] text-[#4a0000]";
         d.innerText = "(Logged in as Prof. Jericho C. Matutinao)";
         td.classList.remove('hidden');
+        if (postTaskBtn) postTaskBtn.classList.remove('hidden');
+        if (addThBtn) addThBtn.classList.remove('hidden');
       } else {
         b.innerText = "Student";
         b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
         d.innerText = "(Viewing as student)";
         td.classList.add('hidden');
+        if (postTaskBtn) postTaskBtn.classList.add('hidden');
+        if (addThBtn) addThBtn.classList.add('hidden');
       }
       switchView(state.currentView);
     }
 
+    // View Switching
     function switchView(viewName) {
       state.currentView = viewName;
       document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
@@ -489,11 +709,13 @@
       if (target) target.classList.remove('hidden');
 
       if (viewName === 'lessons') renderLessonsGrid();
+      if (viewName === 'assignments') renderAssignmentsGrid();
       if (viewName === 'theorists') renderTheoristsGrid();
+      if (viewName === 'my-progress') renderStudentProgress();
       if (viewName === 'teacher-dashboard') renderTeacherDashboardView();
     }
 
-    // Load lessons from Supabase Cloud
+    // Load Lessons from Supabase Cloud
     async function loadCloudLessons() {
       try {
         const { data, error } = await sb.from('lessons').select('*').order('created_at', { ascending: false });
@@ -509,12 +731,11 @@
             isPublished: l.is_published
           }));
         }
-      } catch(e) {
-        console.error("Supabase load error:", e);
-      }
+      } catch(e) {}
       renderLessonsGrid();
     }
 
+    // Render Lessons
     function renderLessonsGrid() {
       const container = document.getElementById('student-lessons-grid');
       container.innerHTML = state.lessons.map(item => `
@@ -537,7 +758,7 @@
       `).join('');
     }
 
-    // PowerPoint & Document Online Viewer
+    // Material Viewer
     function openMaterialViewer(id) {
       const l = state.lessons.find(x => x.id === id);
       if (!l) return;
@@ -552,22 +773,16 @@
       }
       document.getElementById('viewer-modal').classList.remove('hidden');
     }
+    function closeViewerModal() { document.getElementById('viewer-modal').classList.add('hidden'); }
 
-    function closeViewerModal() {
-      document.getElementById('viewer-iframe').src = '';
-      document.getElementById('viewer-modal').classList.add('hidden');
-    }
-
-    // Cloud Upload to Supabase Storage & Database
+    // Upload Lesson to Supabase
     async function handleLessonUploadSubmit(e) {
       e.preventDefault();
       const code = document.getElementById('upl-subject').value;
       const title = document.getElementById('upl-title').value;
       const topic = document.getElementById('upl-topic').value;
       const desc = document.getElementById('upl-desc').value;
-      const fileInput = document.getElementById('upl-file');
-      const file = fileInput.files[0];
-
+      const file = document.getElementById('upl-file').files[0];
       if (!file) return;
 
       const statusText = document.getElementById('upload-status-text');
@@ -576,21 +791,13 @@
       submitBtn.disabled = true;
 
       try {
-        // 1. Upload to Supabase Storage
         const cleanName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-        const { data: uploadData, error: uploadErr } = await sb.storage
-          .from('materials')
-          .upload(cleanName, file);
+        const { error: upErr } = await sb.storage.from('materials').upload(cleanName, file);
+        if (upErr) throw upErr;
 
-        if (uploadErr) throw uploadErr;
+        const { data: { publicUrl } } = sb.storage.from('materials').getPublicUrl(cleanName);
 
-        // 2. Get Public URL
-        const { data: { publicUrl } } = sb.storage
-          .from('materials')
-          .getPublicUrl(cleanName);
-
-        // 3. Save to Supabase Database
-        const { error: dbErr } = await sb.from('lessons').insert([{
+        await sb.from('lessons').insert([{
           subject_code: code,
           title: title,
           topic: topic,
@@ -600,8 +807,6 @@
           file_type: file.name.split('.').pop(),
           is_published: true
         }]);
-
-        if (dbErr) throw dbErr;
 
         alert("Uploaded directly to Supabase cloud! It will now preview with Microsoft Office!");
         document.getElementById('form-faculty-upload').reset();
@@ -618,9 +823,261 @@
     function openUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.remove('hidden'); }
     function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
 
+    // ========================================================
+    // ASSIGNMENTS LOGIC (GOOGLE CLASSROOM STYLE)
+    // ========================================================
+    function openCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.remove('hidden'); }
+    function closeCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.add('hidden'); }
+
+    function handleAssignmentCreateSubmit(e) {
+      e.preventDefault();
+      const asg = {
+        id: 'asg-' + Date.now(),
+        subject: document.getElementById('asg-subject').value,
+        title: document.getElementById('asg-title').value,
+        maxPoints: parseInt(document.getElementById('asg-points').value, 10),
+        deadline: document.getElementById('asg-deadline').value,
+        instructions: document.getElementById('asg-instructions').value,
+        isPublished: true
+      };
+      state.assignments.unshift(asg);
+      persistData();
+      alert("Assignment published successfully!");
+      closeCreateAssignmentModal();
+      renderAssignmentsGrid();
+    }
+
+    function renderAssignmentsGrid() {
+      const c = document.getElementById('assignments-grid');
+      c.innerHTML = state.assignments.map(asg => {
+        const mySub = state.submissions.find(s => s.assignmentId === asg.id && s.studentId === state.currentUser.id);
+        return `
+          <div class="bg-white p-5 rounded-xl border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-red-50 text-[#8B0000] border">${asg.subject}</span>
+                <span class="status-badge ${mySub ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${mySub ? (mySub.status || 'Submitted') : 'Assigned'}</span>
+                <span class="text-xs text-gray-500">Points: <strong>${asg.maxPoints} pts</strong></span>
+              </div>
+              <h3 class="font-bold text-gray-900 text-base">${asg.title}</h3>
+              <p class="text-xs text-gray-600">${asg.instructions}</p>
+              <p class="text-[11px] text-gray-400">Due: <strong>${new Date(asg.deadline).toLocaleString()}</strong></p>
+            </div>
+            <div>
+              ${state.role === 'student' ? `
+                <button onclick="openSubmitAssignmentModal('${asg.id}')" class="px-4 py-2 bg-[#8B0000] hover:bg-[#660000] text-white rounded-lg text-xs font-bold shadow">
+                  ${mySub ? 'Resubmit Work' : 'Submit Assignment'}
+                </button>
+              ` : `
+                <button onclick="switchView('teacher-dashboard')" class="px-3 py-1.5 border rounded text-xs font-semibold hover:bg-gray-50">Review Submissions</button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openSubmitAssignmentModal(id) {
+      const asg = state.assignments.find(a => a.id === id);
+      if (!asg) return;
+      document.getElementById('modal-submit-assignment-id').value = id;
+      document.getElementById('modal-submit-title').innerText = `Submit: ${asg.title}`;
+      document.getElementById('modal-submit-instructions').innerText = asg.instructions;
+      document.getElementById('submit-assignment-modal').classList.remove('hidden');
+    }
+    function closeSubmitAssignmentModal() { document.getElementById('submit-assignment-modal').classList.add('hidden'); }
+
+    async function confirmAssignmentSubmission() {
+      const asgId = document.getElementById('modal-submit-assignment-id').value;
+      const fileInput = document.getElementById('modal-submit-file');
+      const notes = document.getElementById('modal-submit-text').value;
+
+      if (!fileInput.files.length) {
+        alert("Please attach a file.");
+        return;
+      }
+      const file = fileInput.files[0];
+
+      // Upload submission file to Supabase storage
+      let publicUrl = "";
+      try {
+        const cleanName = `sub_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        await sb.storage.from('materials').upload(cleanName, file);
+        const { data } = sb.storage.from('materials').getPublicUrl(cleanName);
+        publicUrl = data.publicUrl;
+      } catch(e) {
+        publicUrl = URL.createObjectURL(file);
+      }
+
+      const newSub = {
+        id: 'sub-' + Date.now(),
+        assignmentId: asgId,
+        studentId: state.currentUser.id,
+        studentName: state.currentUser.name,
+        fileName: file.name,
+        fileUrl: publicUrl,
+        notes: notes,
+        status: 'Submitted',
+        points: null,
+        feedback: null
+      };
+
+      state.submissions = state.submissions.filter(s => !(s.assignmentId === asgId && s.studentId === state.currentUser.id));
+      state.submissions.push(newSub);
+      persistData();
+
+      alert("Assignment submitted successfully to Prof. Jericho C. Matutinao!");
+      closeSubmitAssignmentModal();
+      renderAssignmentsGrid();
+    }
+
+    function openGradeSubmissionModal(subId) {
+      const sub = state.submissions.find(s => s.id === subId);
+      if (!sub) return;
+      const asg = state.assignments.find(a => a.id === sub.assignmentId) || { title: 'Assignment' };
+
+      document.getElementById('modal-grade-submission-id').value = subId;
+      document.getElementById('modal-grade-student-name').innerText = sub.studentName;
+      document.getElementById('modal-grade-assignment-title').innerText = asg.title;
+      document.getElementById('modal-grade-file-link').href = sub.fileUrl;
+      document.getElementById('modal-grade-points').value = sub.points || '';
+      document.getElementById('modal-grade-feedback').value = sub.feedback || '';
+      document.getElementById('grade-submission-modal').classList.remove('hidden');
+    }
+    function closeGradeSubmissionModal() { document.getElementById('grade-submission-modal').classList.add('hidden'); }
+
+    function saveStudentGrade() {
+      const subId = document.getElementById('modal-grade-submission-id').value;
+      const pts = document.getElementById('modal-grade-points').value;
+      const fb = document.getElementById('modal-grade-feedback').value;
+
+      const sub = state.submissions.find(s => s.id === subId);
+      if (sub) {
+        sub.points = pts;
+        sub.feedback = fb;
+        sub.status = 'Graded';
+        persistData();
+        alert("Grade and feedback saved!");
+        closeGradeSubmissionModal();
+        renderTeacherDashboardView();
+      }
+    }
+
+    // ========================================================
+    // THEORISTS LOGIC (WITH PICTURE UPLOAD OR LINK!)
+    // ========================================================
+    function openTheoristEditorModal() { document.getElementById('theorist-editor-modal').classList.remove('hidden'); }
+    function closeTheoristEditorModal() { document.getElementById('theorist-editor-modal').classList.add('hidden'); }
+
+    async function handleTheoristSave(e) {
+      e.preventDefault();
+      const name = document.getElementById('th-name').value;
+      const cat = document.getElementById('th-cat').value;
+      const bio = document.getElementById('th-bio').value;
+      const theories = document.getElementById('th-theories').value;
+      const apps = document.getElementById('th-apps').value;
+      const fileInput = document.getElementById('th-photo-file');
+      const urlInput = document.getElementById('th-photo-url').value;
+
+      const status = document.getElementById('th-status-text');
+      status.classList.remove('hidden');
+
+      let photoUrl = urlInput.trim() || "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg";
+
+      // If a photo file was selected from computer, upload it to Supabase Storage!
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        try {
+          const cleanName = `theorist_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          await sb.storage.from('materials').upload(cleanName, file);
+          const { data } = sb.storage.from('materials').getPublicUrl(cleanName);
+          photoUrl = data.publicUrl;
+        } catch(err) {
+          console.error("Theorist photo upload error:", err);
+        }
+      }
+
+      state.theorists.unshift({
+        id: 'th-' + Date.now(),
+        name: name,
+        category: cat,
+        photoUrl: photoUrl,
+        biography: bio,
+        theories: theories,
+        applications: apps
+      });
+      persistData();
+
+      status.classList.add('hidden');
+      alert(`Theorist profile for "${name}" added to the Knowledge Library!`);
+      closeTheoristEditorModal();
+      renderTheoristsGrid();
+    }
+
+    function renderTheoristsGrid() {
+      const c = document.getElementById('theorists-grid');
+      const search = (document.getElementById('theorist-search')?.value || '').toLowerCase();
+      const cat = document.getElementById('theorist-filter-cat')?.value || 'ALL';
+
+      let list = state.theorists;
+      if (cat !== 'ALL') list = list.filter(t => t.category === cat);
+      if (search) list = list.filter(t => t.name.toLowerCase().includes(search) || t.theories.toLowerCase().includes(search));
+
+      c.innerHTML = list.map(t => `
+        <div onclick="openTheoristModal('${t.id}')" class="bg-white rounded-xl shadow border p-4 cursor-pointer hover:shadow-md transition">
+          <img src="${t.photoUrl}" class="w-full h-44 object-cover rounded-lg mb-3">
+          <span class="text-[10px] font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded">${t.category}</span>
+          <h3 class="font-bold text-gray-900 mt-2">${t.name}</h3>
+          <p class="text-xs text-gray-600 line-clamp-2 mt-1">${t.theories}</p>
+        </div>
+      `).join('');
+    }
+
+    function openTheoristModal(id) {
+      const t = state.theorists.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('detail-theorist-name').innerText = t.name;
+      document.getElementById('detail-theorist-cat').innerText = t.category;
+      document.getElementById('detail-theorist-photo').src = t.photoUrl;
+      document.getElementById('detail-theorist-bio').innerText = t.biography;
+      document.getElementById('detail-theorist-theories').innerText = t.theories;
+      document.getElementById('detail-theorist-applications').innerText = t.applications;
+      document.getElementById('theorist-detail-modal').classList.remove('hidden');
+    }
+    function closeTheoristModal() { document.getElementById('theorist-detail-modal').classList.add('hidden'); }
+
+    // ========================================================
+    // DASHBOARDS
+    // ========================================================
+    function renderStudentProgress() {
+      document.getElementById('stat-completed-lessons').innerText = state.lessons.length;
+      document.getElementById('stat-total-assignments').innerText = state.assignments.length;
+      const mySubs = state.submissions.filter(s => s.studentId === state.currentUser.id);
+      document.getElementById('stat-assignments-submitted').innerText = mySubs.length;
+
+      const subTable = document.getElementById('student-submissions-table');
+      if (!mySubs.length) {
+        subTable.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No submissions yet.</td></tr>`;
+      } else {
+        subTable.innerHTML = mySubs.map(s => {
+          const asg = state.assignments.find(a => a.id === s.assignmentId) || { title: 'Assignment', maxPoints: 100 };
+          return `
+            <tr class="border-b">
+              <td class="p-3 font-bold">${asg.title}</td>
+              <td class="p-3"><span class="status-badge ${s.status === 'Graded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${s.status}</span></td>
+              <td class="p-3"><a href="${s.fileUrl}" target="_blank" class="text-blue-700 underline">${s.fileName}</a></td>
+              <td class="p-3 font-bold">${s.points !== null ? `${s.points} / ${asg.maxPoints}` : 'Pending'}</td>
+              <td class="p-3 text-gray-500 italic">${s.feedback || 'In review by Prof. Jericho C. Matutinao'}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
     function renderTeacherDashboardView() {
-      const table = document.getElementById('faculty-materials-table');
-      table.innerHTML = state.lessons.map(l => `
+      // Materials
+      const matTable = document.getElementById('faculty-materials-table');
+      matTable.innerHTML = state.lessons.map(l => `
         <tr class="border-b text-xs">
           <td class="p-3 font-bold">${l.code}: ${l.title}</td>
           <td class="p-3 text-gray-500">${l.fileName}</td>
@@ -630,34 +1087,31 @@
           </td>
         </tr>
       `).join('');
-    }
 
-    function renderTheoristsGrid() {
-      const c = document.getElementById('theorists-grid');
-      c.innerHTML = state.theorists.map(t => `
-        <div onclick="openTheoristModal('${t.id}')" class="bg-white rounded-xl shadow border p-4 cursor-pointer hover:shadow-md transition">
-          <img src="${t.photoUrl}" class="w-full h-40 object-cover rounded-lg mb-3">
-          <span class="text-[10px] font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded">${t.category}</span>
-          <h3 class="font-bold text-gray-900 mt-2">${t.name}</h3>
-          <p class="text-xs text-gray-600 line-clamp-2 mt-1">${t.biography}</p>
-        </div>
-      `).join('');
-    }
-
-    function openTheoristModal(id) {
-      const t = state.theorists.find(x => x.id === id);
-      if (!t) return;
-      document.getElementById('detail-theorist-name').innerText = t.name;
-      document.getElementById('detail-theorist-bio').innerText = t.biography;
-      document.getElementById('detail-theorist-applications').innerText = t.eceApplications;
-      document.getElementById('theorist-detail-modal').classList.remove('hidden');
-    }
-
-    function closeTheoristModal() {
-      document.getElementById('theorist-detail-modal').classList.add('hidden');
+      // Submissions
+      const subTable = document.getElementById('faculty-submissions-table');
+      if (!state.submissions.length) {
+        subTable.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No student submissions in queue.</td></tr>`;
+      } else {
+        subTable.innerHTML = state.submissions.map(sub => {
+          const asg = state.assignments.find(a => a.id === sub.assignmentId) || { title: 'Assignment' };
+          return `
+            <tr class="border-b text-xs">
+              <td class="p-3 font-bold">${sub.studentName}</td>
+              <td class="p-3">${asg.title}</td>
+              <td class="p-3"><a href="${sub.fileUrl}" target="_blank" class="text-blue-700 underline">${sub.fileName}</a></td>
+              <td class="p-3 font-bold">${sub.points !== null ? sub.points : 'Not Graded'}</td>
+              <td class="p-3 text-right">
+                <button onclick="openGradeSubmissionModal('${sub.id}')" class="px-2.5 py-1 bg-[#8B0000] text-white rounded font-bold">Grade</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      loadSavedData();
       loadCloudLessons();
       setRole('student');
     });
