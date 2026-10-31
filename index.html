@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECE STUDY HUB & LMS | Cebu Normal University</title>
 
-  <!-- Tailwind CSS & Chart.js -->
+  <!-- Tailwind CSS, Chart.js & Supabase JS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     tailwind.config = {
@@ -90,13 +91,16 @@
     </div>
   </header>
 
-  <!-- ROLE SWITCHER & ENVIRONMENT BAR -->
+  <!-- ROLE SWITCHER & CLOUD STATUS -->
   <div class="bg-[#FFF9E6] border-b border-[#D4AF37]/50 py-2 px-4 text-xs">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <span class="font-bold text-[#8B0000]">Active Session:</span>
         <span id="role-badge" class="px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white">Student</span>
         <span id="role-details" class="text-gray-600 hidden sm:inline">(Viewing as student)</span>
+        <span class="ml-2 text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Supabase Connected
+        </span>
       </div>
       <div class="flex items-center gap-2">
         <span class="text-gray-500 font-medium">Switch view mode:</span>
@@ -113,7 +117,7 @@
   <!-- MAIN VIEWPORT -->
   <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 
-    <!-- 1. VIEW: HOME HERO & LMS OVERVIEW -->
+    <!-- 1. VIEW: HOME HERO -->
     <section id="view-home" class="view-panel space-y-8">
       <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#8B0000] via-[#730000] to-[#500000] text-white p-8 sm:p-12 shadow-xl border-t-4 border-[#D4AF37]">
         <div class="max-w-2xl space-y-4">
@@ -152,7 +156,7 @@
         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
           <div class="w-10 h-10 rounded-lg bg-red-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-red-200">PPT</div>
           <h3 class="font-bold text-gray-900 mb-1">Slide Decks & Video</h3>
-          <p class="text-xs text-gray-600">Review PPT presentations with Microsoft Online and stream embedded video lectures in-browser.</p>
+          <p class="text-xs text-gray-600">Review PPT presentations with Microsoft Online and stream video lectures in-browser.</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
           <div class="w-10 h-10 rounded-lg bg-amber-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-amber-200">GCR</div>
@@ -172,7 +176,7 @@
       </div>
     </section>
 
-    <!-- 2. VIEW: COURSE MATERIALS (PPT, PDF, & VIDEO LESSONS) -->
+    <!-- 2. VIEW: COURSE MATERIALS -->
     <section id="view-lessons" class="view-panel hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-4">
         <div>
@@ -203,7 +207,7 @@
       <div id="assignments-grid" class="space-y-4"></div>
     </section>
 
-    <!-- 4. VIEW: ECE KNOWLEDGE LIBRARY (THEORISTS & CONTRIBUTORS) -->
+    <!-- 4. VIEW: ECE KNOWLEDGE LIBRARY -->
     <section id="view-theorists" class="view-panel hidden space-y-6">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <div>
@@ -211,7 +215,7 @@
           <p class="text-sm text-gray-500">Seminal Educational Theorists, Developmental Paradigms & ECE Applications</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <input type="text" id="theorist-search" oninput="renderTheoristsGrid()" placeholder="Search theorist or theory..." class="border border-gray-300 rounded-lg px-3 py-1.5 text-xs w-48 sm:w-64 focus:ring-[#8B0000]">
+          <input type="text" id="theorist-search" oninput="renderTheoristsGrid()" placeholder="Search theorist..." class="border border-gray-300 rounded-lg px-3 py-1.5 text-xs w-48 sm:w-64 focus:ring-[#8B0000]">
           <select id="theorist-filter-cat" onchange="renderTheoristsGrid()" class="text-xs font-bold border border-gray-300 rounded-lg p-2 bg-white">
             <option value="ALL">All Categories</option>
             <option value="Cognitive / Constructivist">Cognitive / Constructivist</option>
@@ -219,15 +223,12 @@
             <option value="Psychosocial / Humanist">Psychosocial / Humanist</option>
             <option value="Behavioral">Behavioral</option>
           </select>
-          <button id="btn-add-theorist" onclick="openAddTheoristModal()" class="teacher-only hidden px-3 py-1.5 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
-            + Add Theorist
-          </button>
         </div>
       </div>
       <div id="theorists-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
     </section>
 
-    <!-- 5. VIEW: STUDENT PORTAL (PROGRESS, SUBMISSIONS & GRADES) -->
+    <!-- 5. VIEW: STUDENT PORTAL -->
     <section id="view-my-progress" class="view-panel hidden space-y-6">
       <div>
         <h2 class="text-2xl font-black text-gray-900">Student Academic Record</h2>
@@ -253,11 +254,9 @@
         </div>
       </div>
 
-      <!-- Submissions Status Table -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 flex justify-between">
-          <span>Assignment Submissions & Teacher Feedback</span>
-          <span class="text-xs text-gray-500">Evaluated by Prof. Jericho C. Matutinao</span>
+        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
+          Assignment Submissions & Teacher Feedback
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -275,10 +274,9 @@
         </div>
       </div>
 
-      <!-- Quiz Attempts History -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
-          Quiz Attempt History & Mastery Verification
+          Quiz Attempt History
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -297,7 +295,7 @@
       </div>
     </section>
 
-    <!-- 6. VIEW: FACULTY DASHBOARD (PROF. JERICHO C. MATUTINAO) -->
+    <!-- 6. VIEW: FACULTY DASHBOARD -->
     <section id="view-teacher-dashboard" class="view-panel hidden space-y-8">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-gray-200 pb-4">
         <div>
@@ -309,92 +307,32 @@
         </span>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button onclick="openUploadLessonModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
-          <p class="text-xs font-bold text-[#8B0000] uppercase">+ Create / Upload</p>
-          <p class="text-base font-bold text-gray-800">New Lesson (PPT / Video / PDF)</p>
+          <p class="text-xs font-bold text-[#8B0000] uppercase">+ Cloud Upload</p>
+          <p class="text-base font-bold text-gray-800">New PowerPoint or Video Lesson</p>
         </button>
         <button onclick="openCreateAssignmentModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-amber-700 uppercase">+ Post Task</p>
-          <p class="text-base font-bold text-gray-800">New Assignment & Rubric</p>
-        </button>
-        <button onclick="openAddTheoristModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
-          <p class="text-xs font-bold text-emerald-700 uppercase">+ Library Profile</p>
-          <p class="text-base font-bold text-gray-800">New Educational Theorist</p>
+          <p class="text-base font-bold text-gray-800">New Assignment & Deadline</p>
         </button>
       </div>
 
-      <!-- Class Analytics Bar Chart -->
-      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-3">
-        <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Cohort Assessment Distribution</h3>
-        <div class="max-w-2xl mx-auto">
-          <canvas id="facultyMasteryChart" height="130"></canvas>
-        </div>
-      </div>
-
-      <!-- Manage Course Materials & Quizzes -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 flex justify-between items-center">
           <span>Uploaded Course Materials & Editable Quizzes</span>
-          <span class="text-xs text-[#8B0000] font-bold">Full Teacher Control</span>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead class="bg-gray-100 text-gray-600 uppercase">
               <tr>
                 <th class="py-3 px-4">Subject & Title</th>
-                <th class="py-3 px-4">Media</th>
+                <th class="py-3 px-4">File Name</th>
                 <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-4">Quiz Status</th>
                 <th class="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="faculty-materials-table"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Assignment Submissions & Grading Queue -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 flex justify-between items-center">
-          <span>Student Submissions Review & Grading Queue</span>
-          <span class="text-xs text-amber-700 font-bold">Google Classroom Workflow</span>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-gray-100 text-gray-600 uppercase">
-              <tr>
-                <th class="py-3 px-4">Student</th>
-                <th class="py-3 px-4">Assignment</th>
-                <th class="py-3 px-4">Submission</th>
-                <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-4">Grade</th>
-                <th class="py-3 px-4 text-right">Review</th>
-              </tr>
-            </thead>
-            <tbody id="faculty-grading-table"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Enrolled Students Directory -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
-          Enrolled Student Registry (Gmail Identified)
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-gray-100 text-gray-600 uppercase">
-              <tr>
-                <th class="py-3 px-4">Student Name</th>
-                <th class="py-3 px-4">Verified Gmail</th>
-                <th class="py-3 px-4 text-center">Quizzes Taken</th>
-                <th class="py-3 px-4 text-center">Average Mastery</th>
-                <th class="py-3 px-4">Last Activity</th>
-              </tr>
-            </thead>
-            <tbody id="faculty-students-table"></tbody>
           </table>
         </div>
       </div>
@@ -412,9 +350,7 @@
     </div>
   </footer>
 
-  <!-- ========================================================
-       MODALS: PRESENTATION & VIDEO VIEWER
-       ======================================================== -->
+  <!-- PRESENTATION VIEWER MODAL -->
   <div id="viewer-modal" class="fixed inset-0 z-50 bg-black/85 hidden flex flex-col backdrop-blur-sm">
     <div class="bg-[#8B0000] text-white px-4 py-3 flex items-center justify-between border-b border-[#D4AF37]">
       <div>
@@ -434,230 +370,11 @@
     </div>
   </div>
 
-  <!-- ========================================================
-       MODALS: STUDENT SUBMIT ASSIGNMENT
-       ======================================================== -->
-  <div id="submit-assignment-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 id="modal-submit-title" class="font-bold text-base text-gray-900">Submit Assignment</h3>
-        <button onclick="closeSubmitAssignmentModal()" class="text-gray-400 font-bold">✕</button>
-      </div>
-      <input type="hidden" id="modal-submit-assignment-id">
-      <div>
-        <p id="modal-submit-instructions" class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border"></p>
-      </div>
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Student Notes / Comment</label>
-          <textarea id="modal-submit-text" rows="2" placeholder="Write any notes for Prof. Jericho C. Matutinao..." class="w-full border p-2 rounded text-xs"></textarea>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Attach File (PDF, DOCX, PPTX, or Image)</label>
-          <input id="modal-submit-file" type="file" required class="w-full border p-1.5 rounded text-xs bg-gray-50">
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 border-t">
-        <button onclick="closeSubmitAssignmentModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
-        <button onclick="confirmAssignmentSubmission()" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
-          Turn In Work
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================
-       MODALS: TEACHER GRADING ASSIGNMENT
-       ======================================================== -->
-  <div id="grade-submission-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Grade Student Assignment</h3>
-        <button onclick="closeGradeSubmissionModal()" class="text-gray-400 font-bold">✕</button>
-      </div>
-      <input type="hidden" id="modal-grade-submission-id">
-      <div class="text-xs space-y-1 bg-amber-50 p-3 rounded-lg border border-amber-200">
-        <p><strong>Student:</strong> <span id="modal-grade-student-name"></span> (<span id="modal-grade-student-email"></span>)</p>
-        <p><strong>Task:</strong> <span id="modal-grade-assignment-title"></span></p>
-        <p><strong>Submitted File:</strong> <a id="modal-grade-file-link" href="#" target="_blank" class="text-blue-700 underline font-bold">View Attached File</a></p>
-      </div>
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Award Points (Max: <span id="modal-grade-max-points">100</span>)</label>
-          <input id="modal-grade-points" type="number" step="0.5" min="0" class="w-full border p-2 rounded text-xs font-bold">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Teacher Feedback & Written Comments</label>
-          <textarea id="modal-grade-feedback" rows="3" placeholder="Provide constructive feedback for candidate teacher..." class="w-full border p-2 rounded text-xs"></textarea>
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2 border-t">
-        <button onclick="closeGradeSubmissionModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
-        <button onclick="saveStudentGrade()" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold shadow hover:bg-[#660000]">
-          Return Grade & Feedback
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================
-       MODALS: THEORIST DETAILED PROFILE
-       ======================================================== -->
-  <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border-t-4 border-[#8B0000] space-y-6">
-      <div class="flex justify-between items-start border-b pb-4">
-        <div class="flex gap-4 items-center">
-          <img id="detail-theorist-photo" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-2 border-[#D4AF37] shadow" src="" alt="">
-          <div>
-            <span id="detail-theorist-cat" class="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-red-50 text-[#8B0000] border border-red-200"></span>
-            <h3 id="detail-theorist-name" class="text-xl sm:text-2xl font-black text-gray-900 mt-1"></h3>
-            <p id="detail-theorist-lifespan" class="text-xs font-bold text-gray-500"></p>
-            <p id="detail-theorist-nat" class="text-xs text-[#8B0000] font-semibold"></p>
-          </div>
-        </div>
-        <button onclick="closeTheoristModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-      </div>
-
-      <div class="space-y-4 text-xs leading-relaxed text-gray-700">
-        <div>
-          <h4 class="font-black text-sm uppercase text-[#8B0000] mb-1">Biography & Academic Career</h4>
-          <p id="detail-theorist-bio"></p>
-        </div>
-        <div>
-          <h4 class="font-black text-sm uppercase text-[#8B0000] mb-1">Major Theories & Contributions</h4>
-          <p id="detail-theorist-theories"></p>
-        </div>
-        <div>
-          <h4 class="font-black text-sm uppercase text-[#8B0000] mb-1.5">Core Concepts & Principles</h4>
-          <ul id="detail-theorist-principles" class="list-disc pl-5 space-y-1"></ul>
-        </div>
-        <div class="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200">
-          <h4 class="font-black text-sm uppercase text-[#660000] mb-1">Early Childhood Classroom Application</h4>
-          <p id="detail-theorist-applications" class="text-amber-950 font-medium"></p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="border p-3 rounded-lg bg-gray-50">
-            <h5 class="font-bold text-[11px] uppercase text-gray-800 mb-1">Key Publications & Works</h5>
-            <p id="detail-theorist-works" class="italic text-gray-600"></p>
-          </div>
-          <div class="border p-3 rounded-lg bg-gray-50">
-            <h5 class="font-bold text-[11px] uppercase text-gray-800 mb-1">Key Takeaways for Students</h5>
-            <p id="detail-theorist-takeaways" class="font-semibold text-gray-800"></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex justify-end pt-2 border-t">
-        <button onclick="closeTheoristModal()" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold">Close Profile</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================
-       MODALS: INTERACTIVE TIMED QUIZ RUNNER
-       ======================================================== -->
-  <div id="quiz-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border-t-4 border-[#8B0000] flex flex-col max-h-[90vh]">
-      <div class="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
-        <div>
-          <h3 id="quiz-title-display" class="font-bold text-gray-900">Module Evaluation</h3>
-          <div class="flex items-center gap-2 mt-0.5">
-            <span id="quiz-step-indicator" class="text-xs font-bold text-[#8B0000]"></span>
-            <span id="quiz-timer-display" class="hidden text-xs font-black px-2 py-0.5 rounded bg-red-100 text-red-800 border border-red-200"></span>
-          </div>
-        </div>
-        <button onclick="closeQuizModal()" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
-      </div>
-      <div id="quiz-content-area" class="p-6 overflow-y-auto flex-grow"></div>
-      <div id="quiz-footer" class="p-4 bg-gray-50 border-t border-gray-200 flex justify-between">
-        <button id="btn-quiz-prev" onclick="prevQuizStep()" class="px-4 py-2 border border-gray-300 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-50">
-          Previous
-        </button>
-        <button id="btn-quiz-next" class="px-6 py-2 bg-[#8B0000] hover:bg-[#660000] text-white rounded-lg text-xs font-bold shadow">
-          Next Question
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================
-       MODALS: FULL QUIZ QUESTION & TIME LIMIT EDITOR (TEACHER)
-       ======================================================== -->
-  <div id="edit-quiz-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-5">
-      <div class="flex justify-between items-center border-b pb-2">
-        <div>
-          <h3 class="font-bold text-lg text-gray-900">Quiz Content & Settings Editor</h3>
-          <p class="text-xs text-gray-500">Instructor: Prof. Jericho C. Matutinao</p>
-        </div>
-        <button onclick="closeEditQuizModal()" class="text-gray-400 font-bold">✕</button>
-      </div>
-      <input type="hidden" id="editor-quiz-lesson-id">
-      
-      <!-- Quiz Meta -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div class="sm:col-span-2">
-          <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quiz Title</label>
-          <input id="editor-quiz-title" type="text" class="w-full border p-2 rounded text-xs">
-        </div>
-        <div>
-          <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Time Limit (Minutes)</label>
-          <input id="editor-quiz-timelimit" type="number" min="0" placeholder="0 = No limit" class="w-full border p-2 rounded text-xs">
-        </div>
-      </div>
-
-      <!-- Add Question Card -->
-      <div class="border p-4 rounded-xl bg-gray-50 space-y-3">
-        <h4 class="text-xs font-black uppercase text-[#8B0000]">+ Add / Update Question</h4>
-        <input id="editor-q-text" type="text" placeholder="Enter Question statement..." class="w-full border p-2 rounded text-xs bg-white">
-        <div class="grid grid-cols-2 gap-2">
-          <input id="editor-q-opt-0" type="text" placeholder="Option 1" class="border p-2 rounded text-xs bg-white">
-          <input id="editor-q-opt-1" type="text" placeholder="Option 2" class="border p-2 rounded text-xs bg-white">
-          <input id="editor-q-opt-2" type="text" placeholder="Option 3" class="border p-2 rounded text-xs bg-white">
-          <input id="editor-q-opt-3" type="text" placeholder="Option 4" class="border p-2 rounded text-xs bg-white">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-[11px] font-bold text-gray-600 block mb-1">Designate Correct Answer</label>
-            <select id="editor-q-correct" class="w-full border p-2 rounded text-xs bg-white font-bold text-emerald-800">
-              <option value="0">Option 1 is Correct</option>
-              <option value="1">Option 2 is Correct</option>
-              <option value="2">Option 3 is Correct</option>
-              <option value="3">Option 4 is Correct</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-[11px] font-bold text-gray-600 block mb-1">Student Explanation</label>
-            <input id="editor-q-explanation" type="text" placeholder="Why is this answer correct?" class="w-full border p-2 rounded text-xs bg-white">
-          </div>
-        </div>
-        <button type="button" onclick="addQuestionToQuizEditor()" class="w-full bg-gray-800 hover:bg-black text-white text-xs font-bold py-2 rounded">
-          + Add Question to Pool
-        </button>
-      </div>
-
-      <!-- Current Questions List -->
-      <div class="space-y-2">
-        <label class="text-xs font-bold uppercase text-gray-700 block">Existing Question Pool (<span id="editor-q-count">0</span>)</label>
-        <div id="editor-questions-pool" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
-      </div>
-
-      <div class="flex justify-end gap-2 border-t pt-3">
-        <button onclick="closeEditQuizModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
-        <button onclick="saveCompleteQuizFromEditor()" class="px-6 py-2 bg-[#8B0000] hover:bg-[#660000] text-white rounded-lg text-xs font-bold shadow">
-          Save Quiz Changes
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================
-       MODALS: UPLOAD / EDIT LESSON (PPT & VIDEO)
-       ======================================================== -->
+  <!-- UPLOAD LESSON MODAL -->
   <div id="upload-lesson-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Upload Learning Material & Lecture</h3>
+        <h3 class="font-bold text-base text-gray-900">Upload Learning Material to Cloud</h3>
         <button onclick="closeUploadLessonModal()" class="text-gray-400 font-bold">✕</button>
       </div>
       <form id="form-faculty-upload" onsubmit="handleLessonUploadSubmit(event)" class="space-y-3">
@@ -668,9 +385,7 @@
               <option value="ECE 101">ECE 101 - Child Development</option>
               <option value="ECE 102">ECE 102 - Creative Arts</option>
               <option value="ECE 201">ECE 201 - Emergent Literacy</option>
-              <option value="ECE 202">ECE 202 - Numeracy & Science</option>
               <option value="ECE 301">ECE 301 - Inclusive Education</option>
-              <option value="ECE 302">ECE 302 - Early Childhood Assessment</option>
             </select>
           </div>
           <div>
@@ -684,814 +399,257 @@
         </div>
         <div>
           <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Presentation File (.PPT, .PPTX, .PDF)</label>
-          <input id="upl-file" type="file" accept=".pdf,.ppt,.pptx" class="w-full border p-1.5 rounded text-xs bg-gray-50">
+          <input id="upl-file" type="file" accept=".pdf,.ppt,.pptx" required class="w-full border p-1.5 rounded text-xs bg-gray-50">
         </div>
         <div>
-          <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Video Lecture Embed Link (YouTube, Vimeo, Google Drive)</label>
-          <input id="upl-video" type="url" placeholder="https://www.youtube.com/embed/..." class="w-full border p-2 rounded text-xs">
-        </div>
-        <div>
-          <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Pedagogical Description</label>
-          <textarea id="upl-desc" rows="2" placeholder="Focus notes for early childhood education students..." class="w-full border p-2 rounded text-xs"></textarea>
+          <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Description</label>
+          <textarea id="upl-desc" rows="2" class="w-full border p-2 rounded text-xs"></textarea>
         </div>
         <div class="flex justify-between items-center pt-2">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input id="upl-publish" type="checkbox" checked class="rounded text-[#8B0000]">
-            <span class="text-xs font-bold text-gray-700">Publish immediately to students</span>
-          </label>
-          <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold hover:bg-[#660000]">
-            Upload & Save Material
+          <span id="upload-status-text" class="text-xs font-bold text-amber-700 hidden">Uploading to Supabase cloud...</span>
+          <button id="btn-submit-upload" type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold hover:bg-[#660000]">
+            Upload & Save to Cloud
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ========================================================
-       MODALS: CREATE ASSIGNMENT (TEACHER)
-       ======================================================== -->
-  <div id="create-assignment-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
+  <!-- THEORIST MODAL -->
+  <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Post Course Assignment</h3>
-        <button onclick="closeCreateAssignmentModal()" class="text-gray-400 font-bold">✕</button>
+        <h3 id="detail-theorist-name" class="text-xl font-bold"></h3>
+        <button onclick="closeTheoristModal()" class="text-gray-400 font-bold">✕</button>
       </div>
-      <form id="form-faculty-assignment" onsubmit="handleAssignmentCreateSubmit(event)" class="space-y-3">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Subject</label>
-            <select id="asg-subject" class="w-full border p-2 rounded text-xs bg-white">
-              <option value="ECE 101">ECE 101 - Child Development</option>
-              <option value="ECE 102">ECE 102 - Creative Arts</option>
-              <option value="ECE 201">ECE 201 - Emergent Literacy</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Task Title</label>
-            <input id="asg-title" type="text" required placeholder="e.g. Kindergarten Lesson Plan" class="w-full border p-2 rounded text-xs">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Max Points</label>
-            <input id="asg-points" type="number" value="100" min="10" required class="w-full border p-2 rounded text-xs">
-          </div>
-          <div>
-            <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Deadline Date & Time</label>
-            <input id="asg-deadline" type="datetime-local" required class="w-full border p-2 rounded text-xs">
-          </div>
-        </div>
-        <div>
-          <label class="text-xs font-bold uppercase text-gray-700 block mb-1">Task Instructions & Rubric</label>
-          <textarea id="asg-instructions" rows="3" required placeholder="Outline task expectations, format, and rubric..." class="w-full border p-2 rounded text-xs"></textarea>
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeCreateAssignmentModal()" class="px-4 py-2 border rounded-lg text-xs font-bold text-gray-600">Cancel</button>
-          <button type="submit" class="px-5 py-2 bg-[#8B0000] text-white rounded-lg text-xs font-bold hover:bg-[#660000]">Publish Assignment</button>
-        </div>
-      </form>
+      <p id="detail-theorist-bio" class="text-xs text-gray-600"></p>
+      <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
+        <h4 class="font-bold text-xs uppercase text-[#660000] mb-1">Early Childhood Classroom Application</h4>
+        <p id="detail-theorist-applications" class="text-xs text-amber-950 font-medium"></p>
+      </div>
     </div>
   </div>
 
-  <!-- APPLICATION ARCHITECTURE & LOGIC -->
+  <!-- APPLICATION SCRIPT WITH DIRECT SUPABASE CONNECTION -->
   <script>
     // ========================================================
-    // GLOBAL STATE & ECE SEED DATA
+    // SUPABASE CREDENTIALS DIRECTLY INTEGRATED
     // ========================================================
-    const state = {
-      role: 'student', // 'student' or 'teacher'
-      currentUser: {
-        id: 'std_01',
-        name: 'Maria Santos',
-        email: 'maria.santos@gmail.com',
-        role: 'student'
-      },
-      currentView: 'home',
+    const SUPABASE_URL = 'https://kjaaavvjngnclswtvtvj.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_BH_DvXJkqyXW7s9eL06tWA_bSzy5ZaU';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // 1. LESSONS (WITH PPT, PDF, AND VIDEO LESSONS)
+    // Initial state
+    const state = {
+      role: 'student',
+      currentUser: { id: 'std_01', name: 'Maria Santos', email: 'maria.santos@gmail.com' },
+      currentView: 'home',
       lessons: [
         {
-          id: 'les-01',
+          id: 'sample-1',
           code: 'ECE 101',
           title: "Piaget's Cognitive Development in Early Childhood",
           topic: "Preoperational Stage & Symbolic Play",
           description: "Schema formation, egocentrism, and symbolic thought in kindergarten learners prepared by Prof. Jericho C. Matutinao.",
           fileName: "ECE101_Piaget_Cognitive_Growth.pptx",
-          fileUrl: "https://view.officeapps.live.com/op/view.aspx?src=https://filesamples.com/samples/document/pptx/sample3.pptx",
-          fileType: "pptx",
-          videoUrl: "https://www.youtube.com/embed/IhcgYgx7aAA",
-          isPublished: true,
-          uploadedAt: "2026-03-15",
-          quiz: {
-            id: 'quiz-01',
-            title: "Piagetian Principles Comprehension Check",
-            timeLimitMinutes: 10,
-            deadline: "2026-11-15T23:59",
-            questions: [
-              {
-                id: 'q1',
-                question: "According to Piaget, children aged 2 to 7 years are in which developmental stage?",
-                options: ["Sensorimotor Period", "Preoperational Stage", "Concrete Operational", "Formal Operational"],
-                correct: 1,
-                explanation: "The Preoperational stage spans ages 2 to 7, characterized by symbolic representation and emerging language."
-              },
-              {
-                id: 'q2',
-                question: "What term describes a young child's inability to see a situation from another person's perspective?",
-                options: ["Object Permanence", "Centration", "Egocentrism", "Scaffolding"],
-                correct: 2,
-                explanation: "Egocentrism in early childhood refers to the cognitive tendency to perceive the world exclusively from one's own viewpoint."
-              }
-            ]
-          }
-        },
-        {
-          id: 'les-02',
-          code: 'ECE 201',
-          title: "Phonological Awareness & Early Emergent Literacy",
-          topic: "Phonemic Segmentation & Storybook Dialogues",
-          description: "Foundational strategies for kindergarten literacy, rhyme detection, and print-rich classroom setups.",
-          fileName: "ECE201_Emergent_Literacy_Strategies.pdf",
-          fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-          fileType: "pdf",
-          videoUrl: "",
-          isPublished: true,
-          uploadedAt: "2026-03-18",
-          quiz: {
-            id: 'quiz-02',
-            title: "Early Literacy Pedagogical Assessment",
-            timeLimitMinutes: 5,
-            deadline: "2026-11-20T23:59",
-            questions: [
-              {
-                id: 'q3',
-                question: "Which of the following represents the smallest unit of sound in spoken language?",
-                options: ["Morpheme", "Phoneme", "Syllable", "Grapheme"],
-                correct: 1,
-                explanation: "A phoneme is the smallest distinctive unit of sound in a spoken language that distinguishes one word from another."
-              }
-            ]
-          }
-        },
-        {
-          id: 'les-03',
-          code: 'ECE 102',
-          title: "Creative Arts and Play-Based Curricula",
-          topic: "Dramatic Play Centers & Socio-Emotional Growth",
-          description: "Frameworks for planning open-ended art and exploratory sensory stations in kindergarten classrooms.",
-          fileName: "ECE102_Play_and_Creativity.pptx",
-          fileUrl: "https://view.officeapps.live.com/op/view.aspx?src=https://filesamples.com/samples/document/pptx/sample3.pptx",
-          fileType: "pptx",
-          videoUrl: "https://www.youtube.com/embed/IhcgYgx7aAA",
-          isPublished: true,
-          uploadedAt: "2026-03-20",
-          quiz: null
-        }
-      ],
-
-      // 2. ASSIGNMENTS & SUBMISSIONS (GOOGLE CLASSROOM REPLICA)
-      assignments: [
-        {
-          id: 'asg-01',
-          subject: 'ECE 101',
-          title: "Kindergarten Cognitive Observation Portfolio",
-          instructions: "Conduct a 45-minute structured observation of a 3-5 year old child during free play. Document schema usage, egocentric communication, and conservation tasks using the attached observation template.",
-          maxPoints: 100,
-          deadline: "2026-11-10T23:59",
-          isPublished: true
-        },
-        {
-          id: 'asg-02',
-          subject: 'ECE 201',
-          title: "Interactive Storybook Lesson Plan Design",
-          instructions: "Create a complete 30-minute dialogic reading lesson plan based on an award-winning Filipino picture book. Include before, during, and after vocabulary scaffolds.",
-          maxPoints: 50,
-          deadline: "2026-11-18T17:00",
+          fileUrl: "https://filesamples.com/samples/document/pptx/sample3.pptx",
           isPublished: true
         }
       ],
-
-      submissions: [
-        {
-          id: 'sub-01',
-          assignmentId: 'asg-01',
-          studentId: 'std_01',
-          studentName: 'Maria Santos',
-          studentEmail: 'maria.santos@gmail.com',
-          fileName: 'Santos_Maria_ECE101_Observation.pdf',
-          fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-          studentNotes: 'Observed 4-year-old child at laboratory school play area.',
-          status: 'Graded',
-          pointsAwarded: 95,
-          teacherFeedback: 'Exemplary behavioral mapping and identification of preoperational egocentrism, Maria. Excellent work!',
-          submittedAt: '2026-11-05 14:30'
-        }
-      ],
-
-      // 3. ECE KNOWLEDGE LIBRARY: 10 COMPLETE VERIFIED THEORISTS
       theorists: [
-        {
-          id: 'th-piaget',
-          name: "Jean Piaget",
-          lifespan: "1896 – 1980",
-          nationality: "Swiss",
-          category: "Cognitive / Constructivist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/64/Jean_Piaget_in_Ann_Arbor.png",
-          biography: "Jean Piaget was a Swiss psychologist renowned for his pioneering work in child development. Originally trained in zoology and epistemology, he turned his focus to the origins of knowledge, observing his own children to establish genetic epistemology.",
-          educationalBackground: "University of Neuchâtel (Ph.D. in Natural Sciences); Sorbonne University (Psychopathology & Logic).",
-          majorTheories: "Theory of Cognitive Development (Sensorimotor, Preoperational, Concrete Operational, Formal Operational).",
-          keyPrinciples: [
-            "Schemas: Internal cognitive mental frameworks used to understand experiences.",
-            "Assimilation & Accommodation: Fitting new information into existing schemas vs. altering schemas.",
-            "Equilibration: The cognitive drive maintaining balance between new information and existing knowledge.",
-            "Stages of Development: Universal, biologically grounded sequential phases of reasoning."
-          ],
-          eceApplications: "Teachers act as facilitators providing developmentally appropriate hands-on manipulatives. Emphasizes learning through direct interaction rather than passive lecture.",
-          majorWorks: "The Origins of Intelligence in Children (1952); The Construction of Reality in the Child (1954).",
-          keyTakeaways: "Children are active scientists constructing knowledge through self-discovery."
-        },
-        {
-          id: 'th-vygotsky',
-          name: "Lev Vygotsky",
-          lifespan: "1896 – 1934",
-          nationality: "Russian",
-          category: "Cognitive / Constructivist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Lev_Vygotsky.jpg",
-          biography: "Lev Semyonovich Vygotsky was a Soviet psychologist whose cultural-historical theory revolutionized cognitive psychology. Working in post-revolutionary Russia, he emphasized the social origin of higher mental processes before dying prematurely of tuberculosis at age 37.",
-          educationalBackground: "Moscow State University (Law & Humanities); Shanyavsky People's University.",
-          majorTheories: "Sociocultural Theory of Cognitive Development; Zone of Proximal Development (ZPD).",
-          keyPrinciples: [
-            "Zone of Proximal Development (ZPD): The distance between actual development and potential level under guidance.",
-            "More Knowledgeable Other (MKO): Any peer, teacher, or coach with higher competence.",
-            "Scaffolding: Temporary instructional support gradually removed as mastery increases.",
-            "Private Speech: Self-directed internal vocalization facilitating cognitive self-regulation."
-          ],
-          eceApplications: "Promotes collaborative peer learning, dramatic sociodramatic play, and guided teacher scaffolding during early writing and math tasks.",
-          majorWorks: "Thought and Language (1934); Mind in Society (1978 posthumous).",
-          keyTakeaways: "Cognitive development is fundamentally socially mediated through language and culture."
-        },
-        {
-          id: 'th-dewey',
-          name: "John Dewey",
-          lifespan: "1859 – 1952",
-          nationality: "American",
-          category: "Early Childhood Pedagogy",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/John_Dewey_in_1902.jpg",
-          biography: "John Dewey was an American philosopher, psychologist, and educational reformer whose ideas founded Pragmatism and Progressive Education. He established the University of Chicago Laboratory School to test democratic, child-centered schooling.",
-          educationalBackground: "University of Vermont (B.A.); Johns Hopkins University (Ph.D. in Philosophy).",
-          majorTheories: "Experiential Learning Theory; Pragmatic Democratic Education.",
-          keyPrinciples: [
-            "Learning by Doing: Authentic experiential problem-solving rather than rote memorization.",
-            "Democratic Classroom: Schools as miniature communities fostering civic collaboration.",
-            "Reflective Thinking: Continuous cycles of action, observation, and cognitive adaptation."
-          ],
-          eceApplications: "Project-based curriculum, gardening, community field visits, and cooking activities that connect classroom learning to authentic everyday life.",
-          majorWorks: "The School and Society (1899); Democracy and Education (1916); Experience and Education (1938).",
-          keyTakeaways: "Education is not preparation for life; education is life itself."
-        },
-        {
-          id: 'th-bruner',
-          name: "Jerome Bruner",
-          lifespan: "1915 – 2016",
-          nationality: "American",
-          category: "Cognitive / Constructivist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Jerome_Bruner.jpg",
-          biography: "Jerome Seymour Bruner was a central architect of the Cognitive Revolution. He challenged behavioral dogma, advocating discovery learning and demonstrating that complex concepts can be taught to any child when structured appropriately.",
-          educationalBackground: "Duke University (B.A.); Harvard University (Ph.D. in Psychology).",
-          majorTheories: "Modes of Representation; Spiral Curriculum; Discovery Learning.",
-          keyPrinciples: [
-            "Enactive, Iconic, Symbolic: Progression from motor actions to mental imagery to abstract symbols.",
-            "Spiral Curriculum: Revisiting fundamental concepts repeatedly with deepening complexity.",
-            "Discovery Learning: Encouraging active problem exploration to construct understanding."
-          ],
-          eceApplications: "Early numeracy taught first with tangible counting blocks (enactive), then pictorial charts (iconic), and finally written numeral digits (symbolic).",
-          majorWorks: "The Process of Education (1960); Toward a Theory of Instruction (1966).",
-          keyTakeaways: "Any subject can be taught effectively in some intellectually honest form to any child at any stage."
-        },
-        {
-          id: 'th-skinner',
-          name: "B. F. Skinner",
-          lifespan: "1904 – 1990",
-          nationality: "American",
-          category: "Behavioral",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3f/B.F._Skinner_at_Harvard_circa_1950.jpg",
-          biography: "Burrhus Frederic Skinner was an American psychologist and leading proponent of Radical Behaviorism. He invented the operant conditioning chamber and pioneered programmed instruction.",
-          educationalBackground: "Hamilton College (B.A. in English); Harvard University (Ph.D. in Psychology).",
-          majorTheories: "Operant Conditioning; Schedules of Reinforcement.",
-          keyPrinciples: [
-            "Positive Reinforcement: Presenting rewarding stimuli to strengthen desired behaviors.",
-            "Negative Reinforcement: Removing aversive stimuli to increase target responses.",
-            "Extinction: Withholding reinforcement to systematically diminish undesirable habits."
-          ],
-          eceApplications: "Consistent praise charts, positive behavioral interventions and supports (PBIS), token economies, and structured kindergarten routine cues.",
-          majorWorks: "The Behavior of Organisms (1938); Science and Human Behavior (1953).",
-          keyTakeaways: "Behavior is determined and maintained by its environmental consequences."
-        },
-        {
-          id: 'th-montessori',
-          name: "Maria Montessori",
-          lifespan: "1870 – 1952",
-          nationality: "Italian",
-          category: "Early Childhood Pedagogy",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg",
-          biography: "Maria Teodora Montessori was Italy's first female medical doctor and one of history's most influential educational innovators. She established the Casa dei Bambini (Children's House) in Rome in 1907.",
-          educationalBackground: "University of Rome Medical School (M.D. Doctor of Medicine, 1896).",
-          majorTheories: "The Montessori Method of Prepared Environment; Absorbent Mind.",
-          keyPrinciples: [
-            "Prepared Environment: Child-sized, orderly materials encouraging autonomous exploration.",
-            "Sensitive Periods: Critical developmental windows of hyper-receptivity to language, order, and sensory skills.",
-            "Auto-Education: Self-correcting didactic sensory materials allowing independent mastery."
-          ],
-          eceApplications: "Child-height shelves, real glassware pouring exercises, sensorial cylinder blocks, and uninterrupted 3-hour self-chosen work blocks.",
-          majorWorks: "The Montessori Method (1912); The Absorbent Mind (1949).",
-          keyTakeaways: "Never help a child with a task at which he feels he can succeed."
-        },
-        {
-          id: 'th-bloom',
-          name: "Benjamin Bloom",
-          lifespan: "1913 – 1999",
-          nationality: "American",
-          category: "Cognitive / Constructivist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Benjamin_Bloom.jpg",
-          biography: "Benjamin Samuel Bloom was an educational psychologist who transformed classroom assessment, mastery learning, and curriculum design through the taxonomy of educational objectives.",
-          educationalBackground: "Pennsylvania State University (B.A., M.S.); University of Chicago (Ph.D. in Education).",
-          majorTheories: "Bloom's Taxonomy of Educational Objectives; Mastery Learning.",
-          keyPrinciples: [
-            "Cognitive Hierarchy: Remembering → Understanding → Applying → Analyzing → Evaluating → Creating.",
-            "Affective & Psychomotor Domains: Developing attitudes, values, and motor coordination alongside cognition."
-          ],
-          eceApplications: "Designing kindergarten questioning sequences moving from basic recall ('What color is the bear?') to creative synthesis ('How can we build a shelter for the bear?').",
-          majorWorks: "Taxonomy of Educational Objectives, Handbook I: Cognitive Domain (1956); All Our Children Learning (1981).",
-          keyTakeaways: "All students can achieve high cognitive mastery when provided adequate time and tailored instructional conditions."
-        },
-        {
-          id: 'th-maslow',
-          name: "Abraham Maslow",
-          lifespan: "1908 – 1970",
-          nationality: "American",
-          category: "Psychosocial / Humanist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Abraham_Maslow.jpg",
-          biography: "Abraham Harold Maslow founded Humanistic Psychology, famously known as psychology's 'Third Force.' He focused on human flourishing, positive mental health, and self-actualization.",
-          educationalBackground: "City College of New York; University of Wisconsin-Madison (Ph.D. in Psychology).",
-          majorTheories: "Hierarchy of Human Needs; Theory of Human Motivation.",
-          keyPrinciples: [
-            "Deficiency Needs (D-Needs): Physiological (food/rest), Safety, Belongingness, and Self-Esteem.",
-            "Growth Need (B-Need): Self-Actualization (fulfilling unique creative potential).",
-            "Prepotency: Foundational survival and emotional needs must be met before cognitive learning can occur."
-          ],
-          eceApplications: "Ensuring school breakfast/snacks, safe non-threatening classroom routines, and warm emotional belonging before expecting academic task engagement.",
-          majorWorks: "A Theory of Human Motivation (1943); Motivation and Personality (1954).",
-          keyTakeaways: "You cannot teach a hungry, frightened, or emotionally alienated child."
-        },
-        {
-          id: 'th-erikson',
-          name: "Erik Erikson",
-          lifespan: "1902 – 1994",
-          nationality: "German-American",
-          category: "Psychosocial / Humanist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/52/Erik_Erikson.jpg",
-          biography: "Erik Homburger Erikson was a developmental psychoanalyst who expanded Freudian theory across the entire human lifespan, introducing the concept of identity crises.",
-          educationalBackground: "Vienna Psychoanalytic Institute; Montessori Certificate from Association Montessori Internationale.",
-          majorTheories: "Eight Stages of Psychosocial Development.",
-          keyPrinciples: [
-            "Trust vs. Mistrust (Infancy): Secure caregiver attachment builds foundational hope.",
-            "Autonomy vs. Shame and Doubt (Toddlers): Fostering independent self-feeding and dressing builds will.",
-            "Initiative vs. Guilt (Preschool): Encouraging imaginative play, leadership, and curiosity builds purpose."
-          ],
-          eceApplications: "Supporting toddler toilet mastery without public shaming; encouraging preschool dramatic play without dismissing creative initiatives as misbehavior.",
-          majorWorks: "Childhood and Society (1950); Identity: Youth and Crisis (1968).",
-          keyTakeaways: "Healthy early personality formation depends upon mastering social and emotional crises in nurturing environments."
-        },
-        {
-          id: 'th-gardner',
-          name: "Howard Gardner",
-          lifespan: "1943 – Present",
-          nationality: "American",
-          category: "Cognitive / Constructivist",
-          photoUrl: "https://upload.wikimedia.org/wikipedia/commons/4/44/Howard_Gardner_2011.jpg",
-          biography: "Howard Earl Gardner is an American developmental psychologist and Harvard research professor who dismantled the traditional concept of single unitary IQ intelligence.",
-          educationalBackground: "Harvard College (A.B.); Harvard University (Ph.D. in Developmental Psychology).",
-          majorTheories: "Theory of Multiple Intelligences (MI Theory).",
-          keyPrinciples: [
-            "Pluralistic Intelligences: Linguistic, Logical-Mathematical, Spatial, Musical, Bodily-Kinesthetic, Interpersonal, Intrapersonal, Naturalistic.",
-            "Individualized Learning: Tailoring early instructional entry points to match a child's unique intelligence profile."
-          ],
-          eceApplications: "Differentiated learning centers featuring music/rhythm stations, block building, movement games, and nature sorting alongside traditional phonics.",
-          majorWorks: "Frames of Mind: The Theory of Multiple Intelligences (1983); The Unschooled Mind (1991).",
-          keyTakeaways: "It is not about how smart you are; it is about how you are smart."
-        }
-      ],
-
-      // 4. ATTEMPTS & DIRECTORY
-      attempts: [
-        {
-          id: 'att-1',
-          quizTitle: "Piagetian Principles Comprehension Check",
-          subject: "ECE 101",
-          date: "2026-03-21",
-          score: 2,
-          max: 2,
-          percentage: 100
-        }
-      ],
-      students: [
-        { name: "Maria Santos", email: "maria.santos@gmail.com", attempts: 1, avg: 100, lastActive: "2026-03-21" },
-        { name: "Carlos Reyes", email: "carlos.reyes@gmail.com", attempts: 2, avg: 85, lastActive: "2026-03-22" },
-        { name: "Bea Alcantara", email: "bea.alcantara@gmail.com", attempts: 1, avg: 90, lastActive: "2026-03-23" },
-        { name: "Joshua Lim", email: "joshua.lim@gmail.com", attempts: 3, avg: 72, lastActive: "2026-03-24" }
-      ],
-
-      facultyChartInstance: null
+        { id: '1', name: "Jean Piaget", category: "Cognitive / Constructivist", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/6/64/Jean_Piaget_in_Ann_Arbor.png", biography: "Pioneered cognitive developmental stages: Sensorimotor, Preoperational, Concrete, Formal.", eceApplications: "Hands-on manipulatives and play-based discovery learning." },
+        { id: '2', name: "Lev Vygotsky", category: "Cognitive / Constructivist", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Lev_Vygotsky.jpg", biography: "Proposed Sociocultural Theory and the Zone of Proximal Development (ZPD).", eceApplications: "Scaffolding and peer collaboration in early language and writing." },
+        { id: '3', name: "Maria Montessori", category: "Early Childhood Pedagogy", photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg", biography: "Pioneered the prepared environment and child-directed sensory auto-education.", eceApplications: "Child-sized furniture, sensorial didactic materials, and autonomous work cycles." }
+      ]
     };
 
-    // Local Storage Persistence
-    function loadSavedLmsData() {
-      const savedLessons = localStorage.getItem('cnu_lms_lessons');
-      if (savedLessons) { try { state.lessons = JSON.parse(savedLessons); } catch(e){} }
-
-      const savedAsg = localStorage.getItem('cnu_lms_assignments');
-      if (savedAsg) { try { state.assignments = JSON.parse(savedAsg); } catch(e){} }
-
-      const savedSubs = localStorage.getItem('cnu_lms_submissions');
-      if (savedSubs) { try { state.submissions = JSON.parse(savedSubs); } catch(e){} }
-
-      const savedTheorists = localStorage.getItem('cnu_lms_theorists');
-      if (savedTheorists) { try { state.theorists = JSON.parse(savedTheorists); } catch(e){} }
-
-      const savedAtt = localStorage.getItem('cnu_lms_attempts');
-      if (savedAtt) { try { state.attempts = JSON.parse(savedAtt); } catch(e){} }
-    }
-
-    function persistLmsData() {
-      localStorage.setItem('cnu_lms_lessons', JSON.stringify(state.lessons));
-      localStorage.setItem('cnu_lms_assignments', JSON.stringify(state.assignments));
-      localStorage.setItem('cnu_lms_submissions', JSON.stringify(state.submissions));
-      localStorage.setItem('cnu_lms_theorists', JSON.stringify(state.theorists));
-      localStorage.setItem('cnu_lms_attempts', JSON.stringify(state.attempts));
-    }
-
-    // ========================================================
-    // ROLE SWITCHING & AUTH UI
-    // ========================================================
-    function setRole(roleName) {
-      state.role = roleName;
-      if (roleName === 'teacher') {
-        state.currentUser = {
-          id: 'prof_jericho',
-          name: 'Prof. Jericho C. Matutinao',
-          email: 'jericho.matutinao@cnu.edu.ph',
-          role: 'teacher'
-        };
+    function setRole(r) {
+      state.role = r;
+      const b = document.getElementById('role-badge');
+      const d = document.getElementById('role-details');
+      const td = document.getElementById('nav-teacher-dash');
+      if (r === 'teacher') {
+        b.innerText = "Professor";
+        b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#D4AF37] text-[#4a0000]";
+        d.innerText = "(Logged in as Prof. Jericho C. Matutinao)";
+        td.classList.remove('hidden');
       } else {
-        state.currentUser = {
-          id: 'std_01',
-          name: 'Maria Santos',
-          email: 'maria.santos@gmail.com',
-          role: 'student'
-        };
+        b.innerText = "Student";
+        b.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
+        d.innerText = "(Viewing as student)";
+        td.classList.add('hidden');
       }
-      updateAuthUI();
       switchView(state.currentView);
     }
 
-    function updateAuthUI() {
-      const badge = document.getElementById('role-badge');
-      const details = document.getElementById('role-details');
-      const userDisplay = document.getElementById('user-display');
-      const teacherDash = document.getElementById('nav-teacher-dash');
-      const teacherOnlyButtons = document.querySelectorAll('.teacher-only');
-
-      if (state.role === 'teacher') {
-        badge.innerText = "Professor";
-        badge.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#D4AF37] text-[#4a0000]";
-        details.innerText = "(Logged in as Prof. Jericho C. Matutinao)";
-        teacherDash.classList.remove('hidden');
-        teacherOnlyButtons.forEach(b => b.classList.remove('hidden'));
-
-        userDisplay.innerHTML = `
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full bg-[#D4AF37] text-[#660000] font-black flex items-center justify-center text-xs border border-white">JM</div>
-            <div class="text-left hidden sm:block">
-              <p class="text-xs font-bold leading-tight text-white">Prof. Jericho C. Matutinao</p>
-              <p class="text-[10px] text-amber-200">ECE Faculty</p>
-            </div>
-          </div>
-        `;
-      } else {
-        badge.innerText = "Student";
-        badge.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
-        details.innerText = `(Logged in as ${state.currentUser.email})`;
-        teacherDash.classList.add('hidden');
-        teacherOnlyButtons.forEach(b => b.classList.add('hidden'));
-
-        userDisplay.innerHTML = `
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full bg-red-900 border border-[#D4AF37] text-amber-200 font-bold flex items-center justify-center text-xs">MS</div>
-            <div class="text-left hidden sm:block">
-              <p class="text-xs font-bold leading-tight text-white">${state.currentUser.name}</p>
-              <p class="text-[10px] text-amber-200 font-mono">${state.currentUser.email}</p>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    // ========================================================
-    // VIEW ROUTING
-    // ========================================================
     function switchView(viewName) {
       state.currentView = viewName;
       document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
-
       const target = document.getElementById('view-' + viewName);
-      if (target) {
-        target.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      if (target) target.classList.remove('hidden');
 
       if (viewName === 'lessons') renderLessonsGrid();
-      if (viewName === 'assignments') renderAssignmentsGrid();
       if (viewName === 'theorists') renderTheoristsGrid();
-      if (viewName === 'my-progress') renderStudentProgressView();
       if (viewName === 'teacher-dashboard') renderTeacherDashboardView();
     }
 
-    // ========================================================
-    // MODULE 1: PRESENTATIONS & VIDEO LESSONS
-    // ========================================================
+    // Load lessons from Supabase Cloud
+    async function loadCloudLessons() {
+      try {
+        const { data, error } = await sb.from('lessons').select('*').order('created_at', { ascending: false });
+        if (!error && data && data.length) {
+          state.lessons = data.map(l => ({
+            id: l.id,
+            code: l.subject_code,
+            title: l.title,
+            topic: l.topic,
+            description: l.description,
+            fileName: l.file_name,
+            fileUrl: l.file_url,
+            isPublished: l.is_published
+          }));
+        }
+      } catch(e) {
+        console.error("Supabase load error:", e);
+      }
+      renderLessonsGrid();
+    }
+
     function renderLessonsGrid() {
       const container = document.getElementById('student-lessons-grid');
-      const filter = document.getElementById('filter-materials-subject').value;
-
-      let list = state.lessons;
-      if (state.role === 'student') list = list.filter(l => l.isPublished);
-      if (filter !== 'ALL') list = list.filter(l => l.code === filter);
-
-      if (!list.length) {
-        container.innerHTML = `<div class="col-span-full py-12 text-center text-gray-400 bg-white border border-dashed rounded-xl">No published materials in this subject category.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(item => {
-        const isPpt = item.fileName.toLowerCase().includes('ppt');
-        const hasVideo = !!item.videoUrl;
-        const hasQuiz = item.quiz && item.quiz.questions && item.quiz.questions.length > 0;
-
-        return `
-          <div class="bg-white rounded-xl shadow-md border border-gray-100 flex flex-col justify-between hover:shadow-lg transition">
-            <div class="p-5">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded border ${isPpt ? 'bg-amber-50 text-amber-900 border-amber-200' : 'bg-red-50 text-[#8B0000] border-red-200'}">
-                  ${item.code}
-                </span>
-                <div class="flex items-center gap-1.5">
-                  ${hasVideo ? '<span class="status-badge bg-purple-100 text-purple-800">Video</span>' : ''}
-                  <span class="status-badge ${isPpt ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
-                    ${isPpt ? 'PowerPoint' : 'PDF Document'}
-                  </span>
-                </div>
-              </div>
-              <h3 class="font-bold text-gray-900 text-base leading-snug mb-1">${item.title}</h3>
-              <p class="text-xs font-semibold text-[#8B0000] mb-2">Topic: ${item.topic}</p>
-              <p class="text-xs text-gray-500 line-clamp-3 mb-4">${item.description}</p>
-              <p class="text-[11px] text-gray-400 italic">File: ${item.fileName}</p>
-            </div>
-            <div class="p-5 pt-0 mt-auto border-t border-gray-100 space-y-2">
-              <div class="flex items-center gap-2 pt-3">
-                <button onclick="openMaterialViewer('${item.id}')" class="flex-1 bg-[#8B0000] hover:bg-[#660000] text-white text-xs font-bold py-2 rounded shadow">
-                  Study Lesson & Slides
-                </button>
-                <a href="${item.fileUrl}" target="_blank" download="${item.fileName}" class="px-3 py-2 border border-gray-300 hover:bg-gray-50 rounded text-xs font-bold text-gray-700" title="Download original file">
-                  Download
-                </a>
-              </div>
-              ${hasQuiz ? `
-                <button onclick="startInteractiveQuiz('${item.id}')" class="w-full bg-[#FFF9E6] hover:bg-[#faecc5] border border-[#D4AF37] text-[#4a0000] text-xs font-bold py-2 rounded flex items-center justify-center gap-1">
-                  <span>Take Interactive Quiz</span>
-                  <span class="text-[10px] text-gray-500">(${item.quiz.questions.length} Questions)</span>
-                </button>
-              ` : ''}
-            </div>
+      container.innerHTML = state.lessons.map(item => `
+        <div class="bg-white rounded-xl shadow-md border p-5 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded border">${item.code}</span>
+            <h3 class="font-bold text-gray-900 mt-2">${item.title}</h3>
+            <p class="text-xs font-semibold text-[#8B0000] mb-2">${item.topic}</p>
+            <p class="text-xs text-gray-500 mb-4">${item.description || ''}</p>
           </div>
-        `;
-      }).join('');
-    }
-
-    function openMaterialViewer(lessonId) {
-      const lesson = state.lessons.find(l => l.id === lessonId);
-      if (!lesson) return;
-
-      document.getElementById('viewer-title').innerText = `${lesson.title} (${lesson.fileName})`;
-      document.getElementById('viewer-subtitle').innerText = `ECE Course: ${lesson.code} • Prof. Jericho C. Matutinao`;
-
-      const dl = document.getElementById('viewer-download-link');
-      dl.href = lesson.fileUrl;
-      dl.setAttribute('download', lesson.fileName);
-
-      const frame = document.getElementById('viewer-iframe');
-      const vidContainer = document.getElementById('viewer-video-container');
-
-      if (lesson.videoUrl && !lesson.fileName.toLowerCase().includes('ppt') && !lesson.fileName.toLowerCase().includes('pdf')) {
-        frame.classList.add('hidden');
-        vidContainer.classList.remove('hidden');
-        vidContainer.innerHTML = `<iframe class="w-full h-full rounded-xl" src="${lesson.videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-      } else {
-        vidContainer.classList.add('hidden');
-        frame.classList.remove('hidden');
-        if (lesson.fileName.toLowerCase().includes('ppt')) {
-          frame.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(lesson.fileUrl)}`;
-        } else {
-          frame.src = lesson.fileUrl;
-        }
-      }
-
-      document.getElementById('viewer-modal').classList.remove('hidden');
-    }
-
-    function closeViewerModal() {
-      document.getElementById('viewer-iframe').src = '';
-      document.getElementById('viewer-video-container').innerHTML = '';
-      document.getElementById('viewer-modal').classList.add('hidden');
-    }
-
-    // ========================================================
-    // MODULE 2: GOOGLE CLASSROOM-STYLE ASSIGNMENTS
-    // ========================================================
-    function renderAssignmentsGrid() {
-      const container = document.getElementById('assignments-grid');
-      let list = state.assignments;
-      if (state.role === 'student') list = list.filter(a => a.isPublished);
-
-      if (!list.length) {
-        container.innerHTML = `<div class="p-8 text-center text-gray-400 bg-white border border-dashed rounded-xl">No course assignments posted yet.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(asg => {
-        const studentSub = state.submissions.find(s => s.assignmentId === asg.id && s.studentId === state.currentUser.id);
-        const deadlineDate = new Date(asg.deadline);
-        const isPastDue = new Date() > deadlineDate;
-
-        let statusBadge = '<span class="status-badge bg-blue-100 text-blue-800">Assigned</span>';
-        if (studentSub) {
-          if (studentSub.status === 'Graded') {
-            statusBadge = `<span class="status-badge bg-emerald-100 text-emerald-800">Graded: ${studentSub.pointsAwarded}/${asg.maxPoints}</span>`;
-          } else {
-            statusBadge = '<span class="status-badge bg-amber-100 text-amber-800">Submitted</span>';
-          }
-        } else if (isPastDue) {
-          statusBadge = '<span class="status-badge bg-red-100 text-red-800">Missing</span>';
-        }
-
-        return `
-          <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="space-y-1 max-w-2xl">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-red-50 text-[#8B0000] border border-red-200">${asg.subject}</span>
-                ${statusBadge}
-                <span class="text-xs text-gray-500">Points: <strong>${asg.maxPoints} pts</strong></span>
-              </div>
-              <h3 class="font-bold text-gray-900 text-base">${asg.title}</h3>
-              <p class="text-xs text-gray-600 line-clamp-2">${asg.instructions}</p>
-              <p class="text-[11px] text-gray-400">Due: <strong>${deadlineDate.toLocaleString()}</strong></p>
-            </div>
-            <div class="flex items-center gap-2 self-start md:self-auto">
-              ${state.role === 'student' ? `
-                <button onclick="openSubmitAssignmentModal('${asg.id}')" class="px-4 py-2 bg-[#8B0000] hover:bg-[#660000] text-white rounded-lg text-xs font-bold shadow">
-                  ${studentSub ? 'Resubmit Assignment' : 'Submit Assignment'}
-                </button>
-              ` : `
-                <button onclick="switchView('teacher-dashboard')" class="px-3 py-1.5 border border-gray-300 rounded text-xs font-semibold hover:bg-gray-100">
-                  Review Submissions
-                </button>
-              `}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openSubmitAssignmentModal(asgId) {
-      const asg = state.assignments.find(a => a.id === asgId);
-      if (!asg) return;
-      document.getElementById('modal-submit-assignment-id').value = asgId;
-      document.getElementById('modal-submit-title').innerText = `Submit: ${asg.title} (${asg.subject})`;
-      document.getElementById('modal-submit-instructions').innerText = asg.instructions;
-      document.getElementById('submit-assignment-modal').classList.remove('hidden');
-    }
-
-    function closeSubmitAssignmentModal() {
-      document.getElementById('submit-assignment-modal').classList.add('hidden');
-    }
-
-    function confirmAssignmentSubmission() {
-      const asgId = document.getElementById('modal-submit-assignment-id').value;
-      const fileInput = document.getElementById('modal-submit-file');
-      const notes = document.getElementById('modal-submit-text').value;
-
-      if (!fileInput.files.length) {
-        alert("Please attach your assignment document or presentation.");
-        return;
-      }
-      const file = fileInput.files[0];
-
-      // Upsert submission
-      const existingIdx = state.submissions.findIndex(s => s.assignmentId === asgId && s.studentId === state.currentUser.id);
-      const newSubmission = {
-        id: 'sub-' + Date.now(),
-        assignmentId: asgId,
-        studentId: state.currentUser.id,
-        studentName: state.currentUser.name,
-        studentEmail: state.currentUser.email,
-        fileName: file.name,
-        fileUrl: URL.createObjectURL(file),
-        studentNotes: notes,
-        status: 'Submitted',
-        pointsAwarded: null,
-        teacherFeedback: null,
-        submittedAt: new Date().toLocaleString()
-      };
-
-      if (existingIdx >= 0) {
-        state.submissions[existingIdx] = newSubmission;
-      } else {
-        state.submissions.push(newSubmission);
-      }
-
-      persistLmsData();
-      alert("Assignment submitted successfully to Prof. Jericho C. Matutinao!");
-      closeSubmitAssignmentModal();
-      renderAssignmentsGrid();
-    }
-
-    // ========================================================
-    // MODULE 3: ECE KNOWLEDGE LIBRARY (THEORISTS & CONTRIBUTORS)
-    // ========================================================
-    function renderTheoristsGrid() {
-      const container = document.getElementById('theorists-grid');
-      const search = (document.getElementById('theorist-search').value || '').toLowerCase();
-      const cat = document.getElementById('theorist-filter-cat').value;
-
-      let list = state.theorists;
-      if (cat !== 'ALL') list = list.filter(t => t.category === cat);
-      if (search) {
-        list = list.filter(t => 
-          t.name.toLowerCase().includes(search) || 
-          t.majorTheories.toLowerCase().includes(search) ||
-          t.nationality.toLowerCase().includes(search)
-        );
-      }
-
-      if (!list.length) {
-        container.innerHTML = `<div class="col-span-full py-12 text-center text-gray-400 bg-white border border-dashed rounded-xl">No theorists found matching your query.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(t => `
-        <div onclick="openTheoristModal('${t.id}')" class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-200 overflow-hidden cursor-pointer transition flex flex-col justify-between group">
-          <div class="relative h-48 bg-gray-100 overflow-hidden">
-            <img src="${t.photoUrl}" alt="${t.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-            <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold bg-[#8B0000] text-white shadow">
-              ${t.category}
-            </span>
-          </div>
-          <div class="p-4 flex-grow flex flex-col justify-between">
-            <div>
-              <h3 class="font-bold text-gray-900 text-base group-hover:text-[#8B0000] transition">${t.name}</h3>
-              <p class="text-xs text-gray-500 font-semibold mb-1">${t.lifespan} • ${t.nationality}</p>
-              <p class="text-xs text-gray-600 line-clamp-2">${t.majorTheories}</p>
-            </div>
-            <div class="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-[#8B0000]">View Full Profile & Principles →</span>
-              ${state.role === 'teacher' ? `
-                <button onclick="event.stopPropagation(); deleteTheoristProfile('${t.id}')" class="text-gray-400 hover:text-red-700 text-xs font-bold" title="Delete Profile">✕</button>
-              ` : ''}
-            </div>
+          <div class="flex gap-2 border-t pt-3">
+            <button onclick="openMaterialViewer('${item.id}')" class="flex-1 bg-[#8B0000] text-white text-xs font-bold py-2 rounded shadow hover:bg-[#660000]">
+              Preview Presentation
+            </button>
+            <a href="${item.fileUrl}" target="_blank" download class="px-3 py-2 border rounded text-xs font-bold text-gray-700 hover:bg-gray-50">
+              Download
+            </a>
           </div>
         </div>
       `).join('');
     }
 
-    function openTheoristModal(theoristId) {
-      const t = state.theorists.find(x => x.id === theoristId);
+    // PowerPoint & Document Online Viewer
+    function openMaterialViewer(id) {
+      const l = state.lessons.find(x => x.id === id);
+      if (!l) return;
+      document.getElementById('viewer-title').innerText = `${l.title} (${l.fileName})`;
+      document.getElementById('viewer-download-link').href = l.fileUrl;
+
+      const frame = document.getElementById('viewer-iframe');
+      if (l.fileName.toLowerCase().includes('ppt')) {
+        frame.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(l.fileUrl)}`;
+      } else {
+        frame.src = l.fileUrl;
+      }
+      document.getElementById('viewer-modal').classList.remove('hidden');
+    }
+
+    function closeViewerModal() {
+      document.getElementById('viewer-iframe').src = '';
+      document.getElementById('viewer-modal').classList.add('hidden');
+    }
+
+    // Cloud Upload to Supabase Storage & Database
+    async function handleLessonUploadSubmit(e) {
+      e.preventDefault();
+      const code = document.getElementById('upl-subject').value;
+      const title = document.getElementById('upl-title').value;
+      const topic = document.getElementById('upl-topic').value;
+      const desc = document.getElementById('upl-desc').value;
+      const fileInput = document.getElementById('upl-file');
+      const file = fileInput.files[0];
+
+      if (!file) return;
+
+      const statusText = document.getElementById('upload-status-text');
+      const submitBtn = document.getElementById('btn-submit-upload');
+      statusText.classList.remove('hidden');
+      submitBtn.disabled = true;
+
+      try {
+        // 1. Upload to Supabase Storage
+        const cleanName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        const { data: uploadData, error: uploadErr } = await sb.storage
+          .from('materials')
+          .upload(cleanName, file);
+
+        if (uploadErr) throw uploadErr;
+
+        // 2. Get Public URL
+        const { data: { publicUrl } } = sb.storage
+          .from('materials')
+          .getPublicUrl(cleanName);
+
+        // 3. Save to Supabase Database
+        const { error: dbErr } = await sb.from('lessons').insert([{
+          subject_code: code,
+          title: title,
+          topic: topic,
+          description: desc,
+          file_name: file.name,
+          file_url: publicUrl,
+          file_type: file.name.split('.').pop(),
+          is_published: true
+        }]);
+
+        if (dbErr) throw dbErr;
+
+        alert("Uploaded directly to Supabase cloud! It will now preview with Microsoft Office!");
+        document.getElementById('form-faculty-upload').reset();
+        closeUploadLessonModal();
+        await loadCloudLessons();
+      } catch(err) {
+        alert("Upload error: " + err.message);
+      } finally {
+        statusText.classList.add('hidden');
+        submitBtn.disabled = false;
+      }
+    }
+
+    function openUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.remove('hidden'); }
+    function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
+
+    function renderTeacherDashboardView() {
+      const table = document.getElementById('faculty-materials-table');
+      table.innerHTML = state.lessons.map(l => `
+        <tr class="border-b text-xs">
+          <td class="p-3 font-bold">${l.code}: ${l.title}</td>
+          <td class="p-3 text-gray-500">${l.fileName}</td>
+          <td class="p-3"><span class="status-badge bg-emerald-100 text-emerald-800">Published</span></td>
+          <td class="p-3 text-right">
+            <button onclick="openMaterialViewer('${l.id}')" class="px-2 py-1 bg-[#8B0000] text-white rounded font-bold">Preview</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTheoristsGrid() {
+      const c = document.getElementById('theorists-grid');
+      c.innerHTML = state.theorists.map(t => `
+        <div onclick="openTheoristModal('${t.id}')" class="bg-white rounded-xl shadow border p-4 cursor-pointer hover:shadow-md transition">
+          <img src="${t.photoUrl}" class="w-full h-40 object-cover rounded-lg mb-3">
+          <span class="text-[10px] font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded">${t.category}</span>
+          <h3 class="font-bold text-gray-900 mt-2">${t.name}</h3>
+          <p class="text-xs text-gray-600 line-clamp-2 mt-1">${t.biography}</p>
+        </div>
+      `).join('');
+    }
+
+    function openTheoristModal(id) {
+      const t = state.theorists.find(x => x.id === id);
       if (!t) return;
-
       document.getElementById('detail-theorist-name').innerText = t.name;
-      document.getElementById('detail-theorist-lifespan').innerText = `Lifespan: ${t.lifespan}`;
-      document.getElementById('detail-theorist-nat').innerText = `Nationality: ${t.nationality}`;
-      document.getElementById('detail-theorist-cat').innerText = t.category;
-      document.getElementById('detail-theorist-photo').src = t.photoUrl;
-
       document.getElementById('detail-theorist-bio').innerText = t.biography;
-      document.getElementById('detail-theorist-theories').innerText = t.majorTheories;
-
-      const principlesList = document.getElementById('detail-theorist-principles');
-      principlesList.innerHTML = t.keyPrinciples.map(p => `<li>${p}</li>`).join('');
-
       document.getElementById('detail-theorist-applications').innerText = t.eceApplications;
-      document.getElementById('detail-theorist-works').innerText = t.majorWorks;
-      document.getElementById('detail-theorist-takeaways').innerText = t.keyTakeaways;
-
       document.getElementById('theorist-detail-modal').classList.remove('hidden');
     }
 
@@ -1499,547 +657,9 @@
       document.getElementById('theorist-detail-modal').classList.add('hidden');
     }
 
-    function deleteTheoristProfile(id) {
-      if (!confirm("Are you sure you want to delete this theorist profile from the Knowledge Library?")) return;
-      state.theorists = state.theorists.filter(t => t.id !== id);
-      persistLmsData();
-      renderTheoristsGrid();
-    }
-
-    function openAddTheoristModal() {
-      const name = prompt("Theorist Full Name (e.g. Friedrich Froebel):");
-      if (!name) return;
-      const theories = prompt("Major Theory (e.g. Father of Kindergarten & Gifts):");
-      const category = prompt("Category (Cognitive / Constructivist, Early Childhood Pedagogy, Psychosocial / Humanist, Behavioral):", "Early Childhood Pedagogy");
-
-      state.theorists.push({
-        id: 'th-' + Date.now(),
-        name: name,
-        lifespan: "Historical Figure",
-        nationality: "International",
-        category: category || "Early Childhood Pedagogy",
-        photoUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Maria_Montessori_1913.jpg",
-        biography: "Influential contributor to early education curricula.",
-        educationalBackground: "Teacher & Pedagogical Researcher.",
-        majorTheories: theories || "Play-based kindergarten pedagogy.",
-        keyPrinciples: ["Play as the highest expression of human development."],
-        eceApplications: "Integrated sensory manipulatives and songs.",
-        majorWorks: "The Education of Man.",
-        keyTakeaways: "Children learn through structured play."
-      });
-      persistLmsData();
-      renderTheoristsGrid();
-    }
-
-    // ========================================================
-    // MODULE 4: EDITABLE LESSONS & QUIZ EDITOR (TEACHER)
-    // ========================================================
-    let editorQuestionsDraft = [];
-
-    function openEditQuizModal(lessonId) {
-      const lesson = state.lessons.find(l => l.id === lessonId);
-      if (!lesson) return;
-
-      document.getElementById('editor-quiz-lesson-id').value = lessonId;
-      document.getElementById('editor-quiz-title').value = lesson.quiz ? lesson.quiz.title : `${lesson.title} Evaluation`;
-      document.getElementById('editor-quiz-timelimit').value = lesson.quiz ? (lesson.quiz.timeLimitMinutes || 0) : 0;
-
-      editorQuestionsDraft = lesson.quiz && lesson.quiz.questions ? JSON.parse(JSON.stringify(lesson.quiz.questions)) : [];
-      renderEditorQuestionsList();
-      document.getElementById('edit-quiz-modal').classList.remove('hidden');
-    }
-
-    function closeEditQuizModal() {
-      document.getElementById('edit-quiz-modal').classList.add('hidden');
-    }
-
-    function renderEditorQuestionsList() {
-      document.getElementById('editor-q-count').innerText = editorQuestionsDraft.length;
-      const container = document.getElementById('editor-questions-pool');
-
-      if (!editorQuestionsDraft.length) {
-        container.innerHTML = `<p class="text-xs text-gray-400">No questions currently in this quiz.</p>`;
-        return;
-      }
-
-      container.innerHTML = editorQuestionsDraft.map((q, idx) => `
-        <div class="p-3 border rounded-lg bg-white shadow-sm text-xs flex justify-between items-start">
-          <div class="space-y-1 pr-2">
-            <p class="font-bold text-gray-800">${idx + 1}. ${q.question}</p>
-            <p class="text-emerald-700 font-semibold">Correct: Option ${q.correct + 1} (${q.options[q.correct]})</p>
-            <p class="text-gray-500 italic">Explanation: ${q.explanation}</p>
-          </div>
-          <button onclick="removeQuestionFromEditor(${idx})" class="text-red-600 hover:text-red-800 font-bold px-2 py-1 text-xs">Delete</button>
-        </div>
-      `).join('');
-    }
-
-    function addQuestionToQuizEditor() {
-      const qText = document.getElementById('editor-q-text').value;
-      const opt0 = document.getElementById('editor-q-opt-0').value;
-      const opt1 = document.getElementById('editor-q-opt-1').value;
-      const opt2 = document.getElementById('editor-q-opt-2').value;
-      const opt3 = document.getElementById('editor-q-opt-3').value;
-      const correctIdx = parseInt(document.getElementById('editor-q-correct').value, 10);
-      const exp = document.getElementById('editor-q-explanation').value;
-
-      if (!qText || !opt0 || !opt1 || !opt2 || !opt3 || !exp) {
-        alert("Please complete the question statement, 4 options, and rationale explanation.");
-        return;
-      }
-
-      editorQuestionsDraft.push({
-        id: 'q_' + Date.now() + '_' + editorQuestionsDraft.length,
-        question: qText,
-        options: [opt0, opt1, opt2, opt3],
-        correct: correctIdx,
-        explanation: exp
-      });
-
-      // Clear fields
-      document.getElementById('editor-q-text').value = '';
-      document.getElementById('editor-q-opt-0').value = '';
-      document.getElementById('editor-q-opt-1').value = '';
-      document.getElementById('editor-q-opt-2').value = '';
-      document.getElementById('editor-q-opt-3').value = '';
-      document.getElementById('editor-q-explanation').value = '';
-
-      renderEditorQuestionsList();
-    }
-
-    function removeQuestionFromEditor(index) {
-      editorQuestionsDraft.splice(index, 1);
-      renderEditorQuestionsList();
-    }
-
-    function saveCompleteQuizFromEditor() {
-      const lessonId = document.getElementById('editor-quiz-lesson-id').value;
-      const title = document.getElementById('editor-quiz-title').value;
-      const timeLimit = parseInt(document.getElementById('editor-quiz-timelimit').value, 10) || 0;
-
-      if (!title || !editorQuestionsDraft.length) {
-        alert("Provide a quiz title and at least one question.");
-        return;
-      }
-
-      const lesson = state.lessons.find(l => l.id === lessonId);
-      if (lesson) {
-        lesson.quiz = {
-          id: lesson.quiz ? lesson.quiz.id : 'quiz-' + Date.now(),
-          title: title,
-          timeLimitMinutes: timeLimit,
-          questions: editorQuestionsDraft
-        };
-        persistLmsData();
-        alert("Quiz content, answer keys, and time limits saved!");
-        closeEditQuizModal();
-        renderTeacherDashboardView();
-      }
-    }
-
-    function togglePublishMaterial(lessonId) {
-      const lesson = state.lessons.find(l => l.id === lessonId);
-      if (lesson) {
-        lesson.isPublished = !lesson.isPublished;
-        persistLmsData();
-        renderTeacherDashboardView();
-      }
-    }
-
-    function deleteLessonMaterial(lessonId) {
-      if (!confirm("Are you sure you want to delete this educational material and its quiz?")) return;
-      state.lessons = state.lessons.filter(l => l.id !== lessonId);
-      persistLmsData();
-      renderTeacherDashboardView();
-    }
-
-    // ========================================================
-    // MODULE 5: INTERACTIVE QUIZ RUNNER (STUDENT)
-    // ========================================================
-    let activeQuizObj = null;
-    let activeQuizIndex = 0;
-    let activeQuizAnswers = {};
-    let quizTimerInterval = null;
-    let quizSecondsRemaining = 0;
-
-    function startInteractiveQuiz(lessonId) {
-      const lesson = state.lessons.find(l => l.id === lessonId);
-      if (!lesson || !lesson.quiz || !lesson.quiz.questions.length) return;
-
-      activeQuizObj = lesson.quiz;
-      activeQuizIndex = 0;
-      activeQuizAnswers = {};
-
-      document.getElementById('quiz-title-display').innerText = activeQuizObj.title;
-      document.getElementById('quiz-footer').classList.remove('hidden');
-      document.getElementById('quiz-modal').classList.remove('hidden');
-
-      // Timer Logic
-      const timerEl = document.getElementById('quiz-timer-display');
-      if (activeQuizObj.timeLimitMinutes > 0) {
-        quizSecondsRemaining = activeQuizObj.timeLimitMinutes * 60;
-        timerEl.classList.remove('hidden');
-        timerEl.innerText = `Time Left: ${Math.floor(quizSecondsRemaining / 60)}:00`;
-        clearInterval(quizTimerInterval);
-        quizTimerInterval = setInterval(() => {
-          quizSecondsRemaining--;
-          const mins = Math.floor(quizSecondsRemaining / 60);
-          const secs = quizSecondsRemaining % 60;
-          timerEl.innerText = `Time Left: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
-          if (quizSecondsRemaining <= 0) {
-            clearInterval(quizTimerInterval);
-            alert("Time limit reached! Submitting quiz automatically.");
-            submitInteractiveQuiz();
-          }
-        }, 1000);
-      } else {
-        timerEl.classList.add('hidden');
-        clearInterval(quizTimerInterval);
-      }
-
-      renderQuizStepDisplay();
-    }
-
-    function renderQuizStepDisplay() {
-      const q = activeQuizObj.questions[activeQuizIndex];
-      const total = activeQuizObj.questions.length;
-      document.getElementById('quiz-step-indicator').innerText = `Question ${activeQuizIndex + 1} of ${total}`;
-
-      const container = document.getElementById('quiz-content-area');
-      container.innerHTML = `
-        <h4 class="text-sm font-bold text-gray-900 mb-4">${activeQuizIndex + 1}. ${q.question}</h4>
-        <div class="space-y-2.5">
-          ${q.options.map((opt, idx) => `
-            <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition ${activeQuizAnswers[q.id] === idx ? 'border-[#8B0000] bg-red-50 text-[#8B0000] font-bold' : 'border-gray-200 hover:bg-gray-50'}">
-              <input type="radio" name="active_opt" value="${idx}" ${activeQuizAnswers[q.id] === idx ? 'checked' : ''} onchange="activeQuizAnswers['${q.id}'] = ${idx}" class="text-[#8B0000]">
-              <span class="text-xs sm:text-sm font-medium">${opt}</span>
-            </label>
-          `).join('')}
-        </div>
-      `;
-
-      document.getElementById('btn-quiz-prev').disabled = activeQuizIndex === 0;
-      const nextBtn = document.getElementById('btn-quiz-next');
-      if (activeQuizIndex === total - 1) {
-        nextBtn.innerText = "Submit Evaluation";
-        nextBtn.onclick = submitInteractiveQuiz;
-      } else {
-        nextBtn.innerText = "Next Question";
-        nextBtn.onclick = () => { activeQuizIndex++; renderQuizStepDisplay(); };
-      }
-    }
-
-    function prevQuizStep() {
-      if (activeQuizIndex > 0) {
-        activeQuizIndex--;
-        renderQuizStepDisplay();
-      }
-    }
-
-    function submitInteractiveQuiz() {
-      clearInterval(quizTimerInterval);
-      const questions = activeQuizObj.questions;
-      let correct = 0;
-
-      questions.forEach(q => {
-        if (activeQuizAnswers[q.id] === q.correct) correct++;
-      });
-
-      const max = questions.length;
-      const percentage = Math.round((correct / max) * 100);
-
-      // Save persistent attempt
-      state.attempts.unshift({
-        id: 'att-' + Date.now(),
-        quizTitle: activeQuizObj.title,
-        subject: "ECE Core",
-        date: new Date().toISOString().split('T')[0],
-        score: correct,
-        max: max,
-        percentage: percentage
-      });
-      persistLmsData();
-
-      // Show comprehensive feedback
-      document.getElementById('quiz-footer').classList.add('hidden');
-      const container = document.getElementById('quiz-content-area');
-      container.innerHTML = `
-        <div class="text-center py-4 border-b border-gray-100 mb-4">
-          <div class="w-16 h-16 mx-auto mb-2 rounded-full flex items-center justify-center text-xl font-black ${percentage >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
-            ${percentage}%
-          </div>
-          <h3 class="text-lg font-bold text-gray-900">${percentage >= 70 ? 'Passed • Competency Verified' : 'Needs Review'}</h3>
-          <p class="text-xs text-gray-500">Correct: ${correct} of ${max} Questions</p>
-        </div>
-
-        <div class="space-y-3 max-h-80 overflow-y-auto pr-1">
-          ${questions.map((q, idx) => {
-            const userAns = activeQuizAnswers[q.id];
-            const isCorrect = userAns === q.correct;
-            return `
-              <div class="p-3 rounded-lg border text-xs ${isCorrect ? 'border-emerald-200 bg-emerald-50/50' : 'border-red-200 bg-red-50/50'}">
-                <p class="font-bold text-gray-800 mb-1">${idx + 1}. ${q.question}</p>
-                <p class="mb-1">Your Answer: <span class="font-bold ${isCorrect ? 'text-emerald-700' : 'text-red-700'}">${userAns !== undefined ? q.options[userAns] : 'Not Answered'}</span></p>
-                ${!isCorrect ? `<p class="text-emerald-700 font-bold mb-1">Correct Answer: ${q.options[q.correct]}</p>` : ''}
-                <p class="text-gray-600 bg-white p-2 rounded border border-gray-200 mt-1"><strong>Pedagogical Explanation:</strong> ${q.explanation}</p>
-              </div>
-            `;
-          }).join('')}
-        </div>
-        <button onclick="closeQuizModal()" class="w-full mt-4 bg-[#8B0000] text-white py-2 rounded-lg font-bold text-xs">Return to LMS</button>
-      `;
-    }
-
-    function closeQuizModal() {
-      clearInterval(quizTimerInterval);
-      document.getElementById('quiz-modal').classList.add('hidden');
-      switchView('lessons');
-    }
-
-    // ========================================================
-    // MODULE 6: STUDENT PROGRESS & ACADEMIC PORTAL
-    // ========================================================
-    function renderStudentProgressView() {
-      document.getElementById('stat-completed-lessons').innerText = state.lessons.length;
-      document.getElementById('stat-completed-quizzes').innerText = state.attempts.length;
-
-      const avg = state.attempts.length ? Math.round(state.attempts.reduce((a, b) => a + b.percentage, 0) / state.attempts.length) : 0;
-      document.getElementById('stat-quiz-avg').innerText = `${avg}%`;
-
-      const mySubs = state.submissions.filter(s => s.studentId === state.currentUser.id);
-      document.getElementById('stat-assignments-submitted').innerText = mySubs.length;
-
-      // Submissions table
-      const subTable = document.getElementById('student-submissions-table');
-      if (!mySubs.length) {
-        subTable.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No assignment submissions recorded yet.</td></tr>`;
-      } else {
-        subTable.innerHTML = mySubs.map(s => {
-          const asg = state.assignments.find(a => a.id === s.assignmentId) || { title: 'Assignment', maxPoints: 100 };
-          return `
-            <tr class="border-b hover:bg-gray-50">
-              <td class="py-3 px-4 font-bold text-gray-900">${asg.title}</td>
-              <td class="py-3 px-4"><span class="status-badge ${s.status === 'Graded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${s.status}</span></td>
-              <td class="py-3 px-4 text-blue-700 underline font-semibold">${s.fileName}</td>
-              <td class="py-3 px-4 font-bold ${s.pointsAwarded ? 'text-emerald-700' : 'text-gray-400'}">${s.pointsAwarded !== null ? `${s.pointsAwarded} / ${asg.maxPoints}` : 'Pending'}</td>
-              <td class="py-3 px-4 text-gray-600 italic">${s.teacherFeedback || 'Evaluation in progress by Prof. Jericho C. Matutinao'}</td>
-            </tr>
-          `;
-        }).join('');
-      }
-
-      // Quiz History Table
-      const qTable = document.getElementById('student-quiz-history-table');
-      if (!state.attempts.length) {
-        qTable.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No completed evaluations.</td></tr>`;
-      } else {
-        qTable.innerHTML = state.attempts.map(att => `
-          <tr class="border-b hover:bg-gray-50">
-            <td class="py-3 px-4 font-bold text-gray-900">${att.quizTitle}</td>
-            <td class="py-3 px-4 text-gray-500">${att.date}</td>
-            <td class="py-3 px-4 font-bold">${att.score} / ${att.max}</td>
-            <td class="py-3 px-4 font-black ${att.percentage >= 70 ? 'text-emerald-700' : 'text-red-700'}">${att.percentage}%</td>
-            <td class="py-3 px-4"><span class="status-badge ${att.percentage >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${att.percentage >= 70 ? 'PASSED' : 'RETAKE'}</span></td>
-          </tr>
-        `).join('');
-      }
-    }
-
-    // ========================================================
-    // MODULE 7: TEACHER DASHBOARD & COHORT ANALYTICS
-    // ========================================================
-    function renderTeacherDashboardView() {
-      // Materials table
-      const matTable = document.getElementById('faculty-materials-table');
-      matTable.innerHTML = state.lessons.map(l => `
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-4">
-            <span class="font-bold text-[#8B0000] block text-[11px]">${l.code}</span>
-            <span class="font-bold text-gray-900">${l.title}</span>
-          </td>
-          <td class="py-3 px-4 text-gray-500 truncate max-w-xs">${l.fileName}</td>
-          <td class="py-3 px-4"><span class="status-badge ${l.isPublished ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'}">${l.isPublished ? 'Published' : 'Draft'}</span></td>
-          <td class="py-3 px-4 text-xs font-semibold ${l.quiz ? 'text-amber-800' : 'text-gray-400'}">${l.quiz ? `${l.quiz.questions.length} Questions` : 'No Quiz Attached'}</td>
-          <td class="py-3 px-4 text-right space-x-1">
-            <button onclick="togglePublishMaterial('${l.id}')" class="px-2 py-1 rounded border text-[11px] font-semibold">${l.isPublished ? 'Unpublish' : 'Publish'}</button>
-            <button onclick="openEditQuizModal('${l.id}')" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded font-bold text-[11px]">Quiz Editor</button>
-            <button onclick="deleteLessonMaterial('${l.id}')" class="px-2 py-1 text-red-600 hover:text-red-800 font-bold text-[11px]">Delete</button>
-          </td>
-        </tr>
-      `).join('');
-
-      // Grading queue
-      const gradeTable = document.getElementById('faculty-grading-table');
-      if (!state.submissions.length) {
-        gradeTable.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-400">No student submissions in queue.</td></tr>`;
-      } else {
-        gradeTable.innerHTML = state.submissions.map(sub => {
-          const asg = state.assignments.find(a => a.id === sub.assignmentId) || { title: 'Assignment', maxPoints: 100 };
-          return `
-            <tr class="border-b hover:bg-gray-50">
-              <td class="py-3 px-4 font-bold text-gray-900">${sub.studentName}</td>
-              <td class="py-3 px-4 text-gray-700">${asg.title}</td>
-              <td class="py-3 px-4"><a href="${sub.fileUrl}" target="_blank" class="text-blue-700 underline font-semibold">${sub.fileName}</a></td>
-              <td class="py-3 px-4"><span class="status-badge ${sub.status === 'Graded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${sub.status}</span></td>
-              <td class="py-3 px-4 font-bold">${sub.pointsAwarded !== null ? `${sub.pointsAwarded}/${asg.maxPoints}` : '—'}</td>
-              <td class="py-3 px-4 text-right">
-                <button onclick="openGradeSubmissionModal('${sub.id}')" class="px-3 py-1 bg-[#8B0000] text-white rounded font-bold text-[11px] hover:bg-[#660000]">Grade</button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
-
-      // Students directory
-      const stuTable = document.getElementById('faculty-students-table');
-      stuTable.innerHTML = state.students.map(s => `
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-4 font-bold text-gray-900">${s.name}</td>
-          <td class="py-3 px-4 font-mono text-gray-600">${s.email}</td>
-          <td class="py-3 px-4 text-center font-bold">${s.attempts}</td>
-          <td class="py-3 px-4 text-center font-black text-[#8B0000]">${s.avg}%</td>
-          <td class="py-3 px-4 text-gray-500">${s.lastActive}</td>
-        </tr>
-      `).join('');
-
-      // Render chart
-      renderFacultyChart();
-    }
-
-    function renderFacultyChart() {
-      const canvas = document.getElementById('facultyMasteryChart');
-      if (!canvas) return;
-      if (state.facultyChartInstance) state.facultyChartInstance.destroy();
-
-      state.facultyChartInstance = new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: ['< 60% (Developing)', '60-74% (Approaching)', '75-89% (Proficient)', '90-100% (Advanced Mastery)'],
-          datasets: [{
-            label: 'Student Candidates',
-            data: [1, 2, 6, 14],
-            backgroundColor: ['#b91c1c', '#ea580c', '#D4AF37', '#15803d'],
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-        }
-      });
-    }
-
-    function openGradeSubmissionModal(subId) {
-      const sub = state.submissions.find(s => s.id === subId);
-      if (!sub) return;
-      const asg = state.assignments.find(a => a.id === sub.assignmentId) || { title: 'Task', maxPoints: 100 };
-
-      document.getElementById('modal-grade-submission-id').value = subId;
-      document.getElementById('modal-grade-student-name').innerText = sub.studentName;
-      document.getElementById('modal-grade-student-email').innerText = sub.studentEmail;
-      document.getElementById('modal-grade-assignment-title').innerText = asg.title;
-      document.getElementById('modal-grade-max-points').innerText = asg.maxPoints;
-
-      const link = document.getElementById('modal-grade-file-link');
-      link.href = sub.fileUrl;
-      link.innerText = sub.fileName;
-
-      document.getElementById('modal-grade-points').value = sub.pointsAwarded || '';
-      document.getElementById('modal-grade-feedback').value = sub.teacherFeedback || '';
-      document.getElementById('grade-submission-modal').classList.remove('hidden');
-    }
-
-    function closeGradeSubmissionModal() {
-      document.getElementById('grade-submission-modal').classList.add('hidden');
-    }
-
-    function saveStudentGrade() {
-      const subId = document.getElementById('modal-grade-submission-id').value;
-      const points = parseFloat(document.getElementById('modal-grade-points').value);
-      const feedback = document.getElementById('modal-grade-feedback').value;
-
-      if (isNaN(points)) {
-        alert("Please enter a valid numerical score.");
-        return;
-      }
-
-      const sub = state.submissions.find(s => s.id === subId);
-      if (sub) {
-        sub.pointsAwarded = points;
-        sub.teacherFeedback = feedback || "Work reviewed and graded by Prof. Jericho C. Matutinao.";
-        sub.status = 'Graded';
-        persistLmsData();
-        alert("Grade and feedback returned to candidate teacher.");
-        closeGradeSubmissionModal();
-        renderTeacherDashboardView();
-      }
-    }
-
-    // Modal Form Submissions (Upload & Assignment creation)
-    function openUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.remove('hidden'); }
-    function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
-
-    function handleLessonUploadSubmit(e) {
-      e.preventDefault();
-      const code = document.getElementById('upl-subject').value;
-      const title = document.getElementById('upl-title').value;
-      const topic = document.getElementById('upl-topic').value;
-      const file = document.getElementById('upl-file').files[0];
-      const video = document.getElementById('upl-video').value;
-      const desc = document.getElementById('upl-desc').value;
-      const isPub = document.getElementById('upl-publish').checked;
-
-      const newLesson = {
-        id: 'les-' + Date.now(),
-        code: code,
-        title: title,
-        topic: topic,
-        description: desc || "Curriculum lesson uploaded by Prof. Jericho C. Matutinao.",
-        fileName: file ? file.name : "Video_Lecture.mp4",
-        fileUrl: file ? URL.createObjectURL(file) : "",
-        fileType: file ? file.name.split('.').pop().toLowerCase() : "video",
-        videoUrl: video || "",
-        isPublished: isPub,
-        uploadedAt: new Date().toISOString().split('T')[0],
-        quiz: null
-      };
-
-      state.lessons.unshift(newLesson);
-      persistLmsData();
-      alert("Lesson uploaded successfully!");
-      document.getElementById('form-faculty-upload').reset();
-      closeUploadLessonModal();
-      renderTeacherDashboardView();
-    }
-
-    function openCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.remove('hidden'); }
-    function closeCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.add('hidden'); }
-
-    function handleAssignmentCreateSubmit(e) {
-      e.preventDefault();
-      const asg = {
-        id: 'asg-' + Date.now(),
-        subject: document.getElementById('asg-subject').value,
-        title: document.getElementById('asg-title').value,
-        maxPoints: parseInt(document.getElementById('asg-points').value, 10),
-        deadline: document.getElementById('asg-deadline').value,
-        instructions: document.getElementById('asg-instructions').value,
-        isPublished: true
-      };
-      state.assignments.unshift(asg);
-      persistLmsData();
-      alert("Assignment published for candidate teachers!");
-      document.getElementById('form-faculty-assignment').reset();
-      closeCreateAssignmentModal();
-      renderTeacherDashboardView();
-    }
-
-    // Initialize System
     window.addEventListener('DOMContentLoaded', () => {
-      loadSavedLmsData();
-      updateAuthUI();
-      renderLessonsGrid();
+      loadCloudLessons();
+      setRole('student');
     });
   </script>
 </body>
