@@ -47,65 +47,154 @@
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen antialiased">
 
   <!-- ========================================================
-       1. INITIAL FULL-SCREEN LOGIN GATEWAY (SHOWN FIRST!)
+       1. SECURE LOGIN & REGISTRATION GATEWAY
        ======================================================== -->
-  <div id="login-gateway-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#660000] via-[#8B0000] to-[#400000] flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border-t-8 border-[#D4AF37] p-8 space-y-6 text-center">
+  <div id="auth-gateway-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#660000] via-[#8B0000] to-[#400000] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border-t-8 border-[#D4AF37] p-6 sm:p-8 space-y-5">
       
       <!-- CNU Crest Logo -->
-      <div class="w-20 h-20 mx-auto rounded-full bg-[#D4AF37] border-4 border-[#8B0000] flex items-center justify-center font-black text-2xl text-[#660000] shadow-lg">
-        CNU
-      </div>
-
-      <!-- University Branding -->
-      <div>
-        <p class="text-xs uppercase font-bold text-gray-500 tracking-wider">Cebu Normal University</p>
+      <div class="text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-[#D4AF37] border-4 border-[#8B0000] flex items-center justify-center font-black text-xl text-[#660000] shadow-md">
+          CNU
+        </div>
+        <p class="text-[11px] uppercase font-bold text-gray-400 mt-2 tracking-wider">Cebu Normal University</p>
         <h2 class="text-2xl font-black text-[#8B0000] tracking-tight uppercase">ECE Study Hub</h2>
-        <p class="text-xs text-gray-600 mt-1">College of Teacher Education • Early Childhood Education</p>
-        <p class="text-[11px] font-bold text-[#D4AF37] bg-red-50 py-1 px-3 rounded-full inline-block mt-2 border border-red-100">
-          Faculty Lead: Prof. Jericho C. Matutinao
-        </p>
+        <p class="text-xs text-gray-600">College of Teacher Education • Early Childhood Education</p>
       </div>
 
-      <div class="border-t border-gray-100 pt-4 space-y-4 text-left">
-        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide">
-          Student or Teacher Gmail Account
-        </label>
-        
-        <!-- Gmail Input Box -->
-        <div class="relative">
+      <!-- Tabs: Sign In vs Register -->
+      <div class="flex border-b border-gray-200 text-xs font-bold text-center">
+        <button id="tab-btn-login" onclick="toggleAuthTab('login')" class="flex-1 py-2.5 text-[#8B0000] border-b-2 border-[#8B0000]">
+          Sign In
+        </button>
+        <button id="tab-btn-register" onclick="toggleAuthTab('register')" class="flex-1 py-2.5 text-gray-400 hover:text-gray-600">
+          Create Student Account
+        </button>
+      </div>
+
+      <!-- FORM A: SIGN IN -->
+      <form id="form-login" onsubmit="handleUserSignIn(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Email / Gmail Address</label>
           <input 
             type="email" 
-            id="login-gmail-input" 
-            placeholder="e.g. yourname@gmail.com" 
-            class="w-full border-2 border-gray-300 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] rounded-xl py-3 px-4 text-sm font-medium outline-none transition"
-            required
+            id="login-email" 
+            placeholder="e.g. student@gmail.com" 
+            required 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2.5 text-xs outline-none"
           >
         </div>
 
-        <p class="text-[11px] text-gray-500 leading-snug">
-          Sign in using your verified Gmail address. No student ID number required.
-        </p>
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Hub Password</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            placeholder="Enter your password" 
+            required 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2.5 text-xs outline-none"
+          >
+        </div>
 
-        <!-- Login Button -->
+        <p id="login-error-text" class="text-red-600 font-bold hidden"></p>
+
         <button 
-          onclick="handleCustomGmailLogin()" 
-          class="w-full bg-[#8B0000] hover:bg-[#660000] text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2 text-sm border-2 border-[#D4AF37]"
+          type="submit" 
+          id="btn-login-submit"
+          class="w-full bg-[#8B0000] hover:bg-[#660000] text-white font-extrabold py-3 rounded-xl shadow-md text-xs border border-[#D4AF37] transition"
         >
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"/></svg>
-          Enter ECE Study Hub
+          Sign In to ECE Study Hub
         </button>
 
-        <div class="pt-2 text-center">
-          <span class="text-[11px] text-gray-400">Secure Supabase PostgreSQL Authentication</span>
+        <p class="text-[11px] text-gray-500 text-center">
+          First time here? <a href="#" onclick="toggleAuthTab('register')" class="text-[#8B0000] font-bold underline">Register with your Student ID</a>
+        </p>
+      </form>
+
+      <!-- FORM B: NEW STUDENT REGISTRATION -->
+      <form id="form-register" onsubmit="handleUserSignUp(event)" class="space-y-3 text-xs hidden">
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Student Full Name</label>
+          <input 
+            type="text" 
+            id="reg-fullname" 
+            placeholder="e.g. Maria Santos" 
+            required 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2 text-xs outline-none"
+          >
         </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">CNU Student ID Number</label>
+          <input 
+            type="text" 
+            id="reg-studentid" 
+            placeholder="e.g. 21-1234-567" 
+            required 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2 text-xs outline-none"
+          >
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Gmail / Email Address</label>
+          <input 
+            type="email" 
+            id="reg-email" 
+            placeholder="e.g. maria.santos@gmail.com" 
+            required 
+            class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2 text-xs outline-none"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 uppercase mb-1">Create Password</label>
+            <input 
+              type="password" 
+              id="reg-password" 
+              placeholder="Min 6 characters" 
+              minlength="6"
+              required 
+              class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2 text-xs outline-none"
+            >
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 uppercase mb-1">Confirm Password</label>
+            <input 
+              type="password" 
+              id="reg-password-confirm" 
+              placeholder="Re-type password" 
+              minlength="6"
+              required 
+              class="w-full border-2 border-gray-300 focus:border-[#8B0000] rounded-xl p-2 text-xs outline-none"
+            >
+          </div>
+        </div>
+
+        <p id="reg-error-text" class="text-red-600 font-bold hidden"></p>
+
+        <button 
+          type="submit" 
+          id="btn-register-submit"
+          class="w-full bg-[#D4AF37] hover:bg-[#c5a028] text-[#4a0000] font-black py-3 rounded-xl shadow-md text-xs transition"
+        >
+          Register & Save Student ID
+        </button>
+
+        <p class="text-[11px] text-gray-500 text-center">
+          Already registered? <a href="#" onclick="toggleAuthTab('login')" class="text-[#8B0000] font-bold underline">Sign in here</a>
+        </p>
+      </form>
+
+      <div class="pt-2 text-center border-t border-gray-100">
+        <span class="text-[10px] text-gray-400">Encrypted via Supabase Authentication & PostgreSQL</span>
       </div>
 
     </div>
   </div>
 
   <!-- ========================================================
-       2. TOP UNIVERSITY STRIP (VISIBLE ONCE LOGGED IN)
+       2. TOP UNIVERSITY STRIP (ACTIVE SESSION)
        ======================================================== -->
   <div class="bg-[#660000] text-amber-200 text-xs py-1.5 px-4 font-semibold flex flex-wrap justify-between items-center border-b border-[#D4AF37]/30">
     <div class="flex items-center gap-2">
@@ -349,6 +438,26 @@
               </tr>
             </thead>
             <tbody id="faculty-materials-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Registered Student Registry -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700">
+          Enrolled Student Registry (Student ID & Gmail Verified)
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-gray-100 text-gray-600 uppercase">
+              <tr>
+                <th class="py-3 px-4">Student ID</th>
+                <th class="py-3 px-4">Full Name</th>
+                <th class="py-3 px-4">Registered Gmail</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="faculty-students-table"></tbody>
           </table>
         </div>
       </div>
@@ -652,9 +761,13 @@
 
     const state = {
       isLoggedIn: false,
-      role: 'student', // 'student' or 'teacher'
+      role: 'student',
       currentUser: null,
       currentView: 'home',
+      registeredStudents: [
+        { studentId: "21-1234-567", name: "Maria Santos", email: "maria.santos@gmail.com", status: "Enrolled" },
+        { studentId: "21-8976-543", name: "Carlos Reyes", email: "carlos.reyes@gmail.com", status: "Enrolled" }
+      ],
       lessons: [
         {
           id: 'sample-1',
@@ -711,68 +824,170 @@
     };
 
     // ========================================================
-    // GMAIL GATEWAY LOGIN LOGIC
+    // AUTHENTICATION: SIGN IN & STUDENT REGISTRATION
     // ========================================================
-    function handleCustomGmailLogin() {
-      const emailInput = document.getElementById('login-gmail-input').value.trim().toLowerCase();
-      
-      if (!emailInput || !emailInput.includes('@')) {
-        alert("Please enter a valid Gmail address (e.g. yourname@gmail.com).");
+    function toggleAuthTab(tab) {
+      const loginForm = document.getElementById('form-login');
+      const regForm = document.getElementById('form-register');
+      const tabLogin = document.getElementById('tab-btn-login');
+      const tabReg = document.getElementById('tab-btn-register');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLogin.className = "flex-1 py-2.5 text-[#8B0000] border-b-2 border-[#8B0000]";
+        tabReg.className = "flex-1 py-2.5 text-gray-400 hover:text-gray-600";
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabReg.className = "flex-1 py-2.5 text-[#8B0000] border-b-2 border-[#8B0000]";
+        tabLogin.className = "flex-1 py-2.5 text-gray-400 hover:text-gray-600";
+      }
+    }
+
+    // 1. REGISTER NEW STUDENT
+    async function handleUserSignUp(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-fullname').value.trim();
+      const studentId = document.getElementById('reg-studentid').value.trim();
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const pass = document.getElementById('reg-password').value;
+      const passConfirm = document.getElementById('reg-password-confirm').value;
+      const errBox = document.getElementById('reg-error-text');
+      const btn = document.getElementById('btn-register-submit');
+
+      errBox.classList.add('hidden');
+
+      if (pass !== passConfirm) {
+        errBox.innerText = "Passwords do not match! Please check.";
+        errBox.classList.remove('hidden');
         return;
       }
 
-      // Automatically identify if it's the Professor or a Student!
-      let detectedRole = 'student';
-      let fullName = emailInput.split('@')[0].replace(/[._]/g, ' ');
-      // Capitalize first letters
-      fullName = fullName.replace(/\b\w/g, l => l.toUpperCase());
+      btn.disabled = true;
+      btn.innerText = "Registering with Supabase...";
 
-      // If the email is the teacher's email or contains matutinao / teacher
-      if (emailInput.includes('matutinao') || emailInput.includes('jericho') || emailInput === 'jewelmaematutinao31@gmail.com') {
-        detectedRole = 'teacher';
-        fullName = "Prof. Jericho C. Matutinao";
+      try {
+        // Register user securely into Supabase Authentication!
+        const { data, error } = await sb.auth.signUp({
+          email: email,
+          password: pass,
+          options: {
+            data: {
+              full_name: name,
+              student_id: studentId,
+              role: 'student'
+            }
+          }
+        });
+
+        if (error) throw error;
+
+        // Add to local registered registry
+        state.registeredStudents.unshift({
+          studentId: studentId,
+          name: name,
+          email: email,
+          status: "Enrolled"
+        });
+        localStorage.setItem('cnu_student_roster', JSON.stringify(state.registeredStudents));
+
+        alert("Account registered successfully! You can now sign in with your email and password.");
+        toggleAuthTab('login');
+        document.getElementById('login-email').value = email;
+      } catch (err) {
+        errBox.innerText = err.message || "Registration error. Please try again.";
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Register & Save Student ID";
       }
-
-      // Set user session
-      state.isLoggedIn = true;
-      state.role = detectedRole;
-      state.currentUser = {
-        email: emailInput,
-        name: fullName,
-        role: detectedRole
-      };
-
-      // Persist in session
-      localStorage.setItem('cnu_active_user', JSON.stringify(state.currentUser));
-
-      // Hide login gateway screen
-      document.getElementById('login-gateway-screen').classList.add('hidden');
-
-      // Update UI
-      updateLoggedInUI();
-      switchView('home');
     }
 
-    function signOut() {
+    // 2. SIGN IN (ONLY REGISTERED USERS CAN ENTER)
+    async function handleUserSignIn(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pass = document.getElementById('login-password').value;
+      const errBox = document.getElementById('login-error-text');
+      const btn = document.getElementById('btn-login-submit');
+
+      errBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.innerText = "Verifying Credentials...";
+
+      try {
+        // Sign in securely via Supabase Auth
+        const { data, error } = await sb.auth.signInWithPassword({
+          email: email,
+          password: pass
+        });
+
+        if (error) {
+          // If login fails, reject unauthorized user!
+          throw new Error("Invalid login credentials! Please make sure you have registered your account first.");
+        }
+
+        const user = data.user;
+        let detectedRole = 'student';
+        let fullName = user.user_metadata?.full_name || email.split('@')[0];
+        let studentId = user.user_metadata?.student_id || "21-XXXX";
+
+        // Faculty detection
+        if (email.includes('matutinao') || email.includes('jericho') || email === 'jewelmaematutinao31@gmail.com') {
+          detectedRole = 'teacher';
+          fullName = "Prof. Jericho C. Matutinao";
+          studentId = "FACULTY-01";
+        }
+
+        state.isLoggedIn = true;
+        state.role = detectedRole;
+        state.currentUser = {
+          id: user.id,
+          email: user.email,
+          name: fullName,
+          studentId: studentId,
+          role: detectedRole
+        };
+
+        localStorage.setItem('cnu_active_user', JSON.stringify(state.currentUser));
+
+        // Unlock the Study Hub!
+        document.getElementById('auth-gateway-screen').classList.add('hidden');
+        updateLoggedInUI();
+        switchView('home');
+      } catch(err) {
+        errBox.innerText = err.message;
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Sign In to ECE Study Hub";
+      }
+    }
+
+    // 3. SIGN OUT
+    async function signOut() {
+      await sb.auth.signOut();
       state.isLoggedIn = false;
       state.currentUser = null;
       localStorage.removeItem('cnu_active_user');
 
-      // Clear input
-      document.getElementById('login-gmail-input').value = '';
-
-      // Show login gateway again
-      document.getElementById('login-gateway-screen').classList.remove('hidden');
+      document.getElementById('login-password').value = '';
+      document.getElementById('auth-gateway-screen').classList.remove('hidden');
+      toggleAuthTab('login');
     }
 
     function checkExistingSession() {
       const savedUser = localStorage.getItem('cnu_active_user');
+      const roster = localStorage.getItem('cnu_student_roster');
+      if (roster) { try { state.registeredStudents = JSON.parse(roster); } catch(e){} }
+
       if (savedUser) {
         try {
           state.currentUser = JSON.parse(savedUser);
           state.isLoggedIn = true;
           state.role = state.currentUser.role;
-          document.getElementById('login-gateway-screen').classList.add('hidden');
+          document.getElementById('auth-gateway-screen').classList.add('hidden');
           updateLoggedInUI();
         } catch(e) {
           signOut();
@@ -799,21 +1014,21 @@
       } else {
         badge.innerText = "Student";
         badge.className = "px-2.5 py-0.5 rounded-full font-black text-[11px] uppercase bg-[#8B0000] text-white";
-        details.innerText = `(Student: ${user.name} • ${user.email})`;
+        details.innerText = `(Student: ${user.name} • ID: ${user.studentId})`;
         teacherDash.classList.add('hidden');
         if (postTaskBtn) postTaskBtn.classList.add('hidden');
         if (addThBtn) addThBtn.classList.add('hidden');
       }
 
-      // Header User Pill with Sign Out Button
+      // Header User Avatar & Sign Out
       userDisplay.innerHTML = `
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-full ${state.role === 'teacher' ? 'bg-[#D4AF37] text-[#4a0000]' : 'bg-red-900 border border-[#D4AF37] text-white'} flex items-center justify-center font-bold text-xs">
+          <div class="w-8 h-8 rounded-full ${state.role === 'teacher' ? 'bg-[#D4AF37] text-[#4a0000]' : 'bg-red-900 border border-[#D4AF37] text-white'} flex items-center justify-center font-bold text-xs shadow">
             ${user.name.charAt(0)}
           </div>
           <div class="text-left hidden sm:block">
             <p class="text-xs font-bold leading-tight text-white">${user.name}</p>
-            <p class="text-[10px] text-amber-200 font-mono">${user.email}</p>
+            <p class="text-[10px] text-amber-200 font-mono">${state.role === 'teacher' ? user.email : 'ID: ' + user.studentId}</p>
           </div>
           <button onclick="signOut()" class="text-[11px] border border-white/30 hover:border-white text-white hover:text-amber-300 px-2.5 py-1 rounded-lg ml-1 font-semibold transition">
             Sign Out
@@ -856,7 +1071,6 @@
       renderLessonsGrid();
     }
 
-    // Render Lessons
     function renderLessonsGrid() {
       const container = document.getElementById('student-lessons-grid');
       container.innerHTML = state.lessons.map(item => `
@@ -879,7 +1093,6 @@
       `).join('');
     }
 
-    // Material Viewer
     function openMaterialViewer(id) {
       const l = state.lessons.find(x => x.id === id);
       if (!l) return;
@@ -1195,6 +1408,17 @@
         </tr>
       `).join('');
 
+      // Student Roster with IDs
+      const rosterTable = document.getElementById('faculty-students-table');
+      rosterTable.innerHTML = state.registeredStudents.map(st => `
+        <tr class="border-b text-xs">
+          <td class="p-3 font-mono font-bold text-[#8B0000]">${st.studentId}</td>
+          <td class="p-3 font-bold text-gray-900">${st.name}</td>
+          <td class="p-3 text-gray-600">${st.email}</td>
+          <td class="p-3"><span class="status-badge bg-emerald-100 text-emerald-800">${st.status}</span></td>
+        </tr>
+      `).join('');
+
       // Submissions
       const subTable = document.getElementById('faculty-submissions-table');
       if (!state.submissions.length) {
@@ -1217,7 +1441,6 @@
       }
     }
 
-    // App Initialization
     window.addEventListener('DOMContentLoaded', () => {
       loadCloudLessons();
       checkExistingSession();
