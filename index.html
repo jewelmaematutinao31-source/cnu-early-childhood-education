@@ -121,7 +121,7 @@
         </p>
       </form>
 
-      <!-- FORM B: REGISTRATION -->
+      <!-- FORM B: REGISTRATION (STUDENT BY DEFAULT) -->
       <form id="form-register" onsubmit="handleUserSignUp(event)" class="space-y-3 text-xs hidden">
         <div>
           <label class="block font-bold text-gray-700 uppercase mb-1">I am registering as:</label>
@@ -146,11 +146,11 @@
           <input type="text" id="reg-studentid" placeholder="e.g. 21-1234-567" class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
         </div>
 
-        <!-- Faculty Code (For Teachers) -->
+        <!-- Faculty Code (Completely Hidden & No Leaked Placeholder!) -->
         <div id="field-faculty-code" class="hidden">
-          <label class="block font-bold text-[#8B0000] uppercase mb-1">Faculty Authorization Passcode</label>
-          <input type="password" id="reg-facultypass" placeholder="Default: CNU-CTE-2026" class="w-full border-2 border-[#8B0000] bg-red-50 rounded-xl p-2 text-xs outline-none">
-          <p class="text-[10px] text-gray-500 mt-0.5">Required passcode to create an instructor dashboard.</p>
+          <label class="block font-bold text-[#8B0000] uppercase mb-1">Confidential Faculty Passcode</label>
+          <input type="password" id="reg-facultypass" placeholder="••••••••••••" class="w-full border-2 border-[#8B0000] bg-red-50 rounded-xl p-2 text-xs outline-none">
+          <p class="text-[10px] text-gray-500 mt-0.5">Enter the confidential authorization code provided by the department.</p>
         </div>
 
         <div>
@@ -196,7 +196,6 @@
       <span>Cebu Normal University • College of Teacher Education</span>
     </div>
     <div class="flex items-center gap-3">
-      <!-- Direct Download / Install App Button -->
       <button onclick="installEchoApp()" class="bg-[#D4AF37] text-[#4a0000] px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1 shadow hover:bg-amber-300 transition">
         <span>📲 Download / Install App</span>
       </button>
@@ -244,7 +243,6 @@
         <span id="role-details" class="text-gray-600 font-medium"></span>
       </div>
       <div class="flex items-center gap-2">
-        <!-- Join Class Button for Students -->
         <button id="btn-join-class-bar" onclick="openJoinClassModal()" class="px-3 py-1 bg-[#8B0000] hover:bg-[#660000] text-white font-bold rounded-lg text-xs shadow flex items-center gap-1">
           <span>+ Enter Teacher's Class Code</span>
         </button>
@@ -795,7 +793,7 @@
     const SUPABASE_KEY = 'sb_publishable_BH_DvXJkqyXW7s9eL06tWA_bSzy5ZaU';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Official Faculty Security Passcode
+    // Official Confidential Faculty Security Passcode (Not shown on screen)
     const FACULTY_PASSCODE = 'CNU-CTE-2026';
 
     const state = {
@@ -922,7 +920,7 @@
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
       } else {
-        alert("📲 To install Echo's Study Hub on your phone:\n\n• On Android (Chrome): Tap the 3 dots (⋮) at top-right -> tap 'Install App' or 'Add to Home screen'\n\n• On iPhone (Safari): Tap the Share button (square with arrow pointing up) -> tap 'Add to Home Screen'");
+        alert("📲 To install Echo's Study Hub on your device:\n\n• On Android (Chrome): Tap 3 dots (⋮) -> 'Install App' or 'Add to Home screen'\n\n• On iPhone (Safari): Tap Share (square with arrow) -> 'Add to Home Screen'");
       }
     };
 
@@ -989,7 +987,7 @@
       if (role === 'teacher') {
         const facultyPass = document.getElementById('reg-facultypass').value.trim();
         if (facultyPass !== FACULTY_PASSCODE) {
-          errBox.innerText = "Invalid Faculty Passcode! You cannot create a teacher account without official CNU authorization.";
+          errBox.innerText = "Invalid Faculty Passcode! Contact department head for faculty credentials.";
           errBox.classList.remove('hidden');
           return;
         }
