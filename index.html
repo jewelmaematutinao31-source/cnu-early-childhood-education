@@ -68,7 +68,7 @@
         <h2 class="text-2xl font-black text-[#8B0000] tracking-tight uppercase">Echo's Study Hub</h2>
         <p class="text-xs text-gray-600">Department of Early Childhood Education • Virtual LMS</p>
         <p class="text-[11px] font-bold text-[#D4AF37] bg-red-50 py-1 px-3 rounded-full inline-block mt-1.5 border border-red-100">
-          Faculty Lead: Prof. Jericho C. Matutinao
+          Created & Founded by Prof. Jericho "Echo" C. Matutinao
         </p>
       </div>
 
@@ -121,7 +121,7 @@
         </p>
       </form>
 
-      <!-- FORM B: REGISTRATION (STUDENT BY DEFAULT) -->
+      <!-- FORM B: REGISTRATION -->
       <form id="form-register" onsubmit="handleUserSignUp(event)" class="space-y-3 text-xs hidden">
         <div>
           <label class="block font-bold text-gray-700 uppercase mb-1">I am registering as:</label>
@@ -136,8 +136,8 @@
         </div>
 
         <div>
-          <label class="block font-bold text-gray-700 uppercase mb-1">Full Name</label>
-          <input type="text" id="reg-fullname" placeholder="e.g. Maria Santos" required class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
+          <label class="block font-bold text-gray-700 uppercase mb-1">Your Full Name / Title</label>
+          <input type="text" id="reg-fullname" placeholder="e.g. Ms. Jewel or Prof. Santos" required class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
         </div>
 
         <!-- Student ID (For Students) -->
@@ -146,7 +146,7 @@
           <input type="text" id="reg-studentid" placeholder="e.g. 21-1234-567" class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
         </div>
 
-        <!-- Faculty Code (Completely Hidden & No Leaked Placeholder!) -->
+        <!-- Faculty Code (For Teachers) -->
         <div id="field-faculty-code" class="hidden">
           <label class="block font-bold text-[#8B0000] uppercase mb-1">Confidential Faculty Passcode</label>
           <input type="password" id="reg-facultypass" placeholder="••••••••••••" class="w-full border-2 border-[#8B0000] bg-red-50 rounded-xl p-2 text-xs outline-none">
@@ -260,7 +260,7 @@
         </span>
         <div>
           <span class="font-extrabold text-xs tracking-wider uppercase text-emerald-200">Live Virtual Lecture:</span>
-          <span id="live-class-title" class="font-bold text-xs ml-1 text-white">Prof. Jericho C. Matutinao's Online Class</span>
+          <span id="live-class-title" class="font-bold text-xs ml-1 text-white">Live Online Class</span>
         </div>
       </div>
       <a id="btn-join-live-meet" href="#" target="_blank" class="bg-white text-emerald-950 hover:bg-emerald-100 font-black px-4 py-1.5 rounded-lg text-xs shadow flex items-center gap-1.5 transition">
@@ -287,6 +287,13 @@
           <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
             Centralized digital campus for Early Childhood Education candidate teachers. Study PowerPoint slides, watch video lectures, turn in assignments, review educational theories, and attend live classes directly with your professor.
           </p>
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-10 h-10 rounded-full border border-amber-300/40 bg-white/10 flex items-center justify-center font-bold text-amber-300 text-sm">JM</div>
+            <div>
+              <p class="text-xs text-amber-200 uppercase font-semibold">Creator & Lead Coordinator</p>
+              <p class="text-sm font-bold text-white">Prof. Jericho "Echo" C. Matutinao</p>
+            </div>
+          </div>
 
           <div class="pt-4 flex flex-wrap gap-3">
             <button onclick="switchView('lessons')" class="bg-[#D4AF37] hover:bg-[#c5a028] text-[#4a0000] font-extrabold px-6 py-3 rounded-lg shadow-md transition">
@@ -424,7 +431,7 @@
       </div>
     </section>
 
-    <!-- 6. VIEW: FACULTY DASHBOARD -->
+    <!-- 6. VIEW: FACULTY DASHBOARD (PRIVATE TO LOGGED-IN TEACHER!) -->
     <section id="view-teacher-dashboard" class="view-panel hidden space-y-8">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-gray-200 pb-4">
         <div>
@@ -442,7 +449,7 @@
           <div>
             <span class="text-xs uppercase font-extrabold text-[#8B0000]">Your Unique Class Join Code</span>
             <div class="flex items-center gap-2 mt-1">
-              <span id="faculty-my-class-code" class="text-2xl font-black font-mono tracking-wider bg-white py-1 px-4 rounded-xl border border-[#D4AF37] text-gray-900">CNU-JM-101</span>
+              <span id="faculty-my-class-code" class="text-2xl font-black font-mono tracking-wider bg-white py-1 px-4 rounded-xl border border-[#D4AF37] text-gray-900"></span>
               <button onclick="copyClassCode()" class="text-xs bg-[#8B0000] text-white px-3 py-2 rounded-lg font-bold shadow hover:bg-[#660000]">Copy Code</button>
             </div>
             <p class="text-[11px] text-gray-500 mt-1">Share this code with your students. Only students with your code can join your class and submit work.</p>
@@ -522,7 +529,7 @@
     <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
       <p class="font-bold text-white tracking-wide">ECHO'S STUDY HUB • CEBU NORMAL UNIVERSITY</p>
       <p class="text-xs text-amber-200/90">College of Teacher Education • Department of Early Childhood Education</p>
-      <p class="text-xs text-amber-100/70">Faculty Lead: Prof. Jericho C. Matutinao</p>
+      <p class="text-xs text-amber-100/70">Created & Founded by Prof. Jericho "Echo" C. Matutinao</p>
     </div>
   </footer>
 
@@ -793,7 +800,7 @@
     const SUPABASE_KEY = 'sb_publishable_BH_DvXJkqyXW7s9eL06tWA_bSzy5ZaU';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Official Confidential Faculty Security Passcode (Not shown on screen)
+    // Confidential Faculty Security Passcode
     const FACULTY_PASSCODE = 'CNU-CTE-2026';
 
     const state = {
@@ -808,7 +815,7 @@
           code: 'CNU-JM-101',
           name: 'ECE 101: Child Development & Learning',
           teacherName: 'Prof. Jericho C. Matutinao',
-          teacherEmail: 'jewelmaematutinao31@gmail.com',
+          teacherEmail: 'jericho.matutinao@cnu.edu.ph',
           meetUrl: 'https://meet.google.com/abc-defg-hij',
           schedule: 'Mon & Wed at 9:00 AM'
         }
@@ -822,7 +829,7 @@
         {
           id: 'sample-1',
           classCode: 'CNU-JM-101',
-          teacherEmail: 'jewelmaematutinao31@gmail.com',
+          teacherEmail: 'jericho.matutinao@cnu.edu.ph',
           code: 'ECE 101',
           title: "Piaget's Cognitive Development in Early Childhood",
           fileName: "ECE101_Piaget_Cognitive_Growth.pptx",
@@ -835,7 +842,7 @@
         {
           id: 'asg-1',
           classCode: 'CNU-JM-101',
-          teacherEmail: 'jewelmaematutinao31@gmail.com',
+          teacherEmail: 'jericho.matutinao@cnu.edu.ph',
           teacherName: 'Prof. Jericho C. Matutinao',
           subject: 'ECE 101',
           title: "Kindergarten Cognitive Observation Portfolio",
@@ -925,7 +932,7 @@
     };
 
     // ========================================================
-    // AUTHENTICATION & ROLE MANAGEMENT
+    // AUTHENTICATION & ROLE MANAGEMENT (NO HARDCODED OVERRIDES!)
     // ========================================================
     function toggleAuthTab(tab) {
       const loginForm = document.getElementById('form-login');
@@ -987,7 +994,7 @@
       if (role === 'teacher') {
         const facultyPass = document.getElementById('reg-facultypass').value.trim();
         if (facultyPass !== FACULTY_PASSCODE) {
-          errBox.innerText = "Invalid Faculty Passcode! Contact department head for faculty credentials.";
+          errBox.innerText = "Invalid Faculty Passcode! Please ask the department for the authorized code.";
           errBox.classList.remove('hidden');
           return;
         }
@@ -1009,9 +1016,9 @@
 
         if (error) throw error;
 
-        // Auto-generate unique class code for new teacher
+        // Auto-generate unique class code for the new teacher
         if (role === 'teacher') {
-          const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+          const initials = name.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() || 'FAC';
           const autoCode = `CNU-${initials}-${Math.floor(100 + Math.random() * 900)}`;
           state.classes.push({
             code: autoCode,
@@ -1024,7 +1031,7 @@
           persistData();
         }
 
-        alert("Account created successfully! You can now sign in.");
+        alert(`Account created for ${name}! You can now sign in.`);
         toggleAuthTab('login');
         document.getElementById('login-email').value = email;
       } catch (err) {
@@ -1053,14 +1060,10 @@
 
         const user = data.user;
         let role = user.user_metadata?.role || 'student';
+        
+        // Use the EXACT name that was registered!
         let name = user.user_metadata?.full_name || email.split('@')[0];
         let studentId = user.user_metadata?.student_id || "21-XXXX";
-
-        // Prof. Jericho C. Matutinao override
-        if (email.includes('matutinao') || email.includes('jericho') || email === 'jewelmaematutinao31@gmail.com') {
-          role = 'teacher';
-          name = "Prof. Jericho C. Matutinao";
-        }
 
         state.isLoggedIn = true;
         state.role = role;
@@ -1208,7 +1211,20 @@
     }
 
     function openMeetSettingsModal() {
-      const myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email) || state.classes[0];
+      let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
+      if (!myClass) {
+        const initials = state.currentUser.name.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() || 'FAC';
+        myClass = {
+          code: `CNU-${initials}-${Math.floor(100 + Math.random() * 900)}`,
+          name: `${state.currentUser.name}'s ECE Section`,
+          teacherName: state.currentUser.name,
+          teacherEmail: state.currentUser.email,
+          meetUrl: '',
+          schedule: 'Virtual Lectures'
+        };
+        state.classes.push(myClass);
+        persistData();
+      }
       document.getElementById('input-meet-url').value = myClass.meetUrl || '';
       document.getElementById('input-meet-schedule').value = myClass.schedule || '';
       document.getElementById('meet-settings-modal').classList.remove('hidden');
@@ -1216,7 +1232,8 @@
     function closeMeetSettingsModal() { document.getElementById('meet-settings-modal').classList.add('hidden'); }
 
     function saveMeetSettings() {
-      const myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email) || state.classes[0];
+      let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
+      if (!myClass) myClass = state.classes[0];
       myClass.meetUrl = document.getElementById('input-meet-url').value.trim();
       myClass.schedule = document.getElementById('input-meet-schedule').value.trim();
       persistData();
@@ -1345,14 +1362,15 @@
     function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
 
     // ========================================================
-    // ASSIGNMENTS LOGIC
+    // ASSIGNMENTS LOGIC (PER-TEACHER PRIVACY)
     // ========================================================
     function openCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.remove('hidden'); }
     function closeCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.add('hidden'); }
 
     function handleAssignmentCreateSubmit(e) {
       e.preventDefault();
-      const myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email) || state.classes[0];
+      let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
+      if (!myClass) myClass = state.classes[0];
 
       const asg = {
         id: 'asg-' + Date.now(),
@@ -1368,7 +1386,7 @@
       };
       state.assignments.unshift(asg);
       persistData();
-      alert("Assignment published for your enrolled students!");
+      alert(`Assignment published for your enrolled students by ${state.currentUser.name}!`);
       closeCreateAssignmentModal();
       renderAssignmentsGrid();
     }
@@ -1620,9 +1638,20 @@
       if (state.role !== 'teacher') return;
       document.getElementById('faculty-name-display').innerText = state.currentUser.name;
 
+      // Find or create this teacher's class
       let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
       if (!myClass) {
-        myClass = state.classes[0];
+        const initials = state.currentUser.name.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() || 'FAC';
+        myClass = {
+          code: `CNU-${initials}-${Math.floor(100 + Math.random() * 900)}`,
+          name: `${state.currentUser.name}'s ECE Section`,
+          teacherName: state.currentUser.name,
+          teacherEmail: state.currentUser.email,
+          meetUrl: '',
+          schedule: 'Virtual Lectures'
+        };
+        state.classes.push(myClass);
+        persistData();
       }
       document.getElementById('faculty-my-class-code').innerText = myClass.code;
 
