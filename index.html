@@ -54,7 +54,7 @@
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen antialiased">
 
   <!-- ========================================================
-       1. AUTHENTICATION GATEWAY (LOGIN & REGISTER)
+       1. AUTHENTICATION GATEWAY
        ======================================================== -->
   <div id="auth-gateway-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#660000] via-[#8B0000] to-[#400000] flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border-t-8 border-[#D4AF37] p-6 sm:p-8 space-y-5">
@@ -140,13 +140,13 @@
           <input type="text" id="reg-fullname" placeholder="e.g. Ms. Jewel or Prof. Santos" required class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
         </div>
 
-        <!-- Student ID (For Students) -->
+        <!-- Student ID -->
         <div id="field-student-id">
           <label class="block font-bold text-gray-700 uppercase mb-1">CNU Student ID Number</label>
           <input type="text" id="reg-studentid" placeholder="e.g. 21-1234-567" class="w-full border-2 border-gray-300 rounded-xl p-2 text-xs outline-none">
         </div>
 
-        <!-- Faculty Code (For Teachers) -->
+        <!-- Faculty Code -->
         <div id="field-faculty-code" class="hidden">
           <label class="block font-bold text-[#8B0000] uppercase mb-1">Confidential Faculty Passcode</label>
           <input type="password" id="reg-facultypass" placeholder="••••••••••••" class="w-full border-2 border-[#8B0000] bg-red-50 rounded-xl p-2 text-xs outline-none">
@@ -285,7 +285,7 @@
             Welcome to Echo's Study Hub
           </h2>
           <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
-            Centralized digital campus for Early Childhood Education candidate teachers. Study PowerPoint slides, watch video lectures, turn in assignments, review educational theories, and attend live classes directly with your professor.
+            Centralized digital campus for Early Childhood Education candidate teachers. Read comprehensive lecture notes, preview PowerPoint slides, watch video lectures, turn in assignments, review theories, and complete interactive quizzes!
           </p>
           <div class="flex items-center gap-3 pt-2">
             <div class="w-10 h-10 rounded-full border border-amber-300/40 bg-white/10 flex items-center justify-center font-bold text-amber-300 text-sm">JM</div>
@@ -302,44 +302,17 @@
             <button onclick="openJoinClassModal()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-5 py-3 rounded-lg border border-white/30 transition">
               Join Section with Code
             </button>
-            <button onclick="installEchoApp()" class="bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-5 py-3 rounded-lg border border-emerald-500 shadow transition flex items-center gap-1.5">
-              <span>📲 Install as Mobile App</span>
-            </button>
           </div>
-        </div>
-      </div>
-
-      <!-- Feature Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-red-200">#CODE</div>
-          <h3 class="font-bold text-gray-900 mb-1">Class Code Privacy</h3>
-          <p class="text-xs text-gray-600">Each professor has their own private code. Teachers only see their own enrolled students.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold mb-3 border border-emerald-200">MEET</div>
-          <h3 class="font-bold text-gray-900 mb-1">Live Online Classes</h3>
-          <p class="text-xs text-gray-600">Attend live Google Meet or Zoom lectures with a single click right on your dashboard.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-amber-200">PPT</div>
-          <h3 class="font-bold text-gray-900 mb-1">Cloud Slides Viewer</h3>
-          <p class="text-xs text-gray-600">Presentations uploaded to Supabase preview directly online via Microsoft Office Online.</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-[#8B0000] flex items-center justify-center font-bold mb-3 border border-red-200">BIO</div>
-          <h3 class="font-bold text-gray-900 mb-1">Knowledge Library</h3>
-          <p class="text-xs text-gray-600">Verified biographies, core principles, and kindergarten applications for 10 seminal theorists.</p>
         </div>
       </div>
     </section>
 
-    <!-- 2. VIEW: COURSE MATERIALS -->
+    <!-- 2. VIEW: COURSE MATERIALS (READINGS, PPTs & QUIZZES) -->
     <section id="view-lessons" class="view-panel hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-4">
         <div>
           <h2 class="text-2xl font-black text-gray-900">Course Materials & Lectures</h2>
-          <p class="text-sm text-gray-500">PowerPoint slide decks and documents published by professors.</p>
+          <p class="text-sm text-gray-500">Read in-depth lecture notes, preview slides, and complete topic evaluations.</p>
         </div>
       </div>
       <div id="student-lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -431,7 +404,7 @@
       </div>
     </section>
 
-    <!-- 6. VIEW: FACULTY DASHBOARD (PRIVATE TO LOGGED-IN TEACHER!) -->
+    <!-- 6. VIEW: FACULTY DASHBOARD -->
     <section id="view-teacher-dashboard" class="view-panel hidden space-y-8">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-gray-200 pb-4">
         <div>
@@ -462,20 +435,45 @@
         </div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!-- Quick Actions (Now including Written Lesson / Reading!) -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <button onclick="openUploadLessonModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-[#8B0000] uppercase">+ Cloud Upload</p>
-          <p class="text-base font-bold text-gray-800">New PowerPoint Slide Deck</p>
+          <p class="text-sm font-bold text-gray-800">PowerPoint / PDF File</p>
+        </button>
+        <button onclick="openWriteLessonModal()" class="p-4 bg-white border-2 border-[#8B0000] bg-red-50/40 rounded-xl text-left hover:bg-red-50 shadow-sm transition">
+          <p class="text-xs font-bold text-[#8B0000] uppercase">✍️ Write / Paste</p>
+          <p class="text-sm font-black text-gray-900">Full Lecture / Article</p>
         </button>
         <button onclick="openCreateAssignmentModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-amber-700 uppercase">+ Post Task</p>
-          <p class="text-base font-bold text-gray-800">New Assignment & Deadline</p>
+          <p class="text-sm font-bold text-gray-800">Assignment & Deadline</p>
         </button>
         <button onclick="openTheoristEditorModal()" class="p-4 bg-white border border-gray-200 rounded-xl text-left hover:border-[#8B0000] shadow-sm transition">
           <p class="text-xs font-bold text-emerald-700 uppercase">+ Library Profile</p>
-          <p class="text-base font-bold text-gray-800">Add / Edit ECE Theorist</p>
+          <p class="text-sm font-bold text-gray-800">Add / Edit Theorist</p>
         </button>
+      </div>
+
+      <!-- My Lessons & Editable Quizzes Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 flex justify-between items-center">
+          <span>My Uploaded Lessons & Interactive Quizzes</span>
+          <span class="text-xs text-[#8B0000] font-bold">Manage & Add Quizzes</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-gray-100 text-gray-600 uppercase">
+              <tr>
+                <th class="py-3 px-4">Subject & Title</th>
+                <th class="py-3 px-4">Format</th>
+                <th class="py-3 px-4">Quiz Attached</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="faculty-materials-table"></tbody>
+          </table>
+        </div>
       </div>
 
       <!-- My Enrolled Students -->
@@ -491,7 +489,7 @@
                 <th class="py-3 px-4">Student ID</th>
                 <th class="py-3 px-4">Student Name</th>
                 <th class="py-3 px-4">Gmail Address</th>
-                <th class="py-3 px-4">Enrolled Class</th>
+                <th class="py-3 px-4">Class Code</th>
               </tr>
             </thead>
             <tbody id="faculty-my-students-table"></tbody>
@@ -537,50 +535,158 @@
        MODALS
        ======================================================== -->
 
-  <!-- MODAL: JOIN CLASS WITH CODE (FOR STUDENTS) -->
-  <div id="join-class-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4 text-center">
-      <div class="w-12 h-12 rounded-full bg-red-100 text-[#8B0000] flex items-center justify-center font-bold text-lg mx-auto">#</div>
-      <div>
-        <h3 class="font-black text-lg text-gray-900">Join a Class Section</h3>
-        <p class="text-xs text-gray-500">Ask your professor for their Class Code, then enter it below.</p>
-      </div>
-      <div>
-        <input type="text" id="input-class-code" placeholder="e.g. CNU-JM-101" class="w-full text-center font-mono font-black text-base border-2 border-gray-300 focus:border-[#8B0000] p-3 rounded-xl uppercase outline-none">
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button onclick="closeJoinClassModal()" class="flex-1 py-2.5 border rounded-xl font-bold text-xs text-gray-600">Cancel</button>
-        <button onclick="confirmJoinClass()" class="flex-1 py-2.5 bg-[#8B0000] text-white rounded-xl font-bold text-xs shadow hover:bg-[#660000]">Join Class</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: SET LIVE ONLINE CLASS LINK (FOR TEACHER) -->
-  <div id="meet-settings-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-t-4 border-emerald-600 space-y-4">
+  <!-- 1. WRITE / PASTE FULL LESSON (LONG TEXT / ARTICLES) -->
+  <div id="write-lesson-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-base text-gray-900">Set Live Class Link (Google Meet / Zoom)</h3>
-        <button onclick="closeMeetSettingsModal()" class="text-gray-400 font-bold">✕</button>
-      </div>
-      <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold text-gray-700 uppercase mb-1">Live Meeting Web Link</label>
-          <input type="url" id="input-meet-url" placeholder="https://meet.google.com/abc-defg-hij" class="w-full border-2 p-2.5 rounded-xl outline-none">
-          <p class="text-[11px] text-gray-500 mt-1">Paste your Google Meet, Zoom, or Teams link here.</p>
+          <h3 class="font-bold text-base text-gray-900">Write / Paste Full Lecture or Reading Material</h3>
+          <p class="text-xs text-gray-500">Type or paste comprehensive theory notes directly for your students.</p>
+        </div>
+        <button onclick="closeWriteLessonModal()" class="text-gray-400 font-bold text-lg">✕</button>
+      </div>
+      <form onsubmit="handleWriteLessonSubmit(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">Subject</label>
+            <input id="write-subject" type="text" value="ECE 101" required class="w-full border p-2 rounded">
+          </div>
+          <div>
+            <label class="font-bold uppercase text-gray-700 block mb-1">Lesson Title</label>
+            <input id="write-title" type="text" required placeholder="e.g. Piaget's Stages of Cognitive Growth" class="w-full border p-2 rounded">
+          </div>
         </div>
         <div>
-          <label class="block font-bold text-gray-700 uppercase mb-1">Schedule / Notice</label>
-          <input type="text" id="input-meet-schedule" placeholder="e.g. Every Monday & Wednesday at 9:00 AM" class="w-full border-2 p-2.5 rounded-xl outline-none">
+          <label class="font-bold uppercase text-gray-700 block mb-1">Topic / Unit</label>
+          <input id="write-topic" type="text" required placeholder="e.g. Sensorimotor and Preoperational Periods" class="w-full border p-2 rounded">
         </div>
+        <div>
+          <label class="font-bold uppercase text-[#8B0000] block mb-1">Full Lecture / Reading Text (Type or Paste as Long as You Want!)</label>
+          <textarea id="write-content" rows="10" required placeholder="Paste or type your comprehensive lecture notes, theory breakdowns, bullet points, study guides, and case studies here..." class="w-full border-2 border-gray-300 focus:border-[#8B0000] p-3 rounded-xl text-xs leading-relaxed outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeWriteLessonModal()" class="px-4 py-2 border rounded font-bold text-gray-600">Cancel</button>
+          <button type="submit" class="px-6 py-2 bg-[#8B0000] text-white rounded font-bold hover:bg-[#660000]">Publish Lesson</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. READ WRITTEN LESSON MODAL (STUDENT / TEACHER VIEWER) -->
+  <div id="read-lesson-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border-t-4 border-[#8B0000] flex flex-col justify-between space-y-6">
+      <div class="flex justify-between items-start border-b pb-3">
+        <div>
+          <span id="read-subject-badge" class="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-red-50 text-[#8B0000] border border-red-200"></span>
+          <h3 id="read-lesson-title" class="text-xl sm:text-2xl font-black text-gray-900 mt-1"></h3>
+          <p id="read-lesson-topic" class="text-xs font-bold text-[#8B0000]"></p>
+        </div>
+        <button onclick="closeReadLessonModal()" class="text-gray-400 font-bold text-lg">✕</button>
       </div>
-      <div class="flex justify-end gap-2 pt-2 border-t">
-        <button onclick="closeMeetSettingsModal()" class="px-4 py-2 border rounded-xl font-bold text-xs text-gray-600">Cancel</button>
-        <button onclick="saveMeetSettings()" class="px-5 py-2 bg-emerald-800 text-white rounded-xl font-bold text-xs hover:bg-emerald-700">Save Live Link</button>
+
+      <!-- Long Text Content Body -->
+      <div id="read-lesson-body" class="text-xs sm:text-sm text-gray-800 leading-relaxed space-y-3 whitespace-pre-wrap flex-grow pr-1"></div>
+
+      <!-- Bottom Action: Take Quiz for this Lesson! -->
+      <div class="pt-4 border-t flex flex-col sm:flex-row justify-between items-center gap-3">
+        <span class="text-xs text-gray-500 font-medium">Finished reading? Test your understanding:</span>
+        <button id="btn-take-quiz-from-read" onclick="triggerQuizFromReading()" class="w-full sm:w-auto px-6 py-2.5 bg-[#D4AF37] hover:bg-[#c5a028] text-[#4a0000] font-black rounded-xl text-xs shadow flex items-center justify-center gap-1.5 transition">
+          <span>🎓 Take Interactive Quiz for this Lesson</span>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: PRESENTATION VIEWER -->
+  <!-- 3. INTERACTIVE QUIZ BUILDER MODAL (TEACHER CAN TYPE QUIZZES!) -->
+  <div id="quiz-builder-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <div>
+          <h3 class="font-bold text-base text-gray-900">Quiz Creator & Question Builder</h3>
+          <p id="quiz-builder-lesson-name" class="text-xs text-[#8B0000] font-semibold"></p>
+        </div>
+        <button onclick="closeQuizBuilderModal()" class="text-gray-400 font-bold text-lg">✕</button>
+      </div>
+      <input type="hidden" id="quiz-builder-lesson-id">
+
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="font-bold uppercase text-gray-700 block mb-1">Quiz Title</label>
+          <input id="qbuild-title" type="text" placeholder="e.g. Cognitive Stages Check" class="w-full border p-2 rounded">
+        </div>
+        <div>
+          <label class="font-bold uppercase text-gray-700 block mb-1">Time Limit (Minutes)</label>
+          <input id="qbuild-time" type="number" min="0" value="5" placeholder="0 = No limit" class="w-full border p-2 rounded">
+        </div>
+      </div>
+
+      <!-- Add New Question Box -->
+      <div class="border-2 border-dashed border-[#D4AF37] p-4 rounded-xl bg-amber-50/40 space-y-3 text-xs">
+        <h4 class="font-black text-[#8B0000] uppercase">+ Add Multiple Choice Question</h4>
+        <input id="qbuild-qtext" type="text" placeholder="Type question statement here..." class="w-full border p-2 rounded bg-white">
+        
+        <div class="grid grid-cols-2 gap-2">
+          <input id="qbuild-opt0" type="text" placeholder="Option 1 (A)" class="border p-2 rounded bg-white">
+          <input id="qbuild-opt1" type="text" placeholder="Option 2 (B)" class="border p-2 rounded bg-white">
+          <input id="qbuild-opt2" type="text" placeholder="Option 3 (C)" class="border p-2 rounded bg-white">
+          <input id="qbuild-opt3" type="text" placeholder="Option 4 (D)" class="border p-2 rounded bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Which option is correct?</label>
+            <select id="qbuild-correct" class="w-full border p-2 rounded bg-white font-bold text-emerald-800">
+              <option value="0">Option 1 (A) is Correct</option>
+              <option value="1">Option 2 (B) is Correct</option>
+              <option value="2">Option 3 (C) is Correct</option>
+              <option value="3">Option 4 (D) is Correct</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Explanation for Students</label>
+            <input id="qbuild-explanation" type="text" placeholder="Why is this answer correct?" class="w-full border p-2 rounded bg-white">
+          </div>
+        </div>
+
+        <button type="button" onclick="addQuestionToBuilderPool()" class="w-full py-2 bg-gray-900 text-white rounded-lg font-bold hover:bg-black">
+          + Add Question to Pool
+        </button>
+      </div>
+
+      <!-- Questions List Pool -->
+      <div>
+        <label class="font-bold text-xs uppercase text-gray-700 block mb-1">Questions Queued (<span id="qbuild-pool-count">0</span>)</label>
+        <div id="qbuild-pool-list" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs text-gray-500">No questions added yet.</div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button type="button" onclick="closeQuizBuilderModal()" class="px-4 py-2 border rounded font-bold text-xs text-gray-600">Cancel</button>
+        <button type="button" onclick="saveQuizToLesson()" class="px-6 py-2 bg-[#8B0000] text-white rounded font-bold text-xs hover:bg-[#660000]">Save & Attach Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. STUDENT INTERACTIVE QUIZ RUNNER -->
+  <div id="quiz-runner-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <div>
+          <h3 id="quiz-runner-title" class="font-bold text-base text-gray-900"></h3>
+          <span id="quiz-runner-step" class="text-xs font-bold text-[#8B0000]"></span>
+        </div>
+        <button onclick="closeQuizRunnerModal()" class="text-gray-400 font-bold text-lg">✕</button>
+      </div>
+
+      <div id="quiz-runner-content" class="space-y-3"></div>
+
+      <div id="quiz-runner-actions" class="flex justify-between border-t pt-3">
+        <button id="btn-quiz-runner-prev" onclick="prevQuizRunnerStep()" class="px-4 py-2 border rounded text-xs font-bold text-gray-600">Previous</button>
+        <button id="btn-quiz-runner-next" class="px-5 py-2 bg-[#8B0000] text-white rounded text-xs font-bold hover:bg-[#660000]">Next Question</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PRESENTATION VIEWER -->
   <div id="viewer-modal" class="fixed inset-0 z-50 bg-black/85 hidden flex flex-col backdrop-blur-sm">
     <div class="bg-[#8B0000] text-white px-4 py-3 flex items-center justify-between border-b border-[#D4AF37]">
       <div>
@@ -599,7 +705,7 @@
     </div>
   </div>
 
-  <!-- MODAL: UPLOAD LESSON -->
+  <!-- 6. UPLOAD PPT MODAL -->
   <div id="upload-lesson-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -614,7 +720,7 @@
           </div>
           <div>
             <label class="font-bold uppercase text-gray-700 block mb-1">Lesson Title</label>
-            <input id="upl-title" type="text" required placeholder="e.g. Cognitive Play" class="w-full border p-2 rounded">
+            <input id="upl-title" type="text" required placeholder="e.g. Cognitive Play Slides" class="w-full border p-2 rounded">
           </div>
         </div>
         <div>
@@ -631,7 +737,49 @@
     </div>
   </div>
 
-  <!-- MODAL: CREATE ASSIGNMENT -->
+  <!-- 7. JOIN CLASS MODAL -->
+  <div id="join-class-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-[#8B0000] flex items-center justify-center font-bold text-lg mx-auto">#</div>
+      <div>
+        <h3 class="font-black text-lg text-gray-900">Join a Class Section</h3>
+        <p class="text-xs text-gray-500">Ask your professor for their Class Code, then enter it below.</p>
+      </div>
+      <div>
+        <input type="text" id="input-class-code" placeholder="e.g. CNU-JM-101" class="w-full text-center font-mono font-black text-base border-2 border-gray-300 focus:border-[#8B0000] p-3 rounded-xl uppercase outline-none">
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeJoinClassModal()" class="flex-1 py-2.5 border rounded-xl font-bold text-xs text-gray-600">Cancel</button>
+        <button onclick="confirmJoinClass()" class="flex-1 py-2.5 bg-[#8B0000] text-white rounded-xl font-bold text-xs shadow hover:bg-[#660000]">Join Class</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. MEET SETTINGS MODAL -->
+  <div id="meet-settings-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-t-4 border-emerald-600 space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-base text-gray-900">Set Live Class Link (Google Meet / Zoom)</h3>
+        <button onclick="closeMeetSettingsModal()" class="text-gray-400 font-bold">✕</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Live Meeting Web Link</label>
+          <input type="url" id="input-meet-url" placeholder="https://meet.google.com/abc-defg-hij" class="w-full border-2 p-2.5 rounded-xl outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Schedule / Notice</label>
+          <input type="text" id="input-meet-schedule" placeholder="e.g. Every Monday & Wednesday at 9:00 AM" class="w-full border-2 p-2.5 rounded-xl outline-none">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="closeMeetSettingsModal()" class="px-4 py-2 border rounded-xl font-bold text-xs text-gray-600">Cancel</button>
+        <button onclick="saveMeetSettings()" class="px-5 py-2 bg-emerald-800 text-white rounded-xl font-bold text-xs hover:bg-emerald-700">Save Live Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. CREATE ASSIGNMENT MODAL -->
   <div id="create-assignment-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -665,7 +813,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SUBMIT ASSIGNMENT (STUDENT) -->
+  <!-- 10. SUBMIT ASSIGNMENT MODAL -->
   <div id="submit-assignment-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -687,7 +835,7 @@
     </div>
   </div>
 
-  <!-- MODAL: GRADE SUBMISSION (TEACHER) -->
+  <!-- 11. GRADE SUBMISSION MODAL -->
   <div id="grade-submission-modal" class="fixed inset-0 z-50 bg-black/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border-t-4 border-[#D4AF37] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -716,7 +864,7 @@
     </div>
   </div>
 
-  <!-- MODAL: THEORIST ADD / EDIT -->
+  <!-- 12. THEORIST ADD / EDIT -->
   <div id="theorist-editor-modal" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
@@ -764,7 +912,7 @@
     </div>
   </div>
 
-  <!-- MODAL: THEORIST DETAILS -->
+  <!-- 13. THEORIST DETAILS MODAL -->
   <div id="theorist-detail-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border-t-4 border-[#8B0000] space-y-4">
       <div class="flex justify-between items-start border-b pb-3">
@@ -800,7 +948,6 @@
     const SUPABASE_KEY = 'sb_publishable_BH_DvXJkqyXW7s9eL06tWA_bSzy5ZaU';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Confidential Faculty Security Passcode
     const FACULTY_PASSCODE = 'CNU-CTE-2026';
 
     const state = {
@@ -809,7 +956,6 @@
       currentUser: null,
       currentView: 'home',
 
-      // CLASSES REGISTRY
       classes: [
         {
           code: 'CNU-JM-101',
@@ -825,16 +971,64 @@
         { studentId: "21-1234-567", name: "Maria Santos", email: "maria.santos@gmail.com", classCode: "CNU-JM-101" }
       ],
 
+      // LESSONS (CAN BE PPT, PDF, OR FULL WRITTEN ARTICLES!)
       lessons: [
         {
-          id: 'sample-1',
+          id: 'les-sample-written',
+          type: 'written', // 'written' or 'file'
           classCode: 'CNU-JM-101',
           teacherEmail: 'jericho.matutinao@cnu.edu.ph',
+          teacherName: 'Prof. Jericho C. Matutinao',
           code: 'ECE 101',
-          title: "Piaget's Cognitive Development in Early Childhood",
+          title: "Piaget's Preoperational Stage in the Kindergarten Classroom",
+          topic: "Symbolic Thought & Egocentrism Breakdown",
+          content: `1. INTRODUCTION TO THE PREOPERATIONAL PERIOD (AGES 2 - 7)
+Jean Piaget observed that children between ages 2 and 7 make remarkable developmental leaps in symbolic representation. However, their cognitive operations remain intuitive rather than logical.
+
+2. CORE CONSTRUCTS
+• Symbolic Function Substage (Ages 2 to 4):
+Children acquire the mental capacity to represent an object that is not physically present. A wooden block becomes a telephone; a stick becomes a magic wand.
+
+• Egocentrism:
+Children do not perceive situations from the vantage point of another individual. In Piaget's classic Three Mountain Task, preschool children consistently describe the perspective of the teddy bear opposite them as identical to their own vantage point.
+
+• Centration & Conservation:
+Young learners 'center' on one prominent perceptual feature. When identical amounts of water are poured into a tall thin cylinder versus a wide dish, preoperational children assert that the taller cylinder holds more liquid.
+
+3. CLASSROOM IMPLICATIONS FOR TEACHER CANDIDATES
+- Provide open-ended dramatic sociodramatic play areas.
+- Utilize physical manipulatives (counting bears, wooden rods) rather than abstract worksheets.
+- Avoid expecting young children to see social conflicts from another child's point of view without guided teacher mediation.`,
+          quiz: {
+            title: "Piagetian Principles Comprehension Check",
+            timeLimitMinutes: 5,
+            questions: [
+              {
+                question: "According to Piaget, children aged 2 to 7 years are in which developmental stage?",
+                options: ["Sensorimotor Period", "Preoperational Stage", "Concrete Operational", "Formal Operational"],
+                correct: 1,
+                explanation: "The Preoperational stage spans ages 2 to 7, characterized by symbolic representation and emerging language."
+              },
+              {
+                question: "What term describes a young child's inability to see a situation from another person's perspective?",
+                options: ["Object Permanence", "Centration", "Egocentrism", "Scaffolding"],
+                correct: 2,
+                explanation: "Egocentrism refers to the cognitive tendency to perceive the world exclusively from one's own viewpoint."
+              }
+            ]
+          }
+        },
+        {
+          id: 'sample-ppt',
+          type: 'file',
+          classCode: 'CNU-JM-101',
+          teacherEmail: 'jericho.matutinao@cnu.edu.ph',
+          teacherName: 'Prof. Jericho C. Matutinao',
+          code: 'ECE 101',
+          title: "Piaget's Cognitive Development Slide Deck",
           fileName: "ECE101_Piaget_Cognitive_Growth.pptx",
           fileUrl: "https://filesamples.com/samples/document/pptx/sample3.pptx",
-          isPublished: true
+          quiz: null
         }
       ],
 
@@ -888,6 +1082,9 @@
 
     // Load Local Data
     function loadSavedData() {
+      const savedLessons = localStorage.getItem('cnu_lessons_v2');
+      if (savedLessons) { try { state.lessons = JSON.parse(savedLessons); } catch(e){} }
+
       const savedClasses = localStorage.getItem('cnu_classes');
       if (savedClasses) { try { state.classes = JSON.parse(savedClasses); } catch(e){} }
 
@@ -905,6 +1102,7 @@
     }
 
     function persistData() {
+      localStorage.setItem('cnu_lessons_v2', JSON.stringify(state.lessons));
       localStorage.setItem('cnu_classes', JSON.stringify(state.classes));
       localStorage.setItem('cnu_enrolled_roster', JSON.stringify(state.enrolledStudents));
       localStorage.setItem('cnu_assignments', JSON.stringify(state.assignments));
@@ -913,7 +1111,7 @@
     }
 
     // ========================================================
-    // PWA APP INSTALLATION LOGIC
+    // PWA & AUTHENTICATION
     // ========================================================
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -927,13 +1125,10 @@
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
       } else {
-        alert("📲 To install Echo's Study Hub on your device:\n\n• On Android (Chrome): Tap 3 dots (⋮) -> 'Install App' or 'Add to Home screen'\n\n• On iPhone (Safari): Tap Share (square with arrow) -> 'Add to Home Screen'");
+        alert("📲 To install Echo's Study Hub:\n\n• On Android (Chrome): Tap 3 dots (⋮) -> 'Install App' or 'Add to Home screen'\n\n• On iPhone (Safari): Tap Share (square with arrow) -> 'Add to Home Screen'");
       }
     };
 
-    // ========================================================
-    // AUTHENTICATION & ROLE MANAGEMENT (NO HARDCODED OVERRIDES!)
-    // ========================================================
     function toggleAuthTab(tab) {
       const loginForm = document.getElementById('form-login');
       const regForm = document.getElementById('form-register');
@@ -1016,7 +1211,7 @@
 
         if (error) throw error;
 
-        // Auto-generate unique class code for the new teacher
+        // Auto-generate unique class code for new teacher
         if (role === 'teacher') {
           const initials = name.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() || 'FAC';
           const autoCode = `CNU-${initials}-${Math.floor(100 + Math.random() * 900)}`;
@@ -1060,8 +1255,6 @@
 
         const user = data.user;
         let role = user.user_metadata?.role || 'student';
-        
-        // Use the EXACT name that was registered!
         let name = user.user_metadata?.full_name || email.split('@')[0];
         let studentId = user.user_metadata?.student_id || "21-XXXX";
 
@@ -1149,7 +1342,7 @@
     }
 
     // ========================================================
-    // CLASS CODE & LIVE MEETING LOGIC
+    // CLASS CODE & LIVE MEETING
     // ========================================================
     function openJoinClassModal() { document.getElementById('join-class-modal').classList.remove('hidden'); }
     function closeJoinClassModal() { document.getElementById('join-class-modal').classList.add('hidden'); }
@@ -1264,42 +1457,116 @@
       if (viewName === 'teacher-dashboard') renderTeacherDashboardView();
     }
 
-    async function loadCloudLessons() {
-      try {
-        const { data, error } = await sb.from('lessons').select('*').order('created_at', { ascending: false });
-        if (!error && data && data.length) {
-          state.lessons = data.map(l => ({
-            id: l.id,
-            code: l.subject_code,
-            title: l.title,
-            fileName: l.file_name,
-            fileUrl: l.file_url,
-            isPublished: l.is_published
-          }));
-        }
-      } catch(e) {}
+    // ========================================================
+    // LESSONS: WRITTEN ARTICLES & PPT VIEWER
+    // ========================================================
+    function openWriteLessonModal() { document.getElementById('write-lesson-modal').classList.remove('hidden'); }
+    function closeWriteLessonModal() { document.getElementById('write-lesson-modal').classList.add('hidden'); }
+
+    function handleWriteLessonSubmit(e) {
+      e.preventDefault();
+      const subject = document.getElementById('write-subject').value.trim();
+      const title = document.getElementById('write-title').value.trim();
+      const topic = document.getElementById('write-topic').value.trim();
+      const content = document.getElementById('write-content').value;
+
+      let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
+      if (!myClass) myClass = state.classes[0];
+
+      const newLesson = {
+        id: 'les-' + Date.now(),
+        type: 'written',
+        classCode: myClass.code,
+        teacherEmail: state.currentUser.email,
+        teacherName: state.currentUser.name,
+        code: subject,
+        title: title,
+        topic: topic,
+        content: content,
+        quiz: null
+      };
+
+      state.lessons.unshift(newLesson);
+      persistData();
+      alert(`Written lesson "${title}" published for your students! You can now click "+ Quiz" on your dashboard to attach a quiz to it.`);
+      document.getElementById('write-content').value = '';
+      closeWriteLessonModal();
       renderLessonsGrid();
+      renderTeacherDashboardView();
+    }
+
+    // Open Written Lesson for Reading
+    let currentReadingLessonId = null;
+    function openReadLessonModal(id) {
+      const lesson = state.lessons.find(l => l.id === id);
+      if (!lesson) return;
+      currentReadingLessonId = id;
+
+      document.getElementById('read-subject-badge').innerText = lesson.code;
+      document.getElementById('read-lesson-title').innerText = lesson.title;
+      document.getElementById('read-lesson-topic').innerText = `Topic: ${lesson.topic} • Instructor: ${lesson.teacherName}`;
+      document.getElementById('read-lesson-body').innerText = lesson.content;
+
+      const quizBtn = document.getElementById('btn-take-quiz-from-read');
+      if (lesson.quiz && lesson.quiz.questions && lesson.quiz.questions.length > 0) {
+        quizBtn.classList.remove('hidden');
+        quizBtn.innerText = `🎓 Take Quiz: ${lesson.quiz.title} (${lesson.quiz.questions.length} Questions)`;
+      } else {
+        quizBtn.classList.add('hidden');
+      }
+
+      document.getElementById('read-lesson-modal').classList.remove('hidden');
+    }
+    function closeReadLessonModal() { document.getElementById('read-lesson-modal').classList.add('hidden'); }
+
+    function triggerQuizFromReading() {
+      closeReadLessonModal();
+      startQuizRunner(currentReadingLessonId);
     }
 
     function renderLessonsGrid() {
       const container = document.getElementById('student-lessons-grid');
-      container.innerHTML = state.lessons.map(item => `
-        <div class="bg-white rounded-xl shadow-md border p-5 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded border">${item.code}</span>
-            <h3 class="font-bold text-gray-900 mt-2">${item.title}</h3>
-            <p class="text-xs text-gray-500 mb-4">${item.fileName}</p>
+      container.innerHTML = state.lessons.map(item => {
+        const isWritten = item.type === 'written';
+        const hasQuiz = item.quiz && item.quiz.questions && item.quiz.questions.length > 0;
+
+        return `
+          <div class="bg-white rounded-xl shadow-md border p-5 flex flex-col justify-between hover:shadow-lg transition">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold px-2 py-0.5 bg-red-50 text-[#8B0000] rounded border">${item.code}</span>
+                <span class="status-badge ${isWritten ? 'bg-amber-100 text-amber-900' : 'bg-blue-100 text-blue-900'}">
+                  ${isWritten ? '📖 Lecture Reading' : '📊 Slide Deck'}
+                </span>
+              </div>
+              <h3 class="font-bold text-gray-900 mt-2 text-base leading-snug">${item.title}</h3>
+              <p class="text-xs font-semibold text-[#8B0000] mt-1 mb-2">${item.topic || ''}</p>
+              <p class="text-xs text-gray-500 line-clamp-3 mb-4">${isWritten ? item.content : item.fileName}</p>
+            </div>
+            <div class="space-y-2 border-t pt-3">
+              ${isWritten ? `
+                <button onclick="openReadLessonModal('${item.id}')" class="w-full bg-[#8B0000] text-white text-xs font-bold py-2.5 rounded-lg shadow hover:bg-[#660000] flex items-center justify-center gap-1.5">
+                  <span>📖 Read Full Lesson</span>
+                </button>
+              ` : `
+                <div class="flex gap-2">
+                  <button onclick="openMaterialViewer('${item.id}')" class="flex-1 bg-[#8B0000] text-white text-xs font-bold py-2 rounded shadow hover:bg-[#660000]">
+                    Preview Presentation
+                  </button>
+                  <a href="${item.fileUrl}" target="_blank" download class="px-3 py-2 border rounded text-xs font-bold text-gray-700 hover:bg-gray-50">
+                    Download
+                  </a>
+                </div>
+              `}
+              ${hasQuiz ? `
+                <button onclick="startQuizRunner('${item.id}')" class="w-full bg-[#FFF9E6] border border-[#D4AF37] text-[#4a0000] text-xs font-bold py-2 rounded flex items-center justify-center gap-1 hover:bg-[#fdedc9]">
+                  <span>🎓 Take Interactive Quiz</span>
+                </button>
+              ` : ''}
+            </div>
           </div>
-          <div class="flex gap-2 border-t pt-3">
-            <button onclick="openMaterialViewer('${item.id}')" class="flex-1 bg-[#8B0000] text-white text-xs font-bold py-2 rounded shadow hover:bg-[#660000]">
-              Preview Presentation
-            </button>
-            <a href="${item.fileUrl}" target="_blank" download class="px-3 py-2 border rounded text-xs font-bold text-gray-700 hover:bg-gray-50">
-              Download
-            </a>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function openMaterialViewer(id) {
@@ -1318,6 +1585,7 @@
     }
     function closeViewerModal() { document.getElementById('viewer-modal').classList.add('hidden'); }
 
+    // Upload Lesson File
     async function handleLessonUploadSubmit(e) {
       e.preventDefault();
       const code = document.getElementById('upl-subject').value;
@@ -1337,20 +1605,29 @@
 
         const { data: { publicUrl } } = sb.storage.from('materials').getPublicUrl(cleanName);
 
-        await sb.from('lessons').insert([{
-          subject_code: code,
+        let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
+        if (!myClass) myClass = state.classes[0];
+
+        const newLesson = {
+          id: 'les-' + Date.now(),
+          type: 'file',
+          classCode: myClass.code,
+          teacherEmail: state.currentUser.email,
+          teacherName: state.currentUser.name,
+          code: code,
           title: title,
-          topic: 'Curriculum Unit',
-          description: '',
-          file_name: file.name,
-          file_url: publicUrl,
-          file_type: file.name.split('.').pop(),
-          is_published: true
-        }]);
+          fileName: file.name,
+          fileUrl: publicUrl,
+          quiz: null
+        };
+
+        state.lessons.unshift(newLesson);
+        persistData();
 
         alert("Presentation uploaded to Supabase cloud!");
         closeUploadLessonModal();
-        await loadCloudLessons();
+        renderLessonsGrid();
+        renderTeacherDashboardView();
       } catch(err) {
         alert("Upload error: " + err.message);
       } finally {
@@ -1362,7 +1639,197 @@
     function closeUploadLessonModal() { document.getElementById('upload-lesson-modal').classList.add('hidden'); }
 
     // ========================================================
-    // ASSIGNMENTS LOGIC (PER-TEACHER PRIVACY)
+    // INTERACTIVE QUIZ BUILDER (TEACHER CREATES QUIZZES)
+    // ========================================================
+    let builderQuestionsPool = [];
+
+    function openQuizBuilderModal(lessonId) {
+      const lesson = state.lessons.find(l => l.id === lessonId);
+      if (!lesson) return;
+
+      document.getElementById('quiz-builder-lesson-id').value = lessonId;
+      document.getElementById('quiz-builder-lesson-name').innerText = `Attaching Quiz to: ${lesson.title}`;
+      document.getElementById('qbuild-title').value = lesson.quiz ? lesson.quiz.title : `${lesson.title} Evaluation`;
+      document.getElementById('qbuild-time').value = lesson.quiz ? lesson.quiz.timeLimitMinutes : 5;
+
+      builderQuestionsPool = lesson.quiz && lesson.quiz.questions ? JSON.parse(JSON.stringify(lesson.quiz.questions)) : [];
+      renderBuilderPool();
+      document.getElementById('quiz-builder-modal').classList.remove('hidden');
+    }
+    function closeQuizBuilderModal() { document.getElementById('quiz-builder-modal').classList.add('hidden'); }
+
+    function renderBuilderPool() {
+      document.getElementById('qbuild-pool-count').innerText = builderQuestionsPool.length;
+      const list = document.getElementById('qbuild-pool-list');
+      if (!builderQuestionsPool.length) {
+        list.innerHTML = `<p class="text-xs text-gray-400">No questions added yet. Type a question above and click "+ Add Question to Pool".</p>`;
+        return;
+      }
+      list.innerHTML = builderQuestionsPool.map((q, idx) => `
+        <div class="p-2.5 border rounded-lg bg-gray-50 flex justify-between items-center text-xs">
+          <div>
+            <strong>Q${idx + 1}:</strong> ${q.question}
+            <span class="text-emerald-700 font-bold ml-2">(Correct: Option ${parseInt(q.correct) + 1})</span>
+          </div>
+          <button onclick="removeQuestionFromPool(${idx})" class="text-red-600 font-bold hover:text-red-800">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    function addQuestionToBuilderPool() {
+      const text = document.getElementById('qbuild-qtext').value.trim();
+      const o0 = document.getElementById('qbuild-opt0').value.trim();
+      const o1 = document.getElementById('qbuild-opt1').value.trim();
+      const o2 = document.getElementById('qbuild-opt2').value.trim();
+      const o3 = document.getElementById('qbuild-opt3').value.trim();
+      const correct = document.getElementById('qbuild-correct').value;
+      const exp = document.getElementById('qbuild-explanation').value.trim();
+
+      if (!text || !o0 || !o1 || !o2 || !o3) {
+        alert("Please complete the question statement and all 4 options.");
+        return;
+      }
+
+      builderQuestionsPool.push({
+        question: text,
+        options: [o0, o1, o2, o3],
+        correct: parseInt(correct, 10),
+        explanation: exp || "Correct answer as designated by professor."
+      });
+
+      document.getElementById('qbuild-qtext').value = '';
+      document.getElementById('qbuild-opt0').value = '';
+      document.getElementById('qbuild-opt1').value = '';
+      document.getElementById('qbuild-opt2').value = '';
+      document.getElementById('qbuild-opt3').value = '';
+      document.getElementById('qbuild-explanation').value = '';
+
+      renderBuilderPool();
+    }
+
+    function removeQuestionFromPool(index) {
+      builderQuestionsPool.splice(index, 1);
+      renderBuilderPool();
+    }
+
+    function saveQuizToLesson() {
+      const lessonId = document.getElementById('quiz-builder-lesson-id').value;
+      const title = document.getElementById('qbuild-title').value.trim();
+      const time = parseInt(document.getElementById('qbuild-time').value, 10) || 5;
+
+      if (!title || !builderQuestionsPool.length) {
+        alert("Please give the quiz a title and add at least one question!");
+        return;
+      }
+
+      const lesson = state.lessons.find(l => l.id === lessonId);
+      if (lesson) {
+        lesson.quiz = {
+          title: title,
+          timeLimitMinutes: time,
+          questions: builderQuestionsPool
+        };
+        persistData();
+        alert(`Quiz "${title}" attached successfully to lesson! Students can now take it.`);
+        closeQuizBuilderModal();
+        renderLessonsGrid();
+        renderTeacherDashboardView();
+      }
+    }
+
+    // ========================================================
+    // INTERACTIVE QUIZ RUNNER (STUDENTS TAKE QUIZ)
+    // ========================================================
+    let activeQuizObj = null;
+    let activeQuizIndex = 0;
+    let activeQuizAnswers = {};
+
+    function startQuizRunner(lessonId) {
+      const lesson = state.lessons.find(l => l.id === lessonId);
+      if (!lesson || !lesson.quiz || !lesson.quiz.questions.length) return;
+
+      activeQuizObj = lesson.quiz;
+      activeQuizIndex = 0;
+      activeQuizAnswers = {};
+
+      document.getElementById('quiz-runner-title').innerText = activeQuizObj.title;
+      document.getElementById('quiz-runner-actions').classList.remove('hidden');
+      document.getElementById('quiz-runner-modal').classList.remove('hidden');
+      renderQuizRunnerStep();
+    }
+    function closeQuizRunnerModal() { document.getElementById('quiz-runner-modal').classList.add('hidden'); }
+
+    function renderQuizRunnerStep() {
+      const q = activeQuizObj.questions[activeQuizIndex];
+      const total = activeQuizObj.questions.length;
+      document.getElementById('quiz-runner-step').innerText = `Question ${activeQuizIndex + 1} of ${total}`;
+
+      const container = document.getElementById('quiz-runner-content');
+      container.innerHTML = `
+        <h4 class="font-bold text-sm text-gray-900 mb-3">${activeQuizIndex + 1}. ${q.question}</h4>
+        <div class="space-y-2">
+          ${q.options.map((opt, i) => `
+            <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer ${activeQuizAnswers[activeQuizIndex] === i ? 'bg-red-50 border-[#8B0000] text-[#8B0000] font-bold' : 'border-gray-200 hover:bg-gray-50'}">
+              <input type="radio" name="runner_opt" value="${i}" ${activeQuizAnswers[activeQuizIndex] === i ? 'checked' : ''} onchange="activeQuizAnswers[${activeQuizIndex}] = ${i}" class="text-[#8B0000]">
+              <span class="text-xs sm:text-sm font-medium">${opt}</span>
+            </label>
+          `).join('')}
+        </div>
+      `;
+
+      document.getElementById('btn-quiz-runner-prev').disabled = activeQuizIndex === 0;
+      const nextBtn = document.getElementById('btn-quiz-runner-next');
+      if (activeQuizIndex === total - 1) {
+        nextBtn.innerText = "Submit Evaluation";
+        nextBtn.onclick = submitQuizRunner;
+      } else {
+        nextBtn.innerText = "Next Question";
+        nextBtn.onclick = () => { activeQuizIndex++; renderQuizRunnerStep(); };
+      }
+    }
+
+    function prevQuizRunnerStep() {
+      if (activeQuizIndex > 0) {
+        activeQuizIndex--;
+        renderQuizRunnerStep();
+      }
+    }
+
+    function submitQuizRunner() {
+      const questions = activeQuizObj.questions;
+      let correct = 0;
+
+      questions.forEach((q, idx) => {
+        if (activeQuizAnswers[idx] === q.correct) correct++;
+      });
+
+      const max = questions.length;
+      const percentage = Math.round((correct / max) * 100);
+
+      document.getElementById('quiz-runner-actions').classList.add('hidden');
+      document.getElementById('quiz-runner-content').innerHTML = `
+        <div class="text-center py-4 border-b mb-4">
+          <div class="w-16 h-16 mx-auto mb-2 rounded-full flex items-center justify-center text-xl font-black ${percentage >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+            ${percentage}%
+          </div>
+          <h3 class="text-lg font-bold">${percentage >= 70 ? 'Competency Verified • Passed!' : 'Needs Review'}</h3>
+          <p class="text-xs text-gray-500">Correct: ${correct} of ${max} Questions</p>
+        </div>
+        <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          ${questions.map((q, idx) => `
+            <div class="p-2.5 border rounded-lg text-xs ${activeQuizAnswers[idx] === q.correct ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}">
+              <p class="font-bold">${idx + 1}. ${q.question}</p>
+              <p class="text-gray-700"><strong>Correct Answer:</strong> ${q.options[q.correct]}</p>
+              <p class="text-gray-500 italic mt-0.5"><strong>Explanation:</strong> ${q.explanation}</p>
+            </div>
+          `).join('')}
+        </div>
+        <button onclick="closeQuizRunnerModal()" class="w-full mt-4 py-2 bg-[#8B0000] text-white rounded-lg font-bold text-xs">Close</button>
+      `;
+    }
+
+    // ========================================================
+    // ASSIGNMENTS LOGIC
     // ========================================================
     function openCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.remove('hidden'); }
     function closeCreateAssignmentModal() { document.getElementById('create-assignment-modal').classList.add('hidden'); }
@@ -1638,7 +2105,6 @@
       if (state.role !== 'teacher') return;
       document.getElementById('faculty-name-display').innerText = state.currentUser.name;
 
-      // Find or create this teacher's class
       let myClass = state.classes.find(c => c.teacherEmail === state.currentUser.email);
       if (!myClass) {
         const initials = state.currentUser.name.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() || 'FAC';
@@ -1655,6 +2121,33 @@
       }
       document.getElementById('faculty-my-class-code').innerText = myClass.code;
 
+      // Filter: Only show lessons created by this teacher!
+      const myLessons = state.lessons.filter(l => l.teacherEmail === state.currentUser.email || l.classCode === myClass.code);
+      const matTable = document.getElementById('faculty-materials-table');
+      if (!myLessons.length) {
+        matTable.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">No lessons created yet. Click "+ Cloud Upload" or "✍️ Write / Paste" above!</td></tr>`;
+      } else {
+        matTable.innerHTML = myLessons.map(l => `
+          <tr class="border-b text-xs">
+            <td class="p-3 font-bold">
+              <span class="text-[#8B0000] block text-[10px]">${l.code}</span>
+              ${l.title}
+            </td>
+            <td class="p-3"><span class="status-badge ${l.type === 'written' ? 'bg-amber-100 text-amber-900' : 'bg-blue-100 text-blue-900'}">${l.type === 'written' ? 'Article / Reading' : 'Slide Deck'}</span></td>
+            <td class="p-3 text-xs font-semibold ${l.quiz ? 'text-emerald-700 font-bold' : 'text-gray-400'}">${l.quiz ? `Attached (${l.quiz.questions.length} Qs)` : 'None'}</td>
+            <td class="p-3 text-right space-x-1">
+              <button onclick="openQuizBuilderModal('${l.id}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded font-bold text-[11px]">+ Quiz</button>
+              ${l.type === 'written' ? `
+                <button onclick="openReadLessonModal('${l.id}')" class="px-2.5 py-1 bg-[#8B0000] text-white rounded font-bold text-[11px]">Read</button>
+              ` : `
+                <button onclick="openMaterialViewer('${l.id}')" class="px-2.5 py-1 bg-[#8B0000] text-white rounded font-bold text-[11px]">Slides</button>
+              `}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Filter: Only show this teacher's enrolled students!
       const myStudents = state.enrolledStudents.filter(e => e.classCode === myClass.code);
       const studentTable = document.getElementById('faculty-my-students-table');
       if (!myStudents.length) {
@@ -1665,11 +2158,12 @@
             <td class="p-3 font-mono font-bold text-[#8B0000]">${st.studentId}</td>
             <td class="p-3 font-bold text-gray-900">${st.name}</td>
             <td class="p-3 text-gray-600">${st.email}</td>
-            <td class="p-3"><span class="status-badge bg-emerald-100 text-emerald-800">Enrolled</span></td>
+            <td class="p-3"><span class="status-badge bg-emerald-100 text-emerald-800">${st.classCode}</span></td>
           </tr>
         `).join('');
       }
 
+      // Filter: Only show submissions for this teacher's assignments!
       const myAssignmentsIds = state.assignments.filter(a => a.teacherEmail === state.currentUser.email || a.classCode === myClass.code).map(a => a.id);
       const mySubmissions = state.submissions.filter(s => myAssignmentsIds.includes(s.assignmentId));
 
@@ -1697,9 +2191,9 @@
     // Initialization
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
-      loadCloudLessons();
       checkExistingSession();
     });
   </script>
 </body>
 </html>
+
